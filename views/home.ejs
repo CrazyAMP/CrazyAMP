@@ -3169,20 +3169,30 @@
                         ? `<img src="${escapeAttribute(pet.image)}" alt="${escapeAttribute(name)}">`
                         : "<span>🐾</span>";
 
-                    const form = String(pet.form || "normal");
-                    const traits = [
-                        `<span class="pet-trait pet-trait-${escapeAttribute(form)}">${escapeHtml(form)}</span>`,
-                        pet.fly ? "<span class=\"pet-trait\">Fly</span>" : "",
-                        pet.ride ? "<span class=\"pet-trait\">Ride</span>" : ""
-                    ].join("");
+                    const form = String(pet.form || "normal").toLowerCase();
+                    const formBadge = form !== "normal"
+                        ? `<span class="pet-trait pet-trait-${escapeAttribute(form)}">${escapeHtml(form.charAt(0).toUpperCase() + form.slice(1))}</span>`
+                        : "";
+
+                    const movementBadge = pet.fly && pet.ride
+                        ? '<span class="pet-trait pet-trait-fr" title="Flyable and Rideable">FR</span>'
+                        : pet.fly
+                            ? '<span class="pet-trait pet-trait-f" title="Flyable">F</span>'
+                            : pet.ride
+                                ? '<span class="pet-trait pet-trait-r" title="Rideable">R</span>'
+                                : "";
+
+                    const traits = [formBadge, movementBadge]
+                        .filter(Boolean)
+                        .join("");
 
                     return `
                         <li class="coinflip-game-pet">
                             <div class="coinflip-game-pet-image">${image}</div>
                             <div>
                                 <strong>${escapeHtml(name)}</strong>
-                                <span>${quantity > 1 ? `Quantity ×${quantity} · ` : ""}💎 ${formatValue(pet.value)}</span>
-                                <div class="coinflip-game-pet-traits">${traits}</div>
+                                <span class="coinflip-game-pet-meta">${quantity > 1 ? `Quantity ×${quantity} · ` : ""}💎 ${formatValue(pet.value)}</span>
+                                ${traits ? `<div class="coinflip-game-pet-traits">${traits}</div>` : ""}
                             </div>
                         </li>
                     `;

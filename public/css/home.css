@@ -4661,3 +4661,201 @@ body.coinflip-game-modal-open {
     .coinflip-join-totals strong { font-size: 14px; }
     .coinflip-join-footer .coinflip-join-match-button { min-width: 112px; }
 }
+
+/* =========================================================
+   CRAZYAMP VIEW GAME POLISH
+   Compact pet traits: Normal is hidden, Fly = F,
+   Ride = R, Fly + Ride = FR.
+   ========================================================= */
+
+.coinflip-game-panel {
+    border-color: rgba(168, 85, 247, 0.28);
+    background:
+        radial-gradient(circle at 50% -20%, rgba(124, 58, 237, 0.14), transparent 46%),
+        linear-gradient(145deg, #211b36 0%, #100d1d 76%);
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.58), 0 0 0 1px rgba(168, 85, 247, 0.035);
+}
+
+.coinflip-game-id {
+    color: #8c82ad;
+    letter-spacing: 0.03em;
+}
+
+.coinflip-game-odds strong {
+    border: 1px solid rgba(255, 255, 255, 0.045);
+    background: linear-gradient(135deg, rgba(39, 45, 65, 0.95), rgba(29, 32, 49, 0.95));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.coinflip-game-pets-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.coinflip-game-pets-heading h3 {
+    margin: 0;
+}
+
+.coinflip-game-pets-heading > span {
+    color: #8c82ad;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.coinflip-game-pets {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.coinflip-game-pet {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 74px;
+    padding: 10px 11px;
+    border: 1px solid rgba(168, 85, 247, 0.13);
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.035), rgba(124, 58, 237, 0.035));
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.coinflip-game-pet:hover {
+    transform: translateY(-1px);
+    border-color: rgba(168, 85, 247, 0.32);
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(124, 58, 237, 0.04));
+}
+
+.coinflip-game-pet-image {
+    display: grid;
+    place-items: center;
+    flex: 0 0 58px;
+    width: 58px;
+    height: 58px;
+    overflow: hidden;
+    border: 1px solid rgba(168, 85, 247, 0.16);
+    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(124, 58, 237, 0.13), rgba(15, 12, 28, 0.8));
+}
+
+.coinflip-game-pet-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.coinflip-game-pet > div:last-child {
+    min-width: 0;
+    flex: 1;
+}
+
+.coinflip-game-pet strong {
+    display: block;
+    overflow: hidden;
+    margin-bottom: 4px;
+    color: #f5f3ff;
+    font-size: 13px;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.coinflip-game-pet-meta {
+    display: block;
+    color: #a9a2c3 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+}
+
+.coinflip-game-pet-traits {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 7px;
+}
+
+.pet-trait {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 19px;
+    padding: 0 7px;
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    border-radius: 6px;
+    background: rgba(124, 58, 237, 0.13);
+    color: #d8ccff;
+    font-size: 9px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.02em;
+}
+
+.pet-trait-f {
+    border-color: rgba(96, 165, 250, 0.32);
+    background: rgba(59, 130, 246, 0.12);
+    color: #93c5fd;
+}
+
+.pet-trait-r {
+    border-color: rgba(52, 211, 153, 0.32);
+    background: rgba(16, 185, 129, 0.12);
+    color: #6ee7b7;
+}
+
+.pet-trait-fr {
+    border-color: rgba(168, 85, 247, 0.4);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.14), rgba(168, 85, 247, 0.14));
+    color: #c4b5fd;
+}
+
+.pet-trait-neon {
+    border-color: rgba(52, 211, 153, 0.3);
+    background: rgba(16, 185, 129, 0.1);
+    color: #6ee7b7;
+}
+
+.pet-trait-mega {
+    border-color: rgba(240, 171, 252, 0.3);
+    background: rgba(217, 70, 239, 0.1);
+    color: #f0abfc;
+}
+
+.coinflip-game-opponent-wager {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    padding: 24px;
+    border: 1px dashed rgba(168, 85, 247, 0.15);
+    border-radius: 14px;
+    background: rgba(124, 58, 237, 0.025);
+    color: #827a9d;
+    font-size: 12px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+@media (max-width: 800px) {
+    .coinflip-game-pet {
+        padding: 9px;
+    }
+
+    .coinflip-game-pet-image {
+        flex-basis: 52px;
+        width: 52px;
+        height: 52px;
+    }
+}
+
