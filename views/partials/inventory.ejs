@@ -1,0 +1,422 @@
+<!-- ========================================== -->
+<!--     INVENTORY MODAL -->
+<!-- ========================================== -->
+
+<div
+    id="inventoryModal"
+    class="inventory-modal"
+>
+    <div
+        id="inventoryOverlay"
+        class="inventory-modal-overlay"
+    ></div>
+
+    <div class="inventory-modal-panel">
+
+        <!-- HEADER -->
+        <div class="inventory-modal-header">
+
+            <div>
+                <h2>Your Inventory</h2>
+
+                <p>
+                    Your deposited pets
+                </p>
+            </div>
+
+            <button
+                type="button"
+                id="inventoryClose"
+                class="inventory-close"
+                aria-label="Close inventory"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+        <div class="inventory-summary">
+
+            <div class="inventory-summary-item">
+
+                <span>
+                    Items
+                </span>
+
+                <strong id="inventoryCount">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="inventory-summary-item">
+
+                <span>
+                    Total Value
+                </span>
+
+                <strong>
+                    💎
+                    <span id="inventoryTotalValue">
+                        0
+                    </span>
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- INVENTORY -->
+        <div class="inventory-content">
+
+            <div class="inventory-section-header">
+
+                <div>
+
+                    <h3>
+                        Items
+                    </h3>
+
+                    <p>
+                        Select items to manage your inventory
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="selectAllButton"
+                    class="inventory-select-all"
+                >
+                    Select All
+                </button>
+
+            </div>
+
+
+            <div
+                id="inventoryItems"
+                class="inventory-items-grid"
+            >
+
+                <div class="inventory-loading">
+
+                    <div class="inventory-loading-spinner"></div>
+
+                    <span>
+                        Loading inventory...
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SELECTED ITEMS -->
+        <div class="inventory-selected-section">
+
+            <div class="inventory-selected-header">
+
+                <div>
+
+                    <h3>
+                        Selected Items
+                    </h3>
+
+                    <p>
+                        Selected Items:
+                        <strong id="selectedItemsCount">
+                            0
+                        </strong>
+                    </p>
+
+                </div>
+
+
+                <div class="inventory-selected-value">
+
+                    <span>
+                        Selected Value
+                    </span>
+
+                    <strong>
+                        💎
+                        <span id="selectedItemsValue">
+                            0
+                        </span>
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+        <div class="inventory-actions">
+
+            <button
+                type="button"
+                id="depositButton"
+                class="inventory-action-button inventory-deposit-button"
+            >
+
+                <span>
+                    ↓
+                </span>
+
+                <div>
+
+                    <strong>
+                        Deposit
+                    </strong>
+
+                    <small>
+                        Add pets to your inventory
+                    </small>
+
+                </div>
+
+            </button>
+
+
+            <button
+                type="button"
+                id="withdrawButton"
+                class="inventory-action-button inventory-withdraw-button"
+                disabled
+            >
+
+                <span>
+                    ↑
+                </span>
+
+                <div>
+
+                    <strong>
+                        Withdraw
+                    </strong>
+
+                    <small>
+                        Withdraw selected items
+                    </small>
+
+                </div>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ========================================== -->
+<!--     DEPOSIT MODAL -->
+<!-- ========================================== -->
+
+<div
+    id="depositModal"
+    class="inventory-secondary-modal"
+>
+
+    <div
+        id="depositOverlay"
+        class="inventory-secondary-overlay"
+    ></div>
+
+
+    <div class="inventory-secondary-panel">
+
+        <button
+            type="button"
+            id="depositClose"
+            class="inventory-secondary-close"
+            aria-label="Close deposit"
+        >
+            ×
+        </button>
+
+
+        <div class="inventory-secondary-icon">
+            ↓
+        </div>
+
+
+        <h2>
+            Deposit
+        </h2>
+
+
+        <p id="depositDescription">
+            Deposit your Adopt Me pets into your inventory.
+        </p>
+
+
+        <!-- DEPOSIT INFORMATION -->
+        <div
+            id="depositInfo"
+            class="inventory-deposit-info"
+        >
+
+            <div>
+
+                <span>
+                    Status
+                </span>
+
+                <strong id="depositStatus">
+                    Ready
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- CREATED DEPOSIT INFORMATION -->
+        <div
+            id="depositCreatedInfo"
+            style="display: none;"
+        >
+
+            <div class="inventory-deposit-info">
+
+                <div>
+
+                    <span>
+                        Deposit ID
+                    </span>
+
+                    <strong
+                        id="depositId"
+                    >
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Status
+                    </span>
+
+                    <strong id="depositCreatedStatus">
+                        Pending
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <p>
+                Your deposit request has been created successfully.
+                Your pets will only be added after the trade has been
+                received and verified.
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="inventory-secondary-button"
+            id="depositContinueButton"
+        >
+            Continue
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- ========================================== -->
+<!--     WITHDRAW MODAL -->
+<!-- ========================================== -->
+
+<div
+    id="withdrawModal"
+    class="inventory-secondary-modal"
+>
+
+    <div
+        id="withdrawOverlay"
+        class="inventory-secondary-overlay"
+    ></div>
+
+
+    <div class="inventory-secondary-panel inventory-withdraw-panel">
+
+        <button
+            type="button"
+            id="withdrawClose"
+            class="inventory-secondary-close"
+            aria-label="Close withdrawal"
+        >
+            ×
+        </button>
+
+
+        <div class="inventory-secondary-icon">
+            ↑
+        </div>
+
+
+        <h2>
+            Withdraw
+        </h2>
+
+
+        <p>
+            Review the items you have selected.
+        </p>
+
+
+        <div
+            id="withdrawItems"
+            class="withdraw-items"
+        ></div>
+
+
+        <div class="withdraw-summary">
+
+            <span>
+                Total Value
+            </span>
+
+            <strong>
+                💎
+                <span id="withdrawTotalValue">
+                    0
+                </span>
+            </strong>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="inventory-secondary-button"
+            id="withdrawConfirmButton"
+        >
+            Confirm Withdrawal
+        </button>
+
+    </div>
+
+</div>

@@ -1,0 +1,4663 @@
+/* ==========================================
+   NAVBAR
+========================================== */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    padding: 0 35px;
+    background: rgba(5, 5, 7, 0.82);
+    border-bottom: 1px solid rgba(168, 85, 247, 0.08);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+/* ==========================================
+   LOGO
+========================================== */
+
+.navbar-logo {
+    flex-shrink: 0;
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: -0.7px;
+    color: #ffffff;
+    transition: opacity 0.2s ease;
+}
+
+.navbar-logo:hover {
+    opacity: 0.85;
+}
+
+.navbar-logo span {
+    background: linear-gradient(
+        135deg,
+        #a855f7,
+        #7c3aed
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================
+   NAVIGATION
+========================================== */
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 48px;
+}
+
+.nav-link {
+    position: relative;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    padding: 0 13px;
+    border-radius: 8px;
+    color: #71717a;
+    font-size: 11px;
+    font-weight: 700;
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #d4d4d8;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.nav-link.active {
+    color: #ffffff;
+    background: rgba(124, 58, 237, 0.1);
+}
+
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -1px;
+    width: 18px;
+    height: 2px;
+    transform: translateX(-50%);
+    border-radius: 5px;
+    background: #8b5cf6;
+    box-shadow:
+        0 0 12px rgba(139, 92, 246, 0.55);
+}
+
+/* ==========================================
+   NAVBAR RIGHT
+========================================== */
+
+.navbar-right {
+    position: relative;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+}
+
+/* ==========================================
+   BALANCE
+========================================== */
+
+.balance-button {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    border: 1px solid rgba(168, 85, 247, 0.12);
+    border-radius: 9px;
+    background: rgba(124, 58, 237, 0.06);
+    color: #ffffff;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.balance-button:hover {
+    transform: translateY(-1px);
+    background: rgba(124, 58, 237, 0.12);
+    border-color: rgba(168, 85, 247, 0.25);
+}
+
+.balance-icon {
+    font-size: 14px;
+}
+
+.balance-value {
+    color: #e4e4e7;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* ==========================================
+   USER
+========================================== */
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 42px;
+    flex-shrink: 0;
+}
+
+.navbar-avatar-wrapper {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    max-width: 38px;
+    max-height: 38px;
+    flex: 0 0 38px;
+    overflow: hidden;
+    display: block;
+    border-radius: 50%;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    background: rgba(124, 58, 237, 0.1);
+}
+
+.navbar-avatar {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    max-width: 38px;
+    max-height: 38px;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-avatar-placeholder {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(124, 58, 237, 0.12);
+    border: 1px solid rgba(168, 85, 247, 0.18);
+    color: #a855f7;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.navbar-user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    height: 38px;
+    min-width: 0;
+}
+
+.navbar-username {
+    max-width: 125px;
+    overflow: hidden;
+    color: #e4e4e7;
+    font-size: 11px;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.navbar-user-label {
+    color: #71717a;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.navbar-user-label.owner {
+    color: #c084fc;
+}
+
+/* ==========================================
+   COINFLIP PAGE
+========================================== */
+
+.coinflip-page {
+    width: 100%;
+    max-width: 1450px;
+    margin: 0 auto;
+    padding: 42px 35px 70px;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.coinflip-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.coinflip-heading {
+    min-width: 0;
+}
+
+.section-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #8b5cf6;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+}
+
+.coinflip-heading h1 {
+    color: #ffffff;
+    font-size: 38px;
+    line-height: 1;
+    letter-spacing: -1.5px;
+}
+
+.coinflip-heading p {
+    margin-top: 9px;
+    color: #71717a;
+    font-size: 13px;
+}
+
+/* ==========================================
+   CREATE MATCH
+========================================== */
+
+.create-match-button {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 0 17px;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 9px;
+    background: linear-gradient(
+        135deg,
+        #6d28d9,
+        #9333ea
+    );
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow:
+        0 10px 30px rgba(124, 58, 237, 0.14);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.create-match-button span {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.create-match-button:hover {
+    transform: translateY(-2px);
+    border-color: rgba(192, 132, 252, 0.5);
+    box-shadow:
+        0 14px 38px rgba(124, 58, 237, 0.25);
+}
+
+/* ==========================================
+   STATS
+========================================== */
+
+.coinflip-stats {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.coinflip-stat {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-height: 78px;
+    padding: 15px 17px;
+    overflow: hidden;
+    background: linear-gradient(
+        135deg,
+        rgba(124, 58, 237, 0.055),
+        rgba(255, 255, 255, 0.018)
+    );
+    border: 1px solid rgba(168, 85, 247, 0.1);
+    border-radius: 12px;
+}
+
+.coinflip-stat-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(124, 58, 237, 0.1);
+    border: 1px solid rgba(168, 85, 247, 0.13);
+    font-size: 17px;
+}
+
+.coinflip-stat-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.coinflip-stat-content span {
+    color: #52525b;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.coinflip-stat-content strong {
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+/* ==========================================
+   MAIN LAYOUT
+========================================== */
+
+.coinflip-layout {
+    width: 100%;
+}
+
+.coinflip-main {
+    width: 100%;
+    min-width: 0;
+}
+
+/* ==========================================
+   MATCH TOOLBAR
+========================================== */
+
+.matches-toolbar {
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 9px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.018);
+    border: 1px solid rgba(255, 255, 255, 0.055);
+    border-radius: 11px;
+}
+
+.matches-tabs {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.match-tab {
+    height: 34px;
+    padding: 0 13px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: transparent;
+    color: #71717a;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.match-tab:hover {
+    color: #d4d4d8;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.match-tab.active {
+    color: #ffffff;
+    background: rgba(124, 58, 237, 0.12);
+    border-color: rgba(168, 85, 247, 0.13);
+}
+
+.sort-button {
+    height: 34px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 11px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.025);
+    color: #71717a;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.sort-button span {
+    color: #a855f7;
+    font-size: 13px;
+}
+
+/* ==========================================
+   MATCHES
+========================================== */
+
+.coinflip-matches {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.matches-empty {
+    min-height: 470px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    background: linear-gradient(
+        135deg,
+        rgba(124, 58, 237, 0.035),
+        rgba(255, 255, 255, 0.012)
+    );
+    border: 1px solid rgba(168, 85, 247, 0.08);
+    border-radius: 13px;
+}
+
+.matches-empty-icon {
+    width: 68px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    border-radius: 17px;
+    background: rgba(124, 58, 237, 0.09);
+    border: 1px solid rgba(168, 85, 247, 0.12);
+    font-size: 28px;
+    box-shadow:
+        0 0 40px rgba(124, 58, 237, 0.08);
+}
+
+.matches-empty h3 {
+    color: #e4e4e7;
+    font-size: 15px;
+}
+
+.matches-empty p {
+    max-width: 300px;
+    margin-top: 6px;
+    color: #52525b;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.empty-create-button {
+    margin-top: 17px;
+}
+
+/* ==========================================
+   FAIR BANNER
+========================================== */
+
+.fair-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 66px;
+    margin-top: 14px;
+    padding: 13px 16px;
+    background: linear-gradient(
+        135deg,
+        rgba(124, 58, 237, 0.045),
+        rgba(255, 255, 255, 0.015)
+    );
+    border: 1px solid rgba(168, 85, 247, 0.075);
+    border-radius: 11px;
+}
+
+.fair-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: rgba(124, 58, 237, 0.1);
+    font-size: 15px;
+}
+
+.fair-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.fair-content strong {
+    color: #d4d4d8;
+    font-size: 11px;
+}
+
+.fair-content span {
+    color: #52525b;
+    font-size: 9px;
+}
+
+.fair-link {
+    margin-left: auto;
+    color: #8b5cf6;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+/* ==========================================
+   FLOATING CHAT BUTTON
+========================================== */
+
+.chat-floating-button {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1500;
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(192, 132, 252, 0.35);
+    border-radius: 15px;
+    background: linear-gradient(
+        135deg,
+        #6d28d9,
+        #9333ea
+    );
+    color: #ffffff;
+    font-size: 21px;
+    cursor: pointer;
+    box-shadow:
+        0 12px 35px rgba(124, 58, 237, 0.3);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.chat-floating-button:hover {
+    transform:
+        translateY(-3px)
+        scale(1.03);
+    box-shadow:
+        0 17px 45px rgba(124, 58, 237, 0.4);
+}
+
+/* ==========================================
+   CHAT BACKDROP
+========================================== */
+
+.chat-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1550;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+    backdrop-filter: blur(2px);
+}
+
+.chat-backdrop.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* ==========================================
+   CHAT DRAWER
+========================================== */
+
+.chat-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1600;
+    width: 360px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(
+        145deg,
+        #100b18,
+        #08070b
+    );
+    border-left:
+        1px solid rgba(168, 85, 247, 0.13);
+    box-shadow:
+        -20px 0 70px rgba(0, 0, 0, 0.45);
+    transform: translateX(100%);
+    visibility: hidden;
+    transition:
+        transform 0.3s cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        ),
+        visibility 0.3s ease;
+}
+
+.chat-drawer.open {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+/* ==========================================
+   CHAT HEADER
+========================================== */
+
+.chat-drawer .chat-header {
+    height: 68px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.06);
+}
+
+.chat-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #e4e4e7;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.chat-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #a855f7;
+    box-shadow:
+        0 0 12px rgba(168, 85, 247, 0.75);
+    animation:
+        chatPulse 2s ease-in-out infinite;
+}
+
+.chat-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-online {
+    color: #52525b;
+    font-size: 9px;
+}
+
+.chat-close-button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.025);
+    color: #71717a;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.chat-close-button:hover {
+    color: #ffffff;
+    background: rgba(168, 85, 247, 0.1);
+}
+
+/* ==========================================
+   CHAT MESSAGES
+========================================== */
+
+.chat-drawer .chat-messages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+.chat-drawer .chat-messages::-webkit-scrollbar {
+    width: 4px;
+}
+
+.chat-drawer .chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-drawer .chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(168, 85, 247, 0.16);
+    border-radius: 10px;
+}
+
+.chat-empty {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.chat-empty-icon {
+    margin-bottom: 12px;
+    font-size: 27px;
+    opacity: 0.55;
+}
+
+.chat-empty strong {
+    color: #71717a;
+    font-size: 11px;
+}
+
+.chat-empty span {
+    margin-top: 4px;
+    color: #3f3f46;
+    font-size: 9px;
+}
+
+/* ==========================================
+   CHAT MESSAGE
+========================================== */
+
+.chat-message {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 9px 10px;
+    margin-bottom: 7px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.018);
+    border:
+        1px solid rgba(255, 255, 255, 0.025);
+}
+
+.chat-message-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chat-message-header strong {
+    color: #a855f7;
+    font-size: 9px;
+}
+
+.chat-message-owner .chat-message-header strong {
+    color: #c084fc;
+}
+
+.chat-owner-crown {
+    font-size: 10px;
+}
+
+.chat-command-notice {
+    margin: 0 0 8px;
+    padding: 8px 10px;
+    border: 1px solid rgba(168, 85, 247, .2);
+    border-radius: 8px;
+    background: rgba(124, 58, 237, .08);
+    color: #c4b5fd;
+    font-size: 9px;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.chat-message-header span {
+    color: #3f3f46;
+    font-size: 8px;
+}
+
+.chat-message-text {
+    color: #a1a1aa;
+    font-size: 10px;
+    line-height: 1.45;
+    word-break: break-word;
+}
+
+/* ==========================================
+   CHAT INPUT
+========================================== */
+
+.chat-input-wrapper {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 13px;
+    border-top:
+        1px solid rgba(255, 255, 255, 0.06);
+}
+
+.chat-input {
+    flex: 1;
+    min-width: 0;
+    height: 40px;
+    padding: 0 12px;
+    outline: none;
+    border:
+        1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 9px;
+    background:
+        rgba(255, 255, 255, 0.025);
+    color: #ffffff;
+    font-size: 10px;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.chat-input::placeholder {
+    color: #3f3f46;
+}
+
+.chat-input:focus {
+    border-color:
+        rgba(168, 85, 247, 0.25);
+    background:
+        rgba(124, 58, 237, 0.035);
+}
+
+.chat-send-button {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border:
+        1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 9px;
+    background:
+        rgba(124, 58, 237, 0.1);
+    color: #a855f7;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.chat-send-button:hover {
+    transform: translateY(-1px);
+    background: #7c3aed;
+    color: #ffffff;
+}
+
+/* ==========================================
+   COINFLIP MODAL
+========================================== */
+
+.coinflip-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+}
+
+.coinflip-modal.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* ==========================================
+   MODAL OVERLAY
+========================================== */
+
+.coinflip-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+/* ==========================================
+   MODAL PANEL
+========================================== */
+
+.coinflip-modal-panel {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background: linear-gradient(
+        145deg,
+        #110b1b 0%,
+        #09070d 55%,
+        #070609 100%
+    );
+    border:
+        1px solid rgba(168, 85, 247, 0.16);
+    border-radius: 17px;
+    box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.65),
+        0 0 80px rgba(124, 58, 237, 0.08);
+    transform:
+        translateY(15px)
+        scale(0.98);
+    transition:
+        transform 0.3s cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        );
+}
+
+.coinflip-modal.open .coinflip-modal-panel {
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+.coinflip-modal-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.coinflip-modal-panel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.coinflip-modal-panel::-webkit-scrollbar-thumb {
+    background:
+        rgba(168, 85, 247, 0.25);
+    border-radius: 10px;
+}
+
+/* ==========================================
+   MODAL HEADER
+========================================== */
+
+.coinflip-modal-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px 25px 20px;
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.055);
+}
+
+.coinflip-modal-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #a855f7;
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+}
+
+.coinflip-modal-header h2 {
+    color: #ffffff;
+    font-size: 23px;
+    font-weight: 850;
+    letter-spacing: -0.7px;
+}
+
+.coinflip-modal-header p {
+    margin-top: 5px;
+    color: #52525b;
+    font-size: 10px;
+}
+
+.coinflip-modal-close {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border:
+        1px solid rgba(255, 255, 255, 0.065);
+    border-radius: 9px;
+    background:
+        rgba(255, 255, 255, 0.025);
+    color: #71717a;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.coinflip-modal-close:hover {
+    color: #ffffff;
+    background:
+        rgba(168, 85, 247, 0.1);
+    border-color:
+        rgba(168, 85, 247, 0.22);
+}
+
+/* ==========================================
+   COINFLIP SIDE SELECTION
+========================================== */
+
+.coinflip-side-section {
+    margin: 24px 25px 0;
+    padding: 18px;
+    border:
+        1px solid rgba(168, 85, 247, 0.14);
+    border-radius: 16px;
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.coinflip-side-heading h3 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.coinflip-side-heading p {
+    margin: 5px 0 0;
+    color: #8f8f9d;
+    font-size: 12px;
+}
+
+.coinflip-side-options {
+    display: grid;
+    grid-template-columns:
+        1fr 1fr;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.coinflip-side-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 88px;
+    padding: 12px 16px;
+    border:
+        1px solid rgba(168, 85, 247, 0.16);
+    border-radius: 13px;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.045),
+        rgba(255, 255, 255, 0.015)
+    );
+    color: #ffffff;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.coinflip-side-button:hover {
+    border-color:
+        rgba(168, 85, 247, 0.45);
+    background: linear-gradient(
+        145deg,
+        rgba(124, 58, 237, 0.12),
+        rgba(255, 255, 255, 0.025)
+    );
+    transform: translateY(-1px);
+}
+
+.coinflip-side-button.selected {
+    border-color:
+        #a855f7;
+    background: linear-gradient(
+        145deg,
+        rgba(124, 58, 237, 0.22),
+        rgba(168, 85, 247, 0.07)
+    );
+    box-shadow:
+        0 0 0 1px rgba(168, 85, 247, 0.12),
+        0 8px 28px rgba(124, 58, 237, 0.12);
+}
+
+/* ==========================================
+   COINFLIP COIN IMAGE
+========================================== */
+
+.coinflip-side-icon {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle,
+            rgba(168, 85, 247, 0.12),
+            rgba(124, 58, 237, 0.04)
+        );
+}
+
+.coinflip-side-icon img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    filter:
+        drop-shadow(
+            0 7px 12px rgba(0, 0, 0, 0.4)
+        );
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease;
+}
+
+.coinflip-side-button:hover
+.coinflip-side-icon img {
+    transform:
+        scale(1.08)
+        rotate(3deg);
+    filter:
+        drop-shadow(
+            0 9px 16px rgba(0, 0, 0, 0.5)
+        );
+}
+
+.coinflip-side-button.selected
+.coinflip-side-icon img {
+    transform: scale(1.06);
+    filter:
+        drop-shadow(
+            0 0 14px rgba(168, 85, 247, 0.35)
+        );
+}
+
+.coinflip-side-name {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.coinflip-side-check {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background:
+        rgba(255, 255, 255, 0.06);
+    color: transparent;
+    font-size: 12px;
+    font-weight: 800;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.coinflip-side-button.selected
+.coinflip-side-check {
+    background:
+        #a855f7;
+    color: #ffffff;
+}
+
+/* ==========================================
+   WAGER SUMMARY
+========================================== */
+
+.coinflip-wager-summary {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 9px;
+    padding: 14px 25px;
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.04);
+}
+
+.coinflip-wager-stat {
+    min-width: 0;
+    padding: 12px 13px;
+    background:
+        rgba(255, 255, 255, 0.018);
+    border:
+        1px solid rgba(255, 255, 255, 0.045);
+    border-radius: 10px;
+}
+
+.coinflip-wager-stat span {
+    display: block;
+    color: #52525b;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+}
+
+.coinflip-wager-stat strong {
+    display: block;
+    margin-top: 5px;
+    overflow: hidden;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 850;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#coinflipSelectedValue {
+    color: #c084fc;
+}
+
+#coinflipJoinRange {
+    color: #a1a1aa;
+}
+
+/* ==========================================
+   INVENTORY HEADER
+========================================== */
+
+.coinflip-inventory-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 18px 25px 13px;
+}
+
+.coinflip-inventory-header h3 {
+    color: #e4e4e7;
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.coinflip-inventory-header p {
+    margin-top: 4px;
+    color: #52525b;
+    font-size: 9px;
+}
+
+.coinflip-select-all {
+    height: 32px;
+    flex-shrink: 0;
+    padding: 0 11px;
+    border:
+        1px solid rgba(168, 85, 247, 0.12);
+    border-radius: 8px;
+    background:
+        rgba(124, 58, 237, 0.06);
+    color: #a855f7;
+    font-size: 9px;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.coinflip-select-all:hover {
+    background:
+        rgba(124, 58, 237, 0.12);
+    border-color:
+        rgba(168, 85, 247, 0.25);
+    color: #c084fc;
+}
+
+/* ==========================================
+   COINFLIP INVENTORY GRID
+========================================== */
+
+.coinflip-inventory-grid {
+    flex: 1;
+    min-height: 220px;
+    max-height: 430px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(135px, 1fr)
+        );
+    align-content: start;
+    gap: 10px;
+    padding: 4px 25px 20px;
+}
+
+.coinflip-inventory-grid::-webkit-scrollbar {
+    width: 5px;
+}
+
+.coinflip-inventory-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.coinflip-inventory-grid::-webkit-scrollbar-thumb {
+    background:
+        rgba(168, 85, 247, 0.15);
+    border-radius: 10px;
+}
+
+/* ==========================================
+   COINFLIP INVENTORY ITEM
+========================================== */
+
+.coinflip-inventory-item {
+    position: relative;
+    min-width: 0;
+    min-height: 154px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 12px 9px 11px;
+    overflow: hidden;
+    border:
+        1px solid rgba(255, 255, 255, 0.055);
+    border-radius: 12px;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.025),
+        rgba(124, 58, 237, 0.025)
+    );
+    color: #ffffff;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.coinflip-inventory-item:hover {
+    transform: translateY(-2px);
+    border-color:
+        rgba(168, 85, 247, 0.2);
+    background: linear-gradient(
+        145deg,
+        rgba(168, 85, 247, 0.055),
+        rgba(255, 255, 255, 0.025)
+    );
+}
+
+.coinflip-inventory-item.selected {
+    border-color:
+        rgba(168, 85, 247, 0.65);
+    background: linear-gradient(
+        145deg,
+        rgba(124, 58, 237, 0.16),
+        rgba(168, 85, 247, 0.055)
+    );
+    box-shadow:
+        0 0 0 1px rgba(168, 85, 247, 0.12),
+        0 10px 30px rgba(124, 58, 237, 0.12);
+}
+
+.coinflip-inventory-item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background:
+        radial-gradient(
+            circle at 50% 25%,
+            rgba(168, 85, 247, 0.12),
+            transparent 55%
+        );
+    transition:
+        opacity 0.2s ease;
+}
+
+.coinflip-inventory-item:hover::after,
+.coinflip-inventory-item.selected::after {
+    opacity: 1;
+}
+
+/* ==========================================
+   ITEM CHECK
+========================================== */
+
+.coinflip-item-check {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 3;
+    width: 21px;
+    height: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    background:
+        rgba(0, 0, 0, 0.35);
+    color: transparent;
+    font-size: 11px;
+    font-weight: 900;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.coinflip-inventory-item.selected
+.coinflip-item-check {
+    background:
+        #7c3aed;
+    border-color:
+        #a855f7;
+    color: #ffffff;
+    box-shadow:
+        0 0 14px rgba(124, 58, 237, 0.35);
+}
+
+/* ==========================================
+   ITEM QUANTITY
+========================================== */
+
+.coinflip-item-quantity {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 3;
+    padding: 4px 6px;
+    border-radius: 6px;
+    background:
+        rgba(0, 0, 0, 0.45);
+    color: #a1a1aa;
+    font-size: 8px;
+    font-weight: 800;
+}
+
+/* ==========================================
+   ITEM IMAGE
+========================================== */
+
+.coinflip-item-image {
+    position: relative;
+    z-index: 2;
+    width: 82px;
+    height: 82px;
+    margin-bottom: 7px;
+    object-fit: contain;
+    border-radius: 10px;
+    filter:
+        drop-shadow(
+            0 8px 14px rgba(0, 0, 0, 0.35)
+        );
+    transition:
+        transform 0.2s ease;
+}
+
+.coinflip-inventory-item:hover
+.coinflip-item-image {
+    transform:
+        translateY(-2px)
+        scale(1.03);
+}
+
+/* ==========================================
+   ITEM NAME
+========================================== */
+
+.coinflip-item-name {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    overflow: hidden;
+    color: #d4d4d8;
+    font-size: 9px;
+    font-weight: 800;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ==========================================
+   ITEM VALUE
+========================================== */
+
+.coinflip-item-value {
+    position: relative;
+    z-index: 2;
+    margin-top: 4px;
+    color: #a855f7;
+    font-size: 8px;
+    font-weight: 800;
+}
+
+/* ==========================================
+   INVENTORY LOADING
+========================================== */
+
+.coinflip-inventory-loading {
+    grid-column: 1 / -1;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #52525b;
+    font-size: 10px;
+}
+
+.coinflip-loading-spinner {
+    width: 27px;
+    height: 27px;
+    border:
+        2px solid rgba(168, 85, 247, 0.12);
+    border-top-color:
+        #a855f7;
+    border-radius: 50%;
+    animation:
+        coinflipSpin 0.8s linear infinite;
+}
+
+/* ==========================================
+   INVENTORY EMPTY / ERROR
+========================================== */
+
+.coinflip-inventory-empty {
+    grid-column: 1 / -1;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    text-align: center;
+}
+
+.coinflip-inventory-empty-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 11px;
+    border:
+        1px solid rgba(168, 85, 247, 0.1);
+    border-radius: 13px;
+    background:
+        rgba(124, 58, 237, 0.07);
+    font-size: 21px;
+}
+
+.coinflip-inventory-empty strong {
+    color: #71717a;
+    font-size: 11px;
+}
+
+.coinflip-inventory-empty span {
+    max-width: 300px;
+    margin-top: 5px;
+    color: #3f3f46;
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+/* ==========================================
+   MODAL FOOTER
+========================================== */
+
+.coinflip-modal-footer {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 16px 25px;
+    border-top:
+        1px solid rgba(255, 255, 255, 0.055);
+    background:
+        rgba(0, 0, 0, 0.12);
+}
+
+.coinflip-footer-info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #52525b;
+    font-size: 9px;
+}
+
+.coinflip-footer-info strong {
+    color: #a855f7;
+    font-size: 10px;
+}
+
+.coinflip-footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.coinflip-cancel-button {
+    height: 39px;
+    padding: 0 15px;
+    border:
+        1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+    background:
+        rgba(255, 255, 255, 0.025);
+    color: #71717a;
+    font-size: 10px;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.coinflip-cancel-button:hover {
+    color: #ffffff;
+    background:
+        rgba(255, 255, 255, 0.05);
+    border-color:
+        rgba(255, 255, 255, 0.12);
+}
+
+.coinflip-confirm-button {
+    height: 39px;
+    min-width: 125px;
+    padding: 0 17px;
+    border:
+        1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 8px;
+    background: linear-gradient(
+        135deg,
+        #6d28d9,
+        #9333ea
+    );
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 850;
+    cursor: pointer;
+    box-shadow:
+        0 8px 22px rgba(124, 58, 237, 0.15);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease,
+        filter 0.2s ease;
+}
+
+.coinflip-confirm-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow:
+        0 11px 28px rgba(124, 58, 237, 0.25);
+}
+
+.coinflip-confirm-button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    filter:
+        grayscale(0.3);
+    box-shadow: none;
+}
+
+/* ==========================================
+   MATCH CARDS
+========================================== */
+
+.coinflip-match-card {
+    display: grid;
+    grid-template-columns:
+        minmax(160px, 1.2fr)
+        minmax(145px, 1fr)
+        auto;
+    align-items: center;
+    gap: 14px;
+    min-height: 62px;
+    padding: 9px 13px;
+    margin-bottom: 0;
+    border:
+        1px solid rgba(168, 85, 247, 0.1);
+    border-radius: 10px;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.028),
+        rgba(255, 255, 255, 0.01)
+    );
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.coinflip-match-card:hover {
+    border-color:
+        rgba(168, 85, 247, 0.25);
+    background: linear-gradient(
+        145deg,
+        rgba(124, 58, 237, 0.055),
+        rgba(255, 255, 255, 0.015)
+    );
+    transform: translateY(-1px);
+}
+
+/* ==========================================
+   MATCH PLAYER
+========================================== */
+
+.coinflip-match-player {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+}
+
+.coinflip-match-avatar {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+    border:
+        1px solid rgba(168, 85, 247, 0.25);
+    background: linear-gradient(
+        135deg,
+        rgba(124, 58, 237, 0.18),
+        rgba(168, 85, 247, 0.06)
+    );
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.coinflip-match-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.coinflip-match-player-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.coinflip-match-player-info strong {
+    overflow: hidden;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.coinflip-match-player-info span {
+    color: #a855f7;
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ==========================================
+   MATCH WAGER
+========================================== */
+
+.coinflip-match-wager {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.coinflip-match-wager > span {
+    color: #777783;
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.coinflip-match-wager strong {
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.coinflip-match-wager small {
+    color: #8f8f9d;
+    font-size: 8px;
+}
+
+/* ==========================================
+   MATCH ACTIONS
+========================================== */
+
+.coinflip-match-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.coinflip-join-match-button,
+.coinflip-cancel-match-button {
+    min-width: 92px;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 7px;
+    font-size: 9px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.coinflip-join-match-button {
+    border:
+        1px solid rgba(168, 85, 247, 0.3);
+    background: linear-gradient(
+        135deg,
+        rgba(124, 58, 237, 0.22),
+        rgba(168, 85, 247, 0.1)
+    );
+    color: #ffffff;
+}
+
+.coinflip-join-match-button:hover {
+    border-color:
+        rgba(168, 85, 247, 0.65);
+    background: linear-gradient(
+        135deg,
+        rgba(124, 58, 237, 0.34),
+        rgba(168, 85, 247, 0.18)
+    );
+    transform: translateY(-1px);
+}
+
+.coinflip-cancel-match-button {
+    border:
+        1px solid rgba(239, 68, 68, 0.22);
+    background:
+        rgba(239, 68, 68, 0.06);
+    color: #fca5a5;
+}
+
+.coinflip-cancel-match-button:hover {
+    border-color:
+        rgba(239, 68, 68, 0.45);
+    background:
+        rgba(239, 68, 68, 0.11);
+    transform: translateY(-1px);
+}
+
+/* ==========================================
+   BODY MODAL LOCK
+========================================== */
+
+body.coinflip-modal-open {
+    overflow: hidden;
+}
+
+/* ==========================================
+   ANIMATIONS
+========================================== */
+
+@keyframes chatPulse {
+    0%,
+    100% {
+        opacity: 0.45;
+        transform:
+            scale(0.9);
+    }
+
+    50% {
+        opacity: 1;
+        transform:
+            scale(1.1);
+    }
+}
+
+@keyframes coinflipSpin {
+    from {
+        transform:
+            rotate(0deg);
+    }
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 850px) {
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .navbar-links {
+        margin-left: 25px;
+    }
+
+    .coinflip-page {
+        padding:
+            32px 20px 60px;
+    }
+
+    .coinflip-modal {
+        padding: 18px;
+    }
+
+    .coinflip-modal-panel {
+        max-height:
+            calc(100vh - 36px);
+    }
+}
+
+@media (max-width: 800px) {
+    .coinflip-match-card {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px 12px;
+    }
+
+    .coinflip-match-actions {
+        justify-content: stretch;
+    }
+
+    .coinflip-join-match-button,
+    .coinflip-cancel-match-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .navbar {
+        height: 64px;
+        padding: 0 15px;
+    }
+
+    .navbar-links {
+        display: none;
+    }
+
+    .navbar-right {
+        gap: 10px;
+    }
+
+    .navbar-user-info {
+        display: none;
+    }
+
+    .coinflip-page {
+        padding:
+            28px 15px 50px;
+    }
+
+    .coinflip-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .coinflip-heading h1 {
+        font-size: 32px;
+    }
+
+    .create-match-button {
+        width: 100%;
+    }
+
+    .coinflip-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .matches-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .matches-tabs {
+        width: 100%;
+    }
+
+    .match-tab {
+        flex: 1;
+    }
+
+    .sort-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .fair-banner {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .fair-link {
+        width: 100%;
+        margin-left: 48px;
+    }
+
+    .chat-floating-button {
+        right: 17px;
+        bottom: 17px;
+        width: 50px;
+        height: 50px;
+    }
+
+    /* Coinflip modal */
+
+    .coinflip-modal {
+        padding: 10px;
+    }
+
+    .coinflip-modal-panel {
+        max-height:
+            calc(100vh - 20px);
+        border-radius: 14px;
+    }
+
+    .coinflip-modal-header {
+        padding:
+            19px 18px 16px;
+    }
+
+    .coinflip-side-section {
+        margin:
+            18px 18px 0;
+        padding: 15px;
+    }
+
+    .coinflip-wager-summary {
+        grid-template-columns:
+            1fr 1fr;
+        padding:
+            11px 18px;
+    }
+
+    .coinflip-wager-stat:last-child {
+        grid-column:
+            1 / -1;
+    }
+
+    .coinflip-inventory-header {
+        padding:
+            15px 18px 11px;
+    }
+
+    .coinflip-inventory-grid {
+        grid-template-columns:
+            repeat(
+                auto-fill,
+                minmax(110px, 1fr)
+            );
+        padding:
+            4px 18px 16px;
+    }
+
+    .coinflip-modal-footer {
+        align-items:
+            stretch;
+        flex-direction:
+            column;
+        padding:
+            13px 18px;
+    }
+
+    .coinflip-footer-info {
+        justify-content:
+            center;
+    }
+
+    .coinflip-footer-actions {
+        width: 100%;
+    }
+
+    .coinflip-cancel-button,
+    .coinflip-confirm-button {
+        flex: 1;
+    }
+}
+
+@media (max-width: 600px) {
+    .coinflip-side-options {
+        grid-template-columns:
+            1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-logo {
+        font-size: 19px;
+    }
+
+    .balance-button {
+        height: 37px;
+        padding: 0 9px;
+    }
+
+    .navbar-avatar-wrapper,
+    .navbar-avatar,
+    .navbar-avatar-placeholder {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        min-height: 34px;
+        max-width: 34px;
+        max-height: 34px;
+    }
+
+    .coinflip-page {
+        padding:
+            24px 12px 45px;
+    }
+
+    .coinflip-heading h1 {
+        font-size: 29px;
+    }
+
+    .chat-drawer {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Coinflip modal */
+
+    .coinflip-modal-header h2 {
+        font-size: 20px;
+    }
+
+    .coinflip-wager-summary {
+        gap: 7px;
+        padding:
+            10px 13px;
+    }
+
+    .coinflip-wager-stat {
+        padding:
+            10px;
+    }
+
+    .coinflip-side-section {
+        margin:
+            14px 13px 0;
+        padding:
+            13px;
+    }
+
+    .coinflip-side-button {
+        min-height: 68px;
+    }
+
+    .coinflip-side-icon {
+        width: 46px;
+        height: 46px;
+    }
+
+    .coinflip-inventory-header {
+        padding:
+            13px;
+    }
+
+    .coinflip-inventory-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        padding:
+            4px 13px 13px;
+    }
+
+    .coinflip-inventory-item {
+        min-height: 145px;
+    }
+
+    .coinflip-item-image {
+        width: 72px;
+        height: 72px;
+    }
+
+    .coinflip-modal-footer {
+        padding:
+            11px 13px;
+    }
+}
+
+/* =========================================================
+   COMPACT COINFLIP MATCH CARDS
+   ========================================================= */
+
+.coinflip-matches {
+    width: 100%;
+}
+
+.coinflip-match-card {
+    width: 100%;
+    min-height: 58px;
+    height: 58px;
+
+    display: grid;
+    grid-template-columns: minmax(160px, 1.3fr) 42px minmax(150px, 1fr) auto;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 8px 12px;
+    margin: 0 0 6px 0;
+
+    border: 1px solid rgba(168, 85, 247, 0.12);
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.025),
+            rgba(255, 255, 255, 0.008)
+        );
+
+    overflow: hidden;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.coinflip-match-card:hover {
+    border-color: rgba(168, 85, 247, 0.3);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(124, 58, 237, 0.055),
+            rgba(255, 255, 255, 0.012)
+        );
+
+    transform: translateY(-1px);
+}
+
+
+/* PLAYER */
+
+.coinflip-match-player {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.coinflip-match-avatar {
+    width: 32px;
+    height: 32px;
+
+    flex: 0 0 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+    border: 1px solid rgba(168, 85, 247, 0.25);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(124, 58, 237, 0.2),
+            rgba(168, 85, 247, 0.06)
+        );
+
+    color: #ffffff;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.coinflip-match-avatar img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.coinflip-match-player-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 1px;
+}
+
+.coinflip-match-player-info strong {
+    display: block;
+
+    overflow: hidden;
+
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    line-height: 13px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.coinflip-match-player-info span {
+    color: #a855f7;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    line-height: 10px;
+
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+
+/* COIN */
+
+.coinflip-match-coin {
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+    max-width: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    position: relative;
+}
+
+.coinflip-match-coin img {
+    display: block;
+
+    width: 34px !important;
+    height: 34px !important;
+
+    max-width: 34px !important;
+    max-height: 34px !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    object-fit: contain;
+
+    flex: 0 0 34px;
+}
+
+
+/* WAGER */
+
+.coinflip-match-wager {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 1px;
+}
+
+.coinflip-match-wager > span {
+    color: #777783;
+
+    font-size: 7px;
+    font-weight: 700;
+
+    line-height: 8px;
+
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.coinflip-match-wager strong {
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    line-height: 13px;
+}
+
+.coinflip-match-wager small {
+    overflow: hidden;
+
+    color: #8f8f9d;
+
+    font-size: 8px;
+    line-height: 9px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* ACTION */
+
+.coinflip-match-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    flex-shrink: 0;
+}
+
+.coinflip-join-match-button,
+.coinflip-cancel-match-button {
+    width: 88px;
+    min-width: 88px;
+    height: 30px;
+
+    padding: 0 8px;
+
+    border-radius: 8px;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.coinflip-join-match-button {
+    border: 1px solid rgba(168, 85, 247, 0.3);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(124, 58, 237, 0.22),
+            rgba(168, 85, 247, 0.1)
+        );
+
+    color: #ffffff;
+}
+
+.coinflip-join-match-button:hover {
+    border-color: rgba(168, 85, 247, 0.65);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(124, 58, 237, 0.34),
+            rgba(168, 85, 247, 0.18)
+        );
+
+    transform: translateY(-1px);
+}
+
+.coinflip-cancel-match-button {
+    border: 1px solid rgba(239, 68, 68, 0.22);
+
+    background: rgba(239, 68, 68, 0.06);
+
+    color: #fca5a5;
+}
+
+.coinflip-cancel-match-button:hover {
+    border-color: rgba(239, 68, 68, 0.45);
+
+    background: rgba(239, 68, 68, 0.11);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .coinflip-match-card {
+        height: 58px;
+        min-height: 58px;
+
+        grid-template-columns:
+            minmax(130px, 1fr)
+            36px
+            minmax(100px, 0.8fr)
+            auto;
+
+        gap: 8px;
+
+        padding: 8px 10px;
+    }
+
+    .coinflip-match-coin {
+        width: 32px;
+        height: 32px;
+
+        min-width: 32px;
+        max-width: 32px;
+    }
+
+    .coinflip-match-coin img {
+        width: 30px !important;
+        height: 30px !important;
+
+        max-width: 30px !important;
+        max-height: 30px !important;
+    }
+
+    .coinflip-join-match-button,
+    .coinflip-cancel-match-button {
+        width: 78px;
+        min-width: 78px;
+        height: 28px;
+
+        font-size: 8px;
+    }
+}
+
+
+/* =========================================================
+   OPEN GAME ROW + FULL GAME VIEW
+   ========================================================= */
+
+.coinflip-match-card {
+    min-height: 94px;
+    grid-template-columns: minmax(190px, .9fr) minmax(210px, 1.4fr) auto;
+    gap: 22px;
+    padding: 12px 16px;
+}
+
+.coinflip-match-duel {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+}
+
+.coinflip-match-contender {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.coinflip-match-contender .coinflip-match-avatar {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    border: 2px solid rgba(59, 130, 246, .72);
+    box-shadow: none;
+}
+
+.coinflip-match-choice,
+.coinflip-match-waiting > span {
+    color: #c4b5fd;
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: capitalize;
+}
+
+.coinflip-match-waiting .coinflip-match-avatar {
+    border: 2px dashed rgba(196, 181, 253, .24);
+    background: #161426;
+    color: #8e8aa3;
+    font-size: 21px;
+}
+
+.coinflip-match-waiting > span {
+    color: #89849c;
+}
+
+.coinflip-match-versus {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 900;
+    font-style: italic;
+}
+
+.coinflip-match-wager {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 11px;
+}
+
+.coinflip-wager-pets {
+    flex: 1;
+    min-width: 0;
+}
+
+.coinflip-match-value {
+    flex: 0 0 auto;
+    color: #fff;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.coinflip-game-panel {
+    width: min(100%, 850px);
+    padding: 34px 46px 30px;
+    border-color: rgba(168, 85, 247, .18);
+    border-radius: 22px;
+    background: #181b2a;
+}
+
+.coinflip-game-kicker,
+.coinflip-game-panel h2 {
+    display: none;
+}
+
+.coinflip-game-versus {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 70px;
+    padding: 16px 50px 24px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.coinflip-game-avatar {
+    width: 112px;
+    height: 112px;
+    overflow: hidden;
+    border: 4px solid #31394c;
+    background: #202534;
+    font-size: 42px;
+}
+
+.coinflip-game-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.coinflip-game-contender.waiting .coinflip-game-avatar {
+    border: 4px dashed #30394b;
+    background: #121722;
+    font-size: 46px;
+}
+
+.coinflip-game-contender strong {
+    color: #fff;
+    font-size: 18px;
+}
+
+.coinflip-game-contender span {
+    color: #747e9c;
+    font-size: 11px;
+}
+
+.coinflip-game-vs {
+    color: #fff;
+    font-size: 46px;
+    font-style: italic;
+}
+
+.coinflip-game-id {
+    margin: 6px auto 28px;
+    color: #717b99;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.coinflip-game-odds {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.coinflip-game-odds strong {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: #242b3b;
+    color: #c7ccdc;
+    font-size: 16px;
+}
+
+.coinflip-game-odds strong span {
+    color: #fff;
+    font-size: 16px;
+}
+
+.coinflip-game-pets-heading {
+    margin-bottom: 10px;
+}
+
+.coinflip-game-pets-heading h3 {
+    color: #fff;
+    font-size: 17px;
+}
+
+.coinflip-game-wagers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.coinflip-game-pets {
+    grid-template-columns: 1fr;
+}
+
+.coinflip-game-pet {
+    padding: 9px;
+    border: 0;
+    background: transparent;
+}
+
+.coinflip-game-pet-image {
+    width: 54px;
+    height: 54px;
+    flex-basis: 54px;
+    background: transparent;
+}
+
+.coinflip-game-pet strong {
+    font-size: 14px;
+}
+
+.coinflip-game-pet div:last-child span {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.coinflip-game-opponent-wager {
+    padding-top: 30px;
+    color: #77809d;
+    font-size: 14px;
+    text-align: center;
+}
+
+.coinflip-game-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 26px;
+    color: #6f7895;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.coinflip-game-footer span {
+    padding: 9px 16px;
+    border-radius: 10px;
+    background: #212838;
+    color: #aeb8d3;
+    letter-spacing: .05em;
+}
+
+@media (max-width: 800px) {
+    .coinflip-match-card {
+        min-height: 92px;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+    }
+
+    .coinflip-match-duel {
+        grid-column: 1 / -1;
+    }
+
+    .coinflip-match-wager {
+        min-width: 0;
+    }
+
+    .coinflip-match-contender .coinflip-match-avatar {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+    }
+
+    .coinflip-game-panel {
+        padding: 34px 18px 20px;
+    }
+
+    .coinflip-game-versus {
+        gap: 25px;
+        padding: 8px 8px 22px;
+    }
+
+    .coinflip-game-avatar {
+        width: 78px;
+        height: 78px;
+    }
+
+    .coinflip-game-vs {
+        font-size: 30px;
+    }
+
+    .coinflip-game-contender strong {
+        font-size: 13px;
+    }
+
+    .coinflip-game-odds,
+    .coinflip-game-wagers {
+        grid-template-columns: 1fr;
+    }
+
+    .coinflip-game-opponent-wager {
+        display: none;
+    }
+}
+
+
+/* =========================================================
+   HEAD-TO-HEAD MATCHES & GAME DETAILS
+   ========================================================= */
+
+.coinflip-match-card {
+    min-height: 96px;
+    grid-template-columns: minmax(160px, 0.8fr) 58px minmax(280px, 1.45fr) auto;
+    gap: 18px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: linear-gradient(115deg, rgba(24, 22, 42, 0.94), rgba(17, 15, 30, 0.9));
+}
+
+.coinflip-match-player {
+    gap: 11px;
+}
+
+.coinflip-match-avatar {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+    border: 2px solid rgba(168, 85, 247, 0.38);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.08);
+}
+
+.coinflip-match-player-info strong {
+    font-size: 12px;
+}
+
+.coinflip-match-player-info span {
+    color: #c4b5fd;
+}
+
+.coinflip-match-coin {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    max-width: 48px;
+    padding: 5px;
+    border: 1px solid rgba(168, 85, 247, 0.14);
+    border-radius: 50%;
+    background: rgba(124, 58, 237, 0.08);
+}
+
+.coinflip-match-coin::after {
+    content: "VS";
+    position: absolute;
+    right: -13px;
+    bottom: -5px;
+    padding: 2px 4px;
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    border-radius: 4px;
+    background: #1a152b;
+    color: #c4b5fd;
+    font-size: 7px;
+    font-weight: 900;
+}
+
+.coinflip-match-coin img {
+    width: 36px !important;
+    height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+}
+
+.coinflip-match-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px;
+}
+
+.coinflip-join-match-button,
+.coinflip-cancel-match-button,
+.coinflip-view-match-button {
+    width: 90px;
+    min-width: 90px;
+    height: 29px;
+    padding: 0 8px;
+    border-radius: 8px;
+    font-size: 9px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.coinflip-view-match-button {
+    border: 1px solid rgba(196, 181, 253, 0.16);
+    background: rgba(255, 255, 255, 0.035);
+    color: #b8b2ca;
+}
+
+.coinflip-view-match-button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(196, 181, 253, 0.35);
+    background: rgba(196, 181, 253, 0.09);
+    color: #fff;
+}
+
+.coinflip-game-modal {
+    position: fixed;
+    z-index: 1300;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .2s ease, visibility .2s ease;
+}
+
+.coinflip-game-modal.open {
+    visibility: visible;
+    opacity: 1;
+}
+
+.coinflip-game-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(3, 2, 10, 0.72);
+    backdrop-filter: blur(6px);
+}
+
+.coinflip-game-panel {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 530px);
+    max-height: min(720px, calc(100vh - 40px));
+    overflow: auto;
+    padding: 28px;
+    border: 1px solid rgba(168, 85, 247, 0.24);
+    border-radius: 18px;
+    background: linear-gradient(145deg, #211b36, #100d1d 72%);
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+    transform: translateY(10px) scale(.98);
+    transition: transform .2s ease;
+}
+
+.coinflip-game-modal.open .coinflip-game-panel {
+    transform: translateY(0) scale(1);
+}
+
+.coinflip-game-close {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .06);
+    color: #c4b5fd;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.coinflip-game-kicker {
+    color: #a855f7;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .14em;
+}
+
+.coinflip-game-panel h2 {
+    margin: 5px 0 20px;
+    color: #fff;
+    font-size: 23px;
+}
+
+.coinflip-game-versus {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 10px;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 12px;
+    background: rgba(7, 5, 15, .33);
+}
+
+.coinflip-game-contender {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+}
+
+.coinflip-game-avatar {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border: 2px solid rgba(168,85,247,.38);
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6d28d9, #312e81);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.coinflip-game-contender.waiting .coinflip-game-avatar {
+    border-style: dashed;
+    background: #242034;
+    color: #a9a6b9;
+}
+
+.coinflip-game-contender strong {
+    max-width: 100%;
+    overflow: hidden;
+    color: #fff;
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.coinflip-game-contender span,
+.coinflip-game-pot small {
+    color: #9b95ad;
+    font-size: 9px;
+}
+
+.coinflip-game-vs {
+    color: #c4b5fd;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.coinflip-game-pot {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 14px 0;
+    padding: 13px 15px;
+    border-radius: 10px;
+    background: linear-gradient(115deg, rgba(124,58,237,.18), rgba(168,85,247,.05));
+}
+
+.coinflip-game-pot > span,
+.coinflip-game-pets-heading span {
+    color: #aba5bb;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.coinflip-game-pot strong {
+    color: #fff;
+    font-size: 19px;
+}
+
+.coinflip-game-pets-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0 8px;
+}
+
+.coinflip-game-pets-heading h3 {
+    color: #fff;
+    font-size: 13px;
+}
+
+.coinflip-game-pets {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.coinflip-game-pet {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 7px;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 9px;
+    background: rgba(255,255,255,.025);
+}
+
+.coinflip-game-pet-image {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    flex: 0 0 32px;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 7px;
+    background: #2a2440;
+}
+
+.coinflip-game-pet-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.coinflip-game-pet div:last-child {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.coinflip-game-pet strong {
+    overflow: hidden;
+    color: #fff;
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.coinflip-game-pet div:last-child span,
+.coinflip-game-empty {
+    color: #9b95ad;
+    font-size: 8px;
+}
+
+.coinflip-game-empty {
+    grid-column: 1 / -1;
+    padding: 16px;
+    text-align: center;
+}
+
+body.coinflip-game-modal-open {
+    overflow: hidden;
+}
+
+@media (max-width: 800px) {
+    .coinflip-match-card {
+        min-height: 104px;
+        grid-template-columns: minmax(95px, 1fr) 40px minmax(125px, 1fr) auto;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .coinflip-match-avatar {
+        width: 35px;
+        height: 35px;
+        flex-basis: 35px;
+    }
+
+    .coinflip-match-coin {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+    }
+
+    .coinflip-match-coin img {
+        width: 27px !important;
+        height: 27px !important;
+    }
+
+    .coinflip-match-coin::after {
+        display: none;
+    }
+
+    .coinflip-join-match-button,
+    .coinflip-cancel-match-button,
+    .coinflip-view-match-button {
+        width: 68px;
+        min-width: 68px;
+        font-size: 8px;
+    }
+
+    .coinflip-game-panel {
+        padding: 24px 16px 16px;
+    }
+
+    .coinflip-game-pets {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================================================
+   WAGERED PET PREVIEWS
+   ========================================================= */
+
+.coinflip-match-card {
+    min-height: 92px;
+    height: auto;
+    grid-template-columns: minmax(145px, 1fr) 44px minmax(260px, 1.35fr) auto;
+    gap: 16px;
+    padding: 13px 16px;
+    border-color: rgba(168, 85, 247, 0.16);
+    box-shadow: 0 8px 22px rgba(4, 3, 15, 0.15);
+}
+
+.coinflip-match-card:hover {
+    box-shadow: 0 12px 30px rgba(4, 3, 15, 0.25);
+}
+
+.coinflip-match-wager {
+    gap: 8px;
+}
+
+.coinflip-match-wager .coinflip-wager-summary {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.coinflip-match-wager .coinflip-wager-summary > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.coinflip-match-wager .coinflip-wager-summary span {
+    color: #a9a6b9;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.coinflip-match-wager .coinflip-wager-summary strong {
+    color: #fff;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.coinflip-match-wager .coinflip-wager-summary small {
+    color: #9894aa;
+    font-size: 9px;
+    white-space: nowrap;
+}
+
+.coinflip-wager-pets {
+    display: flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 9px;
+    background: rgba(7, 6, 20, 0.32);
+}
+
+.coinflip-wager-pet {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    margin-right: -5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 2px solid #19152c;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #312850, #1a1730);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.22);
+}
+
+.coinflip-wager-pet img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.coinflip-wager-pet-fallback,
+.coinflip-wager-pet.image-missing img {
+    display: none;
+}
+
+.coinflip-wager-pet.image-missing .coinflip-wager-pet-fallback,
+.coinflip-wager-pet-empty span {
+    display: block;
+    font-size: 16px;
+}
+
+.coinflip-wager-pet em {
+    position: absolute;
+    right: -2px;
+    bottom: -2px;
+    min-width: 15px;
+    padding: 1px 3px;
+    border: 1px solid #312850;
+    border-radius: 5px;
+    background: #a855f7;
+    color: #fff;
+    font-size: 8px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 11px;
+}
+
+.coinflip-wager-more {
+    z-index: 1;
+    margin-left: 7px;
+    color: #c4b5fd;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+@media (max-width: 800px) {
+    .coinflip-match-card {
+        min-height: 104px;
+        height: auto;
+        grid-template-columns: minmax(110px, 1fr) 34px minmax(160px, 1.2fr) auto;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .coinflip-match-wager .coinflip-wager-summary small {
+        display: none;
+    }
+
+    .coinflip-wager-pet {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+
+/* Keep the open-game layout ahead of the legacy compact-card rules above. */
+.coinflip-match-card {
+    min-height: 94px;
+    height: auto;
+    grid-template-columns: minmax(190px, .9fr) minmax(210px, 1.4fr) auto;
+    gap: 22px;
+    padding: 12px 16px;
+}
+
+.coinflip-match-wager {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 11px;
+}
+
+.coinflip-wager-pets {
+    flex: 1;
+    min-width: 0;
+}
+
+.coinflip-match-value {
+    flex: 0 0 auto;
+    color: #fff;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+@media (max-width: 800px) {
+    .coinflip-match-card {
+        min-height: 92px;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+    }
+
+    .coinflip-match-duel {
+        grid-column: 1 / -1;
+    }
+
+    .coinflip-match-wager {
+        min-width: 0;
+    }
+}
+
+
+/* Stable desktop row: matchup, wagered pets/value, then actions at the edge. */
+@media (min-width: 801px) {
+    .coinflip-match-card {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        min-height: 108px;
+    }
+
+    .coinflip-match-duel {
+        flex: 0 0 195px;
+    }
+
+    .coinflip-match-wager {
+        flex: 1 1 auto;
+        min-width: 300px;
+    }
+
+    .coinflip-match-actions {
+        flex: 0 0 auto;
+        margin-left: auto;
+        justify-self: end;
+    }
+}
+
+.coinflip-wager-pets {
+    display: flex;
+    align-items: center;
+    min-height: 72px;
+    padding: 7px 10px;
+    border-color: rgba(168, 85, 247, .18);
+    background: rgba(6, 5, 16, .42);
+}
+
+.coinflip-wager-pet {
+    width: 56px;
+    height: 56px;
+    margin-right: -8px;
+    border: 2px solid #19152c;
+    border-radius: 11px;
+    background: radial-gradient(circle at 50% 30%, #44326d, #1d1932 72%);
+}
+
+.coinflip-wager-pet img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.coinflip-wager-pet-fallback,
+.coinflip-wager-pet.image-missing img {
+    display: none;
+}
+
+.coinflip-wager-pet.image-missing .coinflip-wager-pet-fallback {
+    display: block;
+    font-size: 23px;
+}
+
+.coinflip-wager-pet em {
+    right: -3px;
+    bottom: -3px;
+    min-width: 19px;
+    padding: 2px 4px;
+    border-radius: 6px;
+    font-size: 9px;
+    line-height: 12px;
+}
+
+.coinflip-match-value {
+    min-width: 110px;
+    font-size: 16px;
+    text-align: right;
+}
+
+.coinflip-match-actions {
+    align-items: stretch;
+}
+
+.coinflip-join-match-button,
+.coinflip-cancel-match-button,
+.coinflip-view-match-button {
+    width: 112px;
+    min-width: 112px;
+    height: 34px;
+}
+
+@media (max-width: 800px) {
+    .coinflip-wager-pets {
+        min-height: 48px;
+        padding: 4px 6px;
+    }
+
+    .coinflip-wager-pet {
+        width: 38px;
+        height: 38px;
+    }
+
+    .coinflip-match-value {
+        min-width: 0;
+        font-size: 12px;
+    }
+}
+
+
+/* Join flow */
+.coinflip-join-panel {
+    width: min(100%, 620px);
+}
+
+.coinflip-join-panel .coinflip-game-kicker,
+.coinflip-join-panel h2 {
+    display: block;
+}
+
+.coinflip-join-panel h2 {
+    margin-bottom: 6px;
+}
+
+.coinflip-join-range {
+    margin-bottom: 18px;
+    color: #aaa4bc;
+    font-size: 12px;
+}
+
+.coinflip-join-inventory {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px;
+    max-height: 390px;
+    overflow: auto;
+    padding: 2px;
+}
+
+.coinflip-join-pet {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+    padding: 9px;
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .03);
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+}
+
+.coinflip-join-pet:hover,
+.coinflip-join-pet.selected {
+    border-color: rgba(168, 85, 247, .7);
+    background: rgba(124, 58, 237, .17);
+}
+
+.coinflip-join-pet > div {
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 9px;
+    background: #282240;
+}
+
+.coinflip-join-pet img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.coinflip-join-pet strong {
+    overflow: hidden;
+    width: 100%;
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.coinflip-join-pet span {
+    color: #c4b5fd;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.coinflip-join-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, .08);
+}
+
+.coinflip-join-footer > strong {
+    color: #fff;
+    font-size: 19px;
+}
+
+.coinflip-join-footer .coinflip-join-match-button {
+    width: auto;
+    min-width: 120px;
+    height: 38px;
+}
+
+@media (max-width: 540px) {
+    .coinflip-join-inventory {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* Final compact game-row refinements. */
+.coinflip-match-card {
+    min-height: 96px;
+    height: auto;
+    grid-template-columns: minmax(160px, .8fr) 58px minmax(280px, 1.45fr) auto;
+    gap: 18px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: linear-gradient(115deg, rgba(24, 22, 42, .94), rgba(17, 15, 30, .9));
+}
+
+.coinflip-match-avatar {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border: 2px solid rgba(168, 85, 247, .38);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, .08);
+}
+
+.coinflip-match-coin {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    max-width: 48px;
+    padding: 5px;
+    border: 1px solid rgba(168, 85, 247, .14);
+    border-radius: 50%;
+    background: rgba(124, 58, 237, .08);
+}
+
+.coinflip-match-coin img {
+    width: 36px !important;
+    height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+}
+
+.coinflip-match-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px;
+}
+
+@media (max-width: 800px) {
+    .coinflip-match-card {
+        min-height: 104px;
+        grid-template-columns: minmax(95px, 1fr) 40px minmax(125px, 1fr) auto;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .coinflip-match-avatar {
+        width: 35px;
+        height: 35px;
+        flex-basis: 35px;
+    }
+
+    .coinflip-match-coin {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+    }
+
+    .coinflip-match-coin img {
+        width: 27px !important;
+        height: 27px !important;
+    }
+
+    .coinflip-join-match-button,
+    .coinflip-cancel-match-button,
+    .coinflip-view-match-button {
+        width: 68px;
+        min-width: 68px;
+        font-size: 8px;
+    }
+}
+
+
+/* =========================================================
+   COINFLIP RESULT ANIMATION
+   ========================================================= */
+
+.coinflip-animation-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 6px 0 4px;
+}
+
+.coinflip-animation-view h2 {
+    margin-bottom: 4px;
+}
+
+.coinflip-animation-stage {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    display: grid;
+    place-items: center;
+    margin: 8px auto 0;
+    perspective: 900px;
+}
+
+.coinflip-animation-stage::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    width: 105px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, .35);
+    filter: blur(9px);
+    transform: translateX(-50%);
+}
+
+.coinflip-animation-coin {
+    position: relative;
+    width: 154px;
+    height: 154px;
+    transform-style: preserve-3d;
+    transform: rotateY(0deg);
+}
+
+.coinflip-animation-coin.is-flipping {
+    animation: coinflipRealisticSpin 3.25s cubic-bezier(.12, .72, .16, 1) forwards;
+}
+
+.coinflip-animation-face {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 50%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.coinflip-animation-face img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.coinflip-animation-heads {
+    transform: rotateY(0deg);
+}
+
+.coinflip-animation-tails {
+    transform: rotateY(180deg);
+}
+
+@keyframes coinflipRealisticSpin {
+    0% {
+        transform: rotateY(0deg) scale(1);
+    }
+
+    12% {
+        transform: rotateY(360deg) scale(1.035);
+    }
+
+    38% {
+        transform: rotateY(1080deg) scale(1.06);
+    }
+
+    65% {
+        transform: rotateY(1800deg) scale(1.04);
+    }
+
+    84% {
+        transform: rotateY(2160deg) scale(1.02);
+    }
+
+    100% {
+        transform: rotateY(var(--coin-final-rotation)) scale(1);
+    }
+}
+
+.coinflip-animation-status {
+    min-height: 19px;
+    margin-top: -2px;
+    color: #aaa4ba;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .16em;
+}
+
+.coinflip-animation-result {
+    display: flex;
+    visibility: hidden;
+    min-width: 180px;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 14px;
+    padding: 11px 18px;
+    border: 1px solid rgba(168, 85, 247, .18);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .035);
+    opacity: 0;
+    transform: translateY(7px);
+    transition: opacity .25s ease, transform .25s ease, visibility .25s ease;
+}
+
+.coinflip-animation-result.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.coinflip-animation-result-side {
+    color: #c4b5fd;
+    font-size: 16px;
+    font-weight: 950;
+    letter-spacing: .12em;
+}
+
+.coinflip-animation-result strong {
+    color: #fff;
+    font-size: 12px;
+}
+
+@media (max-width: 600px) {
+    .coinflip-animation-stage {
+        width: 190px;
+        height: 190px;
+    }
+
+    .coinflip-animation-coin {
+        width: 135px;
+        height: 135px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .coinflip-animation-coin.is-flipping {
+        animation-duration: .01ms;
+        animation-iteration-count: 1;
+    }
+}
+
+.coinflip-game-pet-traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 2px;
+}
+
+.pet-trait {
+    padding: 2px 4px;
+    border: 1px solid rgba(196, 181, 253, .18);
+    border-radius: 4px;
+    background: rgba(124, 58, 237, .12);
+    color: #d8ccff;
+    font-size: 7px;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: capitalize;
+}
+
+.pet-trait-neon {
+    border-color: rgba(110, 231, 183, .25);
+    background: rgba(16, 185, 129, .1);
+    color: #6ee7b7;
+}
+
+.pet-trait-mega {
+    border-color: rgba(240, 171, 252, .25);
+    background: rgba(217, 70, 239, .1);
+    color: #f0abfc;
+}
+
+.navbar-user {
+    padding: 3px 5px;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+
+.navbar-user:hover,
+.navbar-user:focus-visible {
+    background: rgba(168, 85, 247, .09);
+    outline: none;
+}
+
+.account-dropdown {
+    position: absolute;
+    top: calc(100% + 9px);
+    right: 0;
+    z-index: 1200;
+    display: flex;
+    width: 164px;
+    flex-direction: column;
+    gap: 3px;
+    padding: 6px;
+    border: 1px solid rgba(168, 85, 247, .22);
+    border-radius: 11px;
+    background: #171225;
+    box-shadow: 0 16px 35px rgba(0, 0, 0, .35);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-5px) scale(.98);
+    transition: opacity .16s ease, transform .16s ease;
+}
+
+.account-dropdown.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+.account-dropdown a,
+.account-dropdown button {
+    width: 100%;
+    padding: 10px 9px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: #d6d0e2;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.account-dropdown a:hover,
+.account-dropdown button:hover {
+    background: rgba(168, 85, 247, .13);
+    color: #fff;
+}
+
+.account-dropdown button {
+    border-top: 1px solid rgba(255, 255, 255, .06);
+    color: #f0a6b2;
+    cursor: pointer;
+}
+
+
+/* Full game reveal inside the View Game modal. */
+.coinflip-animation-view {
+    width: 100%;
+    padding: 2px 0 12px;
+}
+
+.coinflip-play-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 8px;
+    color: #8f89a2;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .1em;
+}
+
+.coinflip-play-header span { color: #c4b5fd; }
+
+.coinflip-play-contenders {
+    display: grid;
+    grid-template-columns: 1fr 190px 1fr;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.coinflip-play-player {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+    color: #fff;
+}
+
+.coinflip-play-avatar {
+    width: 67px;
+    height: 67px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border: 3px solid #37304d;
+    border-radius: 50%;
+    background: #272039;
+    color: #d8d1e7;
+    font-size: 22px;
+    font-weight: 900;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.coinflip-play-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.coinflip-play-player strong { max-width: 100%; overflow: hidden; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.coinflip-play-player span { color: #aaa3b9; font-size: 8px; font-weight: 900; letter-spacing: .08em; }
+.coinflip-play-player.potential-winner .coinflip-play-avatar { border-color: #7651c8; box-shadow: 0 0 20px rgba(139,92,246,.22); }
+
+.coinflip-animation-stage {
+    width: 190px;
+    height: 156px;
+    margin: 0;
+}
+
+.coinflip-animation-stage::before { bottom: 13px; width: 94px; }
+.coinflip-animation-coin { width: 118px; height: 118px; filter: drop-shadow(0 12px 12px rgba(0,0,0,.35)); }
+.coinflip-animation-coin.is-flipping { animation: coinflipRealisticSpin 3.5s cubic-bezier(.08,.75,.13,1) forwards, coinflipCoinLift 3.5s ease-in-out forwards; }
+
+@keyframes coinflipCoinLift {
+    0%,100% { margin-top: 0; }
+    15% { margin-top: -20px; }
+    58% { margin-top: -30px; }
+    84% { margin-top: -7px; }
+}
+
+.coinflip-play-wagers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    margin: -4px 0 11px;
+}
+
+.coinflip-play-wager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 51px;
+    padding: 6px 9px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 10px;
+    background: rgba(255,255,255,.035);
+    transition: border-color .35s ease, background .35s ease;
+}
+
+.coinflip-play-wager.winner-wager { border-color: rgba(167,139,250,.55); background: rgba(124,58,237,.16); }
+.coinflip-play-wager > div { display: flex; min-width: 0; padding-right: 5px; }
+.coinflip-play-wager strong { color: #fff; font-size: 11px; white-space: nowrap; }
+.coinflip-play-pet { position: relative; width: 34px; height: 34px; margin-right: -6px; display: grid; place-items: center; overflow: hidden; border: 2px solid #241c35; border-radius: 8px; background: #383052; font-size: 15px; }
+.coinflip-play-pet img { width: 100%; height: 100%; object-fit: contain; }
+.coinflip-play-pet em { position: absolute; right: -1px; bottom: -1px; padding: 1px 3px; border-radius: 4px; background: #a855f7; color:#fff; font-size: 7px; font-style: normal; font-weight: 900; }
+
+.coinflip-animation-status { margin-top: 2px; color: #c4b5fd; }
+.coinflip-animation-result { min-width: 250px; margin-top: 10px; }
+.coinflip-animation-result small { color: #a49cb7; font-size: 9px; font-weight: 600; }
+
+@media (max-width: 600px) {
+    .coinflip-play-contenders { grid-template-columns: 1fr 122px 1fr; gap: 5px; }
+    .coinflip-animation-stage { width: 122px; height: 132px; }
+    .coinflip-animation-coin { width: 92px; height: 92px; }
+    .coinflip-play-avatar { width: 52px; height: 52px; }
+    .coinflip-play-player strong { font-size: 9px; }
+    .coinflip-play-wagers { gap: 6px; }
+    .coinflip-play-wager { min-height: 45px; padding: 5px; }
+    .coinflip-play-pet { width: 28px; height: 28px; }
+    .coinflip-play-wager strong { font-size: 9px; }
+}
+
+
+/* Join inventory and in-site notices */
+.coinflip-join-panel {
+    width: min(100%, 700px);
+    padding: 30px;
+    border-color: rgba(168, 85, 247, .26);
+    background: linear-gradient(145deg, #211a35, #100d1e 78%);
+}
+
+.coinflip-join-panel .coinflip-game-kicker {
+    display: block;
+    margin-bottom: 7px;
+    color: #b66cff;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .15em;
+}
+
+.coinflip-join-panel h2 {
+    display: block;
+    margin: 0;
+    color: #fff;
+    font-size: 27px;
+}
+
+.coinflip-join-range {
+    margin: 9px 0 22px;
+    color: #aaa2b8;
+    font-size: 13px;
+}
+
+.coinflip-join-inventory {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    max-height: 365px;
+    padding: 3px;
+}
+
+.coinflip-join-pet {
+    position: relative;
+    min-height: 190px;
+    padding: 13px 11px 11px;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 13px;
+    background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+    box-shadow: inset 0 1px rgba(255,255,255,.025);
+    transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.coinflip-join-pet:hover {
+    transform: translateY(-2px);
+    border-color: rgba(196, 181, 253, .35);
+    background: rgba(124, 58, 237, .11);
+}
+
+.coinflip-join-pet.selected {
+    border-color: #a855f7;
+    background: linear-gradient(145deg, rgba(124,58,237,.25), rgba(168,85,247,.08));
+    box-shadow: 0 8px 20px rgba(76,29,149,.2), inset 0 0 0 1px rgba(196,181,253,.12);
+}
+
+.coinflip-join-pet > div:first-child {
+    width: 92px;
+    height: 92px;
+    margin: 0 auto 10px;
+    border: 1px solid rgba(196,181,253,.13);
+    border-radius: 12px;
+    background: radial-gradient(circle at 50% 35%, #443462, #242039 70%);
+}
+
+.coinflip-join-pet strong { font-size: 12px; }
+.coinflip-join-pet > span { font-size: 10px; }
+.coinflip-join-pet .coinflip-quantity-picker { margin-top: 10px; }
+.coinflip-join-pet .coinflip-quantity-picker button { width: 27px; height: 27px; border-radius: 7px; font-size: 16px; }
+.coinflip-join-pet .coinflip-quantity-picker b { min-width: 39px; padding: 6px 4px; border-radius: 7px; background: rgba(0,0,0,.2); color: #e9ddff; font-size: 10px; }
+
+.coinflip-join-footer {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top-color: rgba(196,181,253,.13);
+}
+
+.coinflip-join-footer > strong {
+    padding: 11px 13px;
+    border: 1px solid rgba(196,181,253,.12);
+    border-radius: 9px;
+    background: rgba(255,255,255,.035);
+    font-size: 20px;
+}
+
+.coinflip-join-footer .coinflip-join-match-button {
+    min-width: 150px;
+    height: 43px;
+    border: 1px solid rgba(196,181,253,.35);
+    background: linear-gradient(135deg, #6d28d9, #9333ea);
+    box-shadow: 0 9px 20px rgba(124,58,237,.22);
+}
+
+.site-toast-region {
+    position: fixed;
+    top: 22px;
+    right: 22px;
+    z-index: 5000;
+    display: flex;
+    width: min(360px, calc(100vw - 32px));
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.site-toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid rgba(134,239,172,.28);
+    border-radius: 11px;
+    background: rgba(18, 38, 31, .96);
+    box-shadow: 0 14px 30px rgba(0,0,0,.32);
+    color: #dcfce7;
+    animation: toastEnter .22s ease-out;
+}
+
+.site-toast.error { border-color: rgba(252,165,165,.3); background: rgba(54, 25, 34, .96); color: #fee2e2; }
+.site-toast > span { width: 20px; height: 20px; display: grid; flex: 0 0 20px; place-items: center; border-radius: 50%; background: rgba(134,239,172,.18); font-size: 12px; font-weight: 900; }
+.site-toast.error > span { background: rgba(252,165,165,.15); }
+.site-toast p { margin: 0; font-size: 11px; font-weight: 700; line-height: 1.4; }
+.site-toast.leaving { animation: toastLeave .22s ease-in forwards; }
+@keyframes toastEnter { from { opacity: 0; transform: translateY(-9px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes toastLeave { to { opacity: 0; transform: translateY(-7px) scale(.97); } }
+
+@media (max-width: 540px) {
+    .coinflip-join-panel { padding: 24px 16px 18px; }
+    .coinflip-join-inventory { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .coinflip-join-pet { min-height: 175px; }
+    .coinflip-join-pet > div:first-child { width: 76px; height: 76px; }
+}
+
+
+/* Wager quantity controls */
+.coinflip-quantity-picker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.coinflip-quantity-picker button {
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(196, 181, 253, .22);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, .06);
+    color: #fff;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.coinflip-quantity-picker button:disabled {
+    cursor: not-allowed;
+    opacity: .35;
+}
+
+.coinflip-quantity-picker span,
+.coinflip-quantity-picker b {
+    min-width: 27px;
+    color: #d8ccff;
+    font-size: 9px;
+    font-weight: 900;
+    text-align: center;
+}
+
+.coinflip-inventory-item {
+    cursor: pointer;
+}
+
+.coinflip-inventory-item .coinflip-quantity-picker {
+    position: relative;
+    z-index: 3;
+}
+
+.coinflip-join-pet {
+    cursor: pointer;
+}
+
+.coinflip-join-pet .coinflip-quantity-picker {
+    margin-top: 1px;
+}
+
+/* Countdown and physical coin tumble */
+.coinflip-animation-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 24px;
+}
+
+.coinflip-countdown-number {
+    min-width: 19px;
+    color: #fff;
+    font-size: 21px;
+    font-weight: 950;
+    line-height: 1;
+    text-shadow: 0 0 17px rgba(196, 181, 253, .75);
+}
+
+.coinflip-countdown-number.tick {
+    animation: coinflipCountdownTick .32s ease-out;
+}
+
+@keyframes coinflipCountdownTick {
+    from { opacity: 0; transform: scale(1.65); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes coinflipRealisticSpin {
+    0% { transform: rotateY(0deg) rotateX(0deg) scale(1); }
+    8% { transform: rotateY(300deg) rotateX(140deg) scale(1.08); }
+    24% { transform: rotateY(900deg) rotateX(400deg) scale(1.12); }
+    46% { transform: rotateY(1710deg) rotateX(740deg) scale(1.08); }
+    68% { transform: rotateY(2250deg) rotateX(970deg) scale(1.04); }
+    84% { transform: rotateY(2430deg) rotateX(1040deg) scale(1.015); }
+    100% { transform: rotateY(var(--coin-final-rotation)) rotateX(0deg) scale(1); }
+}
+
+.coinflip-animation-coin.is-flipping {
+    animation: coinflipRealisticSpin 3.5s cubic-bezier(.08,.75,.13,1) forwards, coinflipCoinLift 3.5s ease-in-out forwards;
+}
+
+/* Join match picker */
+.coinflip-join-panel {
+    width: min(1080px, calc(100vw - 32px));
+    min-height: min(620px, calc(100vh - 48px));
+    display: flex;
+    flex-direction: column;
+    padding: 31px 29px 20px;
+    border-color: rgba(148, 74, 229, .25);
+    background: linear-gradient(135deg, #0e0918 0%, #07050b 56%, #0d0815 100%);
+}
+
+.coinflip-join-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding-right: 42px;
+}
+
+.coinflip-join-panel .coinflip-game-kicker {
+    margin: 0 0 7px;
+    color: #c66cff;
+    font-size: 10px;
+    letter-spacing: .16em;
+}
+
+.coinflip-join-panel h2 {
+    margin: 0;
+    color: #f8f5ff;
+    font-size: 24px;
+    line-height: 1.1;
+}
+
+.coinflip-join-heading p,
+.coinflip-join-range {
+    margin: 6px 0 0;
+    color: #777183;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.coinflip-join-range {
+    margin-top: 14px;
+    color: #a49aac;
+}
+
+.coinflip-join-select-all {
+    min-width: 81px;
+    height: 39px;
+    padding: 0 14px;
+    border: 1px solid rgba(171, 93, 255, .27);
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(87, 31, 144, .22), rgba(39, 14, 72, .23));
+    color: #c776ff;
+    font-size: 10px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.coinflip-join-select-all:hover { border-color: rgba(196, 121, 255, .6); color: #e6c9ff; }
+
+.coinflip-join-inventory {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(182px, 1fr));
+    align-content: start;
+    gap: 14px;
+    flex: 1;
+    max-height: none;
+    min-height: 260px;
+    margin-top: 19px;
+    padding: 0 0 20px;
+    overflow: auto;
+}
+
+.coinflip-join-pet {
+    min-height: 205px;
+    padding: 11px 13px 13px;
+    border: 1px solid rgba(174, 91, 255, .22);
+    border-radius: 14px;
+    background: radial-gradient(circle at 48% 21%, rgba(103, 47, 151, .24), transparent 43%), linear-gradient(145deg, #160d23, #0c0811 86%);
+    box-shadow: inset 0 1px rgba(255,255,255,.035), 0 9px 24px rgba(0,0,0,.17);
+    text-align: center;
+}
+
+.coinflip-join-pet:hover {
+    transform: translateY(-2px);
+    border-color: rgba(196, 118, 255, .62);
+    background: radial-gradient(circle at 48% 21%, rgba(125, 55, 191, .34), transparent 43%), linear-gradient(145deg, #1c102c, #0e0915 86%);
+}
+
+.coinflip-join-pet.selected {
+    border-color: #b85cff;
+    background: radial-gradient(circle at 48% 21%, rgba(146, 62, 222, .42), transparent 46%), linear-gradient(145deg, #211034, #110a1a 86%);
+    box-shadow: 0 10px 30px rgba(104, 38, 173, .24), inset 0 0 0 1px rgba(216, 167, 255, .12);
+}
+
+.coinflip-join-check,
+.coinflip-join-stock {
+    position: absolute;
+    top: 10px;
+    display: grid;
+    place-items: center;
+    min-width: 25px;
+    height: 25px;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 900;
+}
+
+.coinflip-join-check {
+    left: 10px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(0,0,0,.28);
+    color: #fff;
+}
+
+.coinflip-join-pet.selected .coinflip-join-check { border-color: #b85cff; background: #8b3ee0; }
+.coinflip-join-stock { right: 10px; padding: 0 7px; background: rgba(255,255,255,.065); color: #ada5b7; }
+
+.coinflip-join-pet-image {
+    display: grid;
+    width: 98px;
+    height: 98px;
+    margin: 12px auto 9px;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid rgba(211, 164, 255, .12);
+    border-radius: 13px;
+    background: radial-gradient(circle at 50% 38%, #493169, #24162f 72%);
+}
+
+.coinflip-join-pet-image img { width: 82px; height: 82px; object-fit: contain; }
+.coinflip-join-pet-image span { font-size: 37px; }
+.coinflip-join-pet strong { display: block; color: #f5efff; font-size: 12px; }
+.coinflip-join-pet-value { display: block; margin-top: 5px; color: #b889ff; font-size: 10px; font-weight: 900; }
+.coinflip-join-pet .coinflip-quantity-picker { margin-top: 10px; }
+.coinflip-join-pet .coinflip-quantity-picker button { width: 25px; height: 25px; border-radius: 7px; }
+.coinflip-join-pet .coinflip-quantity-picker b { min-width: 41px; padding: 6px 5px; border-radius: 7px; background: rgba(255,255,255,.055); color: #ede3ff; }
+
+.coinflip-join-footer {
+    margin: 0 -29px -20px;
+    padding: 20px 29px;
+    border-top: 1px solid rgba(255,255,255,.075);
+    background: rgba(6, 4, 9, .62);
+}
+
+.coinflip-join-footer > strong { border: 0; background: transparent; color: #f8f5ff; font-size: 21px; }
+.coinflip-join-footer .coinflip-join-match-button { min-width: 156px; height: 48px; border-radius: 10px; }
+
+@media (max-width: 540px) {
+    .coinflip-join-panel { width: min(100%, calc(100vw - 18px)); min-height: calc(100vh - 18px); padding: 24px 17px 16px; }
+    .coinflip-join-heading { padding-right: 32px; }
+    .coinflip-join-heading h2 { font-size: 21px; }
+    .coinflip-join-select-all { min-width: 70px; padding: 0 10px; }
+    .coinflip-join-inventory { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .coinflip-join-pet { min-height: 188px; }
+    .coinflip-join-pet-image { width: 78px; height: 78px; margin-top: 14px; }
+    .coinflip-join-pet-image img { width: 66px; height: 66px; }
+    .coinflip-join-footer { margin: 0 -17px -16px; padding: 16px 17px; }
+}
+
+/* Horizontal match selector and reveal state */
+.coinflip-join-panel {
+    width: min(980px, calc(100vw - 32px));
+    min-height: min(545px, calc(100vh - 44px));
+}
+
+.coinflip-join-inventory {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: flex-start;
+    gap: 14px;
+    min-height: 238px;
+    padding: 3px 3px 18px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-color: rgba(180, 92, 255, .5) rgba(255,255,255,.035);
+}
+
+.coinflip-join-inventory::-webkit-scrollbar { height: 8px; }
+.coinflip-join-inventory::-webkit-scrollbar-track { border-radius: 99px; background: rgba(255,255,255,.035); }
+.coinflip-join-inventory::-webkit-scrollbar-thumb { border-radius: 99px; background: linear-gradient(90deg, #7134ba, #b557ff); }
+
+.coinflip-join-pet {
+    flex: 0 0 178px;
+    min-height: 212px;
+    scroll-snap-align: start;
+}
+
+.coinflip-join-footer {
+    align-items: center;
+    gap: 18px;
+}
+
+.coinflip-join-totals {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.coinflip-join-totals > div {
+    display: grid;
+    gap: 4px;
+}
+
+.coinflip-join-totals span {
+    color: #91899d;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .025em;
+}
+
+.coinflip-join-totals strong {
+    color: #fbf9ff;
+    font-size: 17px;
+    line-height: 1;
+}
+
+.coinflip-animation-coin.coinflip-result-pending {
+    position: relative;
+    transform: rotateY(0deg) !important;
+}
+
+.coinflip-animation-coin.coinflip-result-pending .coinflip-animation-face {
+    opacity: 0;
+}
+
+.coinflip-animation-coin.coinflip-result-pending::after {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border: 4px solid rgba(196, 151, 255, .4);
+    border-radius: 50%;
+    background: radial-gradient(circle at 33% 25%, #5c397c, #251532 73%);
+    box-shadow: inset 0 0 0 7px rgba(255,255,255,.035), 0 0 26px rgba(132, 61, 210, .25);
+    color: #eee7ff;
+    content: "?";
+    font-size: 48px;
+    font-weight: 950;
+    transition: opacity .18s ease;
+}
+
+.coinflip-animation-coin .coinflip-animation-face { transition: opacity .18s ease; }
+
+@media (max-width: 540px) {
+    .coinflip-join-panel { min-height: min(560px, calc(100vh - 18px)); }
+    .coinflip-join-inventory { min-height: 205px; gap: 10px; }
+    .coinflip-join-pet { flex-basis: 146px; min-height: 190px; }
+    .coinflip-join-totals { gap: 12px; }
+    .coinflip-join-totals span { font-size: 8px; }
+    .coinflip-join-totals strong { font-size: 14px; }
+    .coinflip-join-footer .coinflip-join-match-button { min-width: 112px; }
+}

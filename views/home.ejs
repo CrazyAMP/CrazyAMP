@@ -1,0 +1,3427 @@
+<%
+    const pageUserId =
+        typeof user !== "undefined" && user
+            ? user.id
+            : "";
+
+    const pageCanAdmin =
+        typeof canAdmin !== "undefined" && canAdmin;
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CrazyAMP</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/home.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/inventory.css"
+    >
+</head>
+
+<body data-user-id="<%= pageUserId %>">
+
+    <div class="site-toast-region" id="siteToastRegion" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- ==========================================
+         NAVBAR
+    =========================================== -->
+
+    <nav class="navbar">
+
+        <a
+            href="/"
+            class="navbar-logo"
+        >
+            Crazy<span>AMP</span>
+        </a>
+
+
+        <div class="navbar-links">
+
+            <a
+                href="/"
+                class="nav-link active"
+            >
+                Coinflip
+            </a>
+
+            <a
+                href="/dice-duels"
+                class="nav-link"
+            >
+                Dice Duels
+            </a>
+
+            <a
+                href="/colour-dice"
+                class="nav-link"
+            >
+                Colour Dice
+            </a>
+
+            <a
+                href="/blackjack"
+                class="nav-link"
+            >
+                Blackjack
+            </a>
+
+            <a
+                href="/upgrader"
+                class="nav-link"
+            >
+                Upgrader
+            </a>
+
+            <% if (pageCanAdmin) { %>
+                <a href="/admin" class="nav-link">Admin</a>
+            <% } %>
+
+        </div>
+
+
+        <div class="navbar-right">
+
+            <!-- BALANCE -->
+
+            <button
+                type="button"
+                class="balance-button"
+                id="openInventoryButton"
+            >
+
+                <span class="balance-icon">
+                    💎
+                </span>
+
+                <span
+                    class="balance-value"
+                    id="navbarInventoryValue"
+                >
+                    0
+                </span>
+
+            </button>
+
+
+            <!-- USER -->
+
+            <div class="navbar-user" id="accountMenuButton" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
+
+                <%
+                    const navbarUser =
+                        typeof user !== "undefined" && user
+                            ? user
+                            : null;
+
+                    const navbarAvatar =
+                        navbarUser
+                            ? (
+                                navbarUser.avatar_url ||
+                                navbarUser.avatar ||
+                                navbarUser.avatarUrl ||
+                                ""
+                            )
+                            : "";
+
+                    const navbarUsername =
+                        navbarUser
+                            ? (
+                                navbarUser.roblox_username ||
+                                navbarUser.robloxUsername ||
+                                navbarUser.username ||
+                                navbarUser.displayName ||
+                                navbarUser.roblox_display_name ||
+                                "User"
+                            )
+                            : "User";
+
+                    const navbarIsOwner =
+                        String(navbarUsername).toLowerCase() ===
+                        "skyez3rs";
+                %>
+
+
+                <% if (navbarAvatar) { %>
+
+                    <div class="navbar-avatar-wrapper">
+
+                        <img
+                            src="<%= navbarAvatar %>"
+                            alt=""
+                            class="navbar-avatar"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+
+                        <div
+                            class="navbar-avatar-placeholder"
+                            style="display:none;"
+                        >
+                            <%= navbarUsername.charAt(0).toUpperCase() %>
+                        </div>
+
+                    </div>
+
+                <% } else { %>
+
+                    <div class="navbar-avatar-placeholder">
+                        <%= navbarUsername.charAt(0).toUpperCase() %>
+                    </div>
+
+                <% } %>
+
+
+                <div class="navbar-user-info">
+
+                    <span class="navbar-username">
+                        <%= navbarUsername %>
+                    </span>
+
+                    <span class="navbar-user-label<%= navbarIsOwner ? " owner" : "" %>">
+                        <%= navbarIsOwner ? "OWNER" : "PLAYER" %>
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="account-dropdown" id="accountDropdown">
+                <a href="/profile">Profile</a>
+                <a href="/history">Game History</a>
+                <button type="button" id="logoutButton">Log out</button>
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ==========================================
+         COINFLIP PAGE
+    =========================================== -->
+
+    <main class="coinflip-page">
+
+        <!-- HEADER -->
+
+        <section class="coinflip-header">
+
+            <div class="coinflip-heading">
+
+                <span class="section-label">
+                    PROVABLY FAIR
+                </span>
+
+                <h1>
+                    Coinflip
+                </h1>
+
+                <p>
+                    Wager your Adopt Me pets and let the coin decide.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="create-match-button"
+                id="createMatchButton"
+            >
+
+                <span>
+                    +
+                </span>
+
+                Create Match
+
+            </button>
+
+        </section>
+
+
+        <!-- STATS -->
+
+        <section class="coinflip-stats">
+
+            <div class="coinflip-stat">
+
+                <div class="coinflip-stat-icon">
+                    🎲
+                </div>
+
+                <div class="coinflip-stat-content">
+
+                    <span>
+                        OPEN MATCHES
+                    </span>
+
+                    <strong id="openMatchesCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="coinflip-stat">
+
+                <div class="coinflip-stat-icon">
+                    💎
+                </div>
+
+                <div class="coinflip-stat-content">
+
+                    <span>
+                        TOTAL WAGERED
+                    </span>
+
+                    <strong id="totalWageredValue">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="coinflip-stat">
+
+                <div class="coinflip-stat-icon">
+                    🪙
+                </div>
+
+                <div class="coinflip-stat-content">
+
+                    <span>
+                        TAX
+                    </span>
+
+                    <strong>
+                        10%
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MAIN -->
+
+        <div class="coinflip-layout">
+
+            <section class="coinflip-main">
+
+                <!-- MATCH TOOLBAR -->
+
+                <div class="matches-toolbar">
+
+                    <div class="matches-tabs">
+
+                        <button
+                            type="button"
+                            class="match-tab active"
+                            id="openMatchesTab"
+                        >
+                            Open Matches
+                        </button>
+
+                        <button
+                            type="button"
+                            class="match-tab"
+                            id="myMatchesTab"
+                        >
+                            My Matches
+                        </button>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="sort-button"
+                        id="sortMatchesButton"
+                    >
+
+                        <span>
+                            ↕
+                        </span>
+
+                        Newest
+
+                    </button>
+
+                </div>
+
+
+                <!-- MATCHES -->
+
+                <div
+                    class="coinflip-matches"
+                    id="coinflipMatches"
+                >
+
+                    <div class="matches-empty">
+
+                        <div class="matches-empty-icon">
+                            🪙
+                        </div>
+
+                        <h3>
+                            No open matches
+                        </h3>
+
+                        <p>
+                            Create a match and be the first player to start a coinflip.
+                        </p>
+
+                        <button
+                            type="button"
+                            class="create-match-button empty-create-button"
+                            id="emptyCreateMatchButton"
+                        >
+
+                            <span>
+                                +
+                            </span>
+
+                            Create Match
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FAIR BANNER -->
+
+                <div class="fair-banner">
+
+                    <div class="fair-icon">
+                        ✓
+                    </div>
+
+                    <div class="fair-content">
+
+                        <strong>
+                            Provably Fair
+                        </strong>
+
+                        <span>
+                            Every coinflip result is generated fairly and cannot be manually selected.
+                        </span>
+
+                    </div>
+
+                    <a
+                        href="#"
+                        class="fair-link"
+                    >
+                        Learn more →
+                    </a>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- ==========================================
+         FLOATING CHAT
+    =========================================== -->
+
+    <button
+        type="button"
+        class="chat-floating-button"
+        id="chatFloatingButton"
+        aria-label="Open chat"
+    >
+        💬
+    </button>
+
+
+    <div
+        class="chat-backdrop"
+        id="chatBackdrop"
+    ></div>
+
+
+    <aside
+        class="chat-drawer"
+        id="chatDrawer"
+    >
+
+        <div class="chat-header">
+
+            <div class="chat-title">
+
+                <span class="chat-status-dot"></span>
+
+                COMMUNITY CHAT
+
+            </div>
+
+
+            <div class="chat-header-right">
+
+                <span class="chat-online" id="chatOnline">
+                    Connecting...
+                </span>
+
+                <button
+                    type="button"
+                    class="chat-close-button"
+                    id="chatCloseButton"
+                >
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="chat-messages" id="chatMessages">
+
+            <div class="chat-empty">
+
+                <div class="chat-empty-icon">
+                    💬
+                </div>
+
+                <strong>
+                    No messages yet
+                </strong>
+
+                <span>
+                    Say hello to the community.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="chat-input-wrapper">
+
+            <input
+                type="text"
+                class="chat-input"
+                id="chatInput"
+                placeholder="Send a message..."
+                disabled
+            >
+
+            <button
+                type="button"
+                class="chat-send-button"
+                id="chatSendButton"
+                disabled
+            >
+                →
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ==========================================
+         COINFLIP CREATE MODAL
+    =========================================== -->
+
+    <div
+        class="coinflip-modal"
+        id="coinflipModal"
+    >
+
+        <div
+            class="coinflip-modal-overlay"
+            id="coinflipModalOverlay"
+        ></div>
+
+
+        <div class="coinflip-modal-panel">
+
+            <!-- HEADER -->
+
+            <div class="coinflip-modal-header">
+
+                <div>
+
+                    <span class="coinflip-modal-label">
+                        CREATE GAME
+                    </span>
+
+                    <h2>
+                        Create Coinflip
+                    </h2>
+
+                    <p>
+                        Select the pets you want to wager and choose your side.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="coinflip-modal-close"
+                    id="coinflipModalClose"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- SIDE SELECTION -->
+
+            <div
+                class="coinflip-side-section"
+                id="coinflipSideSection"
+            >
+
+                <div class="coinflip-side-heading">
+
+                    <h3>
+                        Choose your side
+                    </h3>
+
+                    <p>
+                        Your opponent will automatically play the opposite side.
+                    </p>
+
+                </div>
+
+
+                <div class="coinflip-side-options">
+
+                    <!-- HEADS -->
+
+                    <button
+                        type="button"
+                        class="coinflip-side-button"
+                        data-side="heads"
+                        id="coinflipHeadsButton"
+                    >
+
+                        <div class="coinflip-side-icon">
+
+                            <img
+                                src="/images/coin-heads.png"
+                                alt="Heads"
+                            >
+
+                        </div>
+
+                        <span class="coinflip-side-name">
+                            Heads
+                        </span>
+
+                        <span class="coinflip-side-check">
+                            ✓
+                        </span>
+
+                    </button>
+
+
+                    <!-- TAILS -->
+
+                    <button
+                        type="button"
+                        class="coinflip-side-button"
+                        data-side="tails"
+                        id="coinflipTailsButton"
+                    >
+
+                        <div class="coinflip-side-icon">
+
+                            <img
+                                src="/images/coin-tails.png"
+                                alt="Tails"
+                            >
+
+                        </div>
+
+                        <span class="coinflip-side-name">
+                            Tails
+                        </span>
+
+                        <span class="coinflip-side-check">
+                            ✓
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- WAGER SUMMARY -->
+
+            <div class="coinflip-wager-summary">
+
+                <div class="coinflip-wager-stat">
+
+                    <span>
+                        SELECTED PETS
+                    </span>
+
+                    <strong id="coinflipSelectedCount">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="coinflip-wager-stat">
+
+                    <span>
+                        YOUR WAGER
+                    </span>
+
+                    <strong id="coinflipSelectedValue">
+                        💎 0
+                    </strong>
+
+                </div>
+
+
+                <div class="coinflip-wager-stat">
+
+                    <span>
+                        JOIN RANGE
+                    </span>
+
+                    <strong id="coinflipJoinRange">
+                        💎 0 - 💎 0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- INVENTORY HEADER -->
+
+            <div class="coinflip-inventory-header">
+
+                <div>
+
+                    <h3>
+                        Select your pets
+                    </h3>
+
+                    <p>
+                        Only deposited pets can be used in a match.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="coinflip-select-all"
+                    id="coinflipSelectAll"
+                >
+                    Select All
+                </button>
+
+            </div>
+
+
+            <!-- INVENTORY -->
+
+            <div
+                class="coinflip-inventory-grid"
+                id="coinflipInventory"
+            >
+
+                <div class="coinflip-inventory-loading">
+
+                    <div class="coinflip-loading-spinner"></div>
+
+                    Loading inventory...
+
+                </div>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="coinflip-modal-footer">
+
+                <div class="coinflip-footer-info">
+
+                    <span>
+                        Game tax:
+                    </span>
+
+                    <strong>
+                        10%
+                    </strong>
+
+                </div>
+
+
+                <div class="coinflip-footer-actions">
+
+                    <button
+                        type="button"
+                        class="coinflip-cancel-button"
+                        id="coinflipCancelButton"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="coinflip-confirm-button"
+                        id="coinflipConfirmButton"
+                        disabled
+                    >
+                        Create Match
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         COINFLIP GAME VIEW
+    =========================================== -->
+
+    <div
+        class="coinflip-game-modal"
+        id="coinflipGameModal"
+        aria-hidden="true"
+    >
+        <div
+            class="coinflip-game-modal-overlay"
+            id="coinflipGameModalOverlay"
+        ></div>
+
+        <section
+            class="coinflip-game-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="coinflipGameTitle"
+        >
+            <button
+                type="button"
+                class="coinflip-game-close"
+                id="coinflipGameClose"
+                aria-label="Close game details"
+            >
+                ×
+            </button>
+
+            <div id="coinflipGameDetails"></div>
+        </section>
+    </div>
+
+
+    <div class="coinflip-game-modal" id="coinflipJoinModal" aria-hidden="true">
+        <div class="coinflip-game-modal-overlay" id="coinflipJoinModalOverlay"></div>
+        <section class="coinflip-game-panel coinflip-join-panel" role="dialog" aria-modal="true">
+            <button type="button" class="coinflip-game-close" id="coinflipJoinClose" aria-label="Close join match">×</button>
+            <div class="coinflip-join-heading">
+                <div>
+                    <span class="coinflip-game-kicker">JOIN COINFLIP</span>
+                    <h2>Select your pets</h2>
+                    <p>Only deposited pets can be used in a match.</p>
+                </div>
+                <button type="button" class="coinflip-join-select-all" id="coinflipJoinSelectAll">Select All</button>
+            </div>
+            <p class="coinflip-join-range" id="coinflipJoinRangeText"></p>
+            <div class="coinflip-join-inventory" id="coinflipJoinInventory"></div>
+            <div class="coinflip-join-footer">
+                <div class="coinflip-join-totals">
+                    <div><span>Your wager</span><strong id="coinflipJoinValue">💎 0</strong></div>
+                    <div><span>Winner receives after 10% tax</span><strong id="coinflipJoinPayout">💎 0</strong></div>
+                </div>
+                <button type="button" class="coinflip-join-match-button" id="coinflipJoinConfirm" disabled>Join & Flip</button>
+            </div>
+        </section>
+    </div>
+
+
+    <!-- ==========================================
+         INVENTORY
+    =========================================== -->
+
+    <%- include("partials/inventory") %>
+
+
+    <!-- ==========================================
+         SCRIPTS
+    =========================================== -->
+
+    <script src="/js/inventory.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+
+    <script>
+
+        /* ==========================================
+           CHAT
+        =========================================== */
+
+        const chatFloatingButton =
+            document.getElementById("chatFloatingButton");
+
+        const chatDrawer =
+            document.getElementById("chatDrawer");
+
+        const chatBackdrop =
+            document.getElementById("chatBackdrop");
+
+        const chatCloseButton =
+            document.getElementById("chatCloseButton");
+
+        const chatMessages =
+            document.getElementById("chatMessages");
+
+        const chatInput =
+            document.getElementById("chatInput");
+
+        const chatSendButton =
+            document.getElementById("chatSendButton");
+
+        const accountMenuButton =
+            document.getElementById("accountMenuButton");
+
+        const accountDropdown =
+            document.getElementById("accountDropdown");
+
+        const logoutButton =
+            document.getElementById("logoutButton");
+
+        const chatOnline =
+            document.getElementById("chatOnline");
+
+        const siteToastRegion =
+            document.getElementById("siteToastRegion");
+
+        function showToast(message, type = "success") {
+            if (!siteToastRegion) return;
+
+            const toast = document.createElement("div");
+            toast.className = `site-toast ${type}`;
+            toast.innerHTML = `<span>${type === "error" ? "!" : "✓"}</span><p>${escapeHtml(message)}</p>`;
+            siteToastRegion.appendChild(toast);
+
+            window.setTimeout(() => {
+                toast.classList.add("leaving");
+                window.setTimeout(() => toast.remove(), 220);
+            }, 3600);
+        }
+
+
+        function openChat() {
+
+            if (!chatDrawer || !chatBackdrop) {
+                return;
+            }
+
+            chatDrawer.classList.add("open");
+
+            chatBackdrop.classList.add("open");
+
+        }
+
+
+        function closeChat() {
+
+            if (!chatDrawer || !chatBackdrop) {
+                return;
+            }
+
+            chatDrawer.classList.remove("open");
+
+            chatBackdrop.classList.remove("open");
+
+        }
+
+
+        if (chatFloatingButton) {
+
+            chatFloatingButton.addEventListener(
+                "click",
+                openChat
+            );
+
+        }
+
+
+        if (chatCloseButton) {
+
+            chatCloseButton.addEventListener(
+                "click",
+                closeChat
+            );
+
+        }
+
+
+        if (chatBackdrop) {
+
+            chatBackdrop.addEventListener(
+                "click",
+                closeChat
+            );
+
+        }
+
+        if (accountMenuButton && accountDropdown) {
+            const toggleAccountMenu = () => {
+                const open = accountDropdown.classList.toggle("open");
+                accountMenuButton.setAttribute("aria-expanded", String(open));
+            };
+
+            accountMenuButton.addEventListener("click", toggleAccountMenu);
+            accountMenuButton.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    toggleAccountMenu();
+                }
+            });
+
+            document.addEventListener("click", (event) => {
+                if (!event.target.closest(".navbar-right")) {
+                    accountDropdown.classList.remove("open");
+                    accountMenuButton.setAttribute("aria-expanded", "false");
+                }
+            });
+        }
+
+        if (logoutButton) {
+            logoutButton.addEventListener("click", async () => {
+                await fetch("/logout", { method: "POST" });
+                window.location.assign("/");
+            });
+        }
+
+
+        /* ==========================================
+           COINFLIP ELEMENTS
+        =========================================== */
+
+        const coinflipModal =
+            document.getElementById("coinflipModal");
+
+        const coinflipModalOverlay =
+            document.getElementById("coinflipModalOverlay");
+
+        const coinflipModalClose =
+            document.getElementById("coinflipModalClose");
+
+        const createMatchButton =
+            document.getElementById("createMatchButton");
+
+        const coinflipCancelButton =
+            document.getElementById("coinflipCancelButton");
+
+        const coinflipConfirmButton =
+            document.getElementById("coinflipConfirmButton");
+
+        const emptyCreateMatchButton =
+            document.getElementById("emptyCreateMatchButton");
+
+        const coinflipInventory =
+            document.getElementById("coinflipInventory");
+
+        const coinflipSelectAll =
+            document.getElementById("coinflipSelectAll");
+
+        const coinflipSelectedCount =
+            document.getElementById("coinflipSelectedCount");
+
+        const coinflipSelectedValue =
+            document.getElementById("coinflipSelectedValue");
+
+        const coinflipJoinRange =
+            document.getElementById("coinflipJoinRange");
+
+        const coinflipHeadsButton =
+            document.getElementById("coinflipHeadsButton");
+
+        const coinflipTailsButton =
+            document.getElementById("coinflipTailsButton");
+
+        const openMatchesCount =
+            document.getElementById("openMatchesCount");
+
+        const totalWageredValue =
+            document.getElementById("totalWageredValue");
+
+        const coinflipMatches =
+            document.getElementById("coinflipMatches");
+
+        const navbarInventoryValue =
+            document.getElementById("navbarInventoryValue");
+
+        const coinflipGameModal =
+            document.getElementById("coinflipGameModal");
+
+        const coinflipGameModalOverlay =
+            document.getElementById("coinflipGameModalOverlay");
+
+        const coinflipGameClose =
+            document.getElementById("coinflipGameClose");
+
+        const coinflipGameDetails =
+            document.getElementById("coinflipGameDetails");
+
+        const coinflipJoinModal =
+            document.getElementById("coinflipJoinModal");
+
+        const coinflipJoinModalOverlay =
+            document.getElementById("coinflipJoinModalOverlay");
+
+        const coinflipJoinClose =
+            document.getElementById("coinflipJoinClose");
+
+        const coinflipJoinInventory =
+            document.getElementById("coinflipJoinInventory");
+
+        const coinflipJoinRangeText =
+            document.getElementById("coinflipJoinRangeText");
+
+        const coinflipJoinValue =
+            document.getElementById("coinflipJoinValue");
+
+        const coinflipJoinPayout =
+            document.getElementById("coinflipJoinPayout");
+
+        const coinflipJoinConfirm =
+            document.getElementById("coinflipJoinConfirm");
+
+        const coinflipJoinSelectAll =
+            document.getElementById("coinflipJoinSelectAll");
+
+
+        let coinflipInventoryItems = [];
+
+        let coinflipSelectedItems =
+            new Set();
+
+        let coinflipSelectedQuantities =
+            new Map();
+
+        let coinflipSelectedSide = null;
+
+        let loadedCoinflipMatches = [];
+
+        let joiningMatch = null;
+        let joinInventoryItems = [];
+        let selectedJoinItems = new Map();
+
+        const currentViewer = {
+            username: <%- JSON.stringify((typeof user !== "undefined" && user && (user.roblox_username || user.username || user.displayName)) || "You") %>,
+            avatar: <%- JSON.stringify((typeof user !== "undefined" && user && (user.avatar_url || user.avatar || user.avatarUrl)) || "") %>
+        };
+
+
+        /* ==========================================
+           HELPERS
+        =========================================== */
+
+        function formatValue(value) {
+
+            const number =
+                Number(value) || 0;
+
+            return number.toLocaleString("en-US");
+
+        }
+
+
+        function getInventoryId(item, index) {
+
+            return (
+                item.inventory_id ||
+                item.inventoryId ||
+                item.id ||
+                `inventory-${index}`
+            );
+
+        }
+
+
+        function getItemValue(item) {
+
+            return Number(item.value) || 0;
+
+        }
+
+
+        function getItemQuantity(item) {
+
+            return Math.max(
+                1,
+                Number(item.quantity) || 1
+            );
+
+        }
+
+
+        function escapeHtml(value) {
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        function escapeAttribute(value) {
+
+            return escapeHtml(value);
+
+        }
+
+
+        /* ==========================================
+           OPEN / CLOSE CREATE MODAL
+        =========================================== */
+
+        function openCoinflipModal() {
+
+            if (!coinflipModal) {
+                return;
+            }
+
+            coinflipSelectedItems =
+                new Set();
+
+            coinflipSelectedQuantities =
+                new Map();
+
+            coinflipSelectedSide =
+                null;
+
+            updateSideSelection();
+
+            updateCoinflipSummary();
+
+            coinflipModal.classList.add("open");
+
+            document.body.classList.add(
+                "coinflip-modal-open"
+            );
+
+            loadCoinflipInventory();
+
+        }
+
+
+        function closeCoinflipModal() {
+
+            if (!coinflipModal) {
+                return;
+            }
+
+            coinflipModal.classList.remove("open");
+
+            document.body.classList.remove(
+                "coinflip-modal-open"
+            );
+
+        }
+
+
+        if (createMatchButton) {
+
+            createMatchButton.addEventListener(
+                "click",
+                openCoinflipModal
+            );
+
+        }
+
+
+        if (emptyCreateMatchButton) {
+
+            emptyCreateMatchButton.addEventListener(
+                "click",
+                openCoinflipModal
+            );
+
+        }
+
+
+        if (coinflipModalClose) {
+
+            coinflipModalClose.addEventListener(
+                "click",
+                closeCoinflipModal
+            );
+
+        }
+
+
+        if (coinflipCancelButton) {
+
+            coinflipCancelButton.addEventListener(
+                "click",
+                closeCoinflipModal
+            );
+
+        }
+
+
+        if (coinflipModalOverlay) {
+
+            coinflipModalOverlay.addEventListener(
+                "click",
+                closeCoinflipModal
+            );
+
+        }
+
+
+        document.addEventListener(
+            "keydown",
+            (event) => {
+
+                if (
+                    event.key === "Escape" &&
+                    coinflipModal &&
+                    coinflipModal.classList.contains("open")
+                ) {
+
+                    closeCoinflipModal();
+
+                }
+
+            }
+        );
+
+
+        /* ==========================================
+           SIDE SELECTION
+        =========================================== */
+
+        function updateSideSelection() {
+
+            if (coinflipHeadsButton) {
+
+                coinflipHeadsButton.classList.toggle(
+                    "selected",
+                    coinflipSelectedSide === "heads"
+                );
+
+            }
+
+
+            if (coinflipTailsButton) {
+
+                coinflipTailsButton.classList.toggle(
+                    "selected",
+                    coinflipSelectedSide === "tails"
+                );
+
+            }
+
+        }
+
+
+        if (coinflipHeadsButton) {
+
+            coinflipHeadsButton.addEventListener(
+                "click",
+                () => {
+
+                    coinflipSelectedSide =
+                        "heads";
+
+                    updateSideSelection();
+
+                    updateCoinflipSummary();
+
+                }
+            );
+
+        }
+
+
+        if (coinflipTailsButton) {
+
+            coinflipTailsButton.addEventListener(
+                "click",
+                () => {
+
+                    coinflipSelectedSide =
+                        "tails";
+
+                    updateSideSelection();
+
+                    updateCoinflipSummary();
+
+                }
+            );
+
+        }
+
+
+        /* ==========================================
+           LOAD COINFLIP INVENTORY
+        =========================================== */
+
+        async function loadCoinflipInventory() {
+
+            if (!coinflipInventory) {
+                return;
+            }
+
+            coinflipInventory.innerHTML = `
+                <div class="coinflip-inventory-loading">
+
+                    <div class="coinflip-loading-spinner"></div>
+
+                    Loading inventory...
+
+                </div>
+            `;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/inventory/"
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.error ||
+                        "Failed to load inventory."
+                    );
+
+                }
+
+
+                coinflipInventoryItems =
+                    Array.isArray(
+                        data.inventory?.items
+                    )
+                        ? data.inventory.items
+                        : [];
+
+
+                if (navbarInventoryValue) {
+
+                    navbarInventoryValue.textContent =
+                        formatValue(
+                            data.inventory?.totalValue || 0
+                        );
+
+                }
+
+
+                renderCoinflipInventory();
+
+            } catch (error) {
+
+                console.error(
+                    "Coinflip inventory error:",
+                    error
+                );
+
+
+                coinflipInventory.innerHTML = `
+                    <div class="coinflip-inventory-empty">
+
+                        <div class="coinflip-inventory-empty-icon">
+                            ⚠️
+                        </div>
+
+                        <strong>
+                            Unable to load inventory
+                        </strong>
+
+                        <span>
+                            Please close this window and try again.
+                        </span>
+
+                    </div>
+                `;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           RENDER COINFLIP INVENTORY
+        =========================================== */
+
+        function renderCoinflipInventory() {
+
+            if (!coinflipInventory) {
+                return;
+            }
+
+
+            if (!coinflipInventoryItems.length) {
+
+                coinflipInventory.innerHTML = `
+                    <div class="coinflip-inventory-empty">
+
+                        <div class="coinflip-inventory-empty-icon">
+                            🐾
+                        </div>
+
+                        <strong>
+                            Your inventory is empty
+                        </strong>
+
+                        <span>
+                            Deposit Adopt Me pets before creating a Coinflip match.
+                        </span>
+
+                    </div>
+                `;
+
+                updateCoinflipSummary();
+
+                return;
+
+            }
+
+
+            coinflipInventory.innerHTML =
+                coinflipInventoryItems
+                    .map((item, index) => {
+
+                        const inventoryId =
+                            getInventoryId(
+                                item,
+                                index
+                            );
+
+
+                        const quantity =
+                            getItemQuantity(item);
+
+
+                        const value =
+                            getItemValue(item);
+
+
+                        const selectedQuantity =
+                            Number(
+                                coinflipSelectedQuantities.get(inventoryId)
+                            ) || 0;
+
+                        const selected = selectedQuantity > 0;
+
+
+                        return `
+                            <div
+                                class="coinflip-inventory-item ${selected ? "selected" : ""}"
+                                data-inventory-id="${escapeAttribute(inventoryId)}"
+                            >
+
+                                <span class="coinflip-item-check">
+                                    ✓
+                                </span>
+
+                                <span class="coinflip-item-quantity">
+                                    ×${quantity}
+                                </span>
+
+                                <img
+                                    src="${escapeAttribute(item.image || "")}"
+                                    alt="${escapeAttribute(item.name || "Pet")}"
+                                    class="coinflip-item-image"
+                                    onerror="this.style.visibility='hidden';"
+                                >
+
+                                <span class="coinflip-item-name">
+                                    ${escapeHtml(item.name || "Unknown Pet")}
+                                </span>
+
+                                <span class="coinflip-item-value">
+                                    💎 ${formatValue(value)}
+                                </span>
+
+                                <div class="coinflip-quantity-picker" aria-label="Wager quantity">
+                                    <button type="button" class="coinflip-quantity-change" data-change="-1" ${selectedQuantity <= 0 ? "disabled" : ""}>−</button>
+                                    <span>${selectedQuantity || "Add"}</span>
+                                    <button type="button" class="coinflip-quantity-change" data-change="1" ${selectedQuantity >= quantity ? "disabled" : ""}>+</button>
+                                </div>
+
+                            </div>
+                        `;
+
+                    })
+                    .join("");
+
+
+            coinflipInventory
+                .querySelectorAll(
+                    ".coinflip-inventory-item"
+                )
+                .forEach((element) => {
+
+                    element.addEventListener(
+                        "click",
+                        () => {
+
+                            const id =
+                                element.dataset.inventoryId;
+
+
+                            const max = getItemQuantity(
+                                coinflipInventoryItems.find((item, index) => getInventoryId(item, index) === id)
+                            );
+                            const next = coinflipSelectedQuantities.get(id) ? 0 : max;
+                            coinflipSelectedQuantities.set(id, next);
+
+
+                            renderCoinflipInventory();
+
+                            updateCoinflipSummary();
+
+                        }
+                    );
+
+                });
+
+            coinflipInventory.querySelectorAll(".coinflip-quantity-change").forEach((button) => {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    const card = button.closest(".coinflip-inventory-item");
+                    const id = card.dataset.inventoryId;
+                    const item = coinflipInventoryItems.find((entry, index) => getInventoryId(entry, index) === id);
+                    const next = Math.max(0, Math.min(getItemQuantity(item), (Number(coinflipSelectedQuantities.get(id)) || 0) + Number(button.dataset.change)));
+                    coinflipSelectedQuantities.set(id, next);
+                    renderCoinflipInventory();
+                });
+            });
+
+
+            updateCoinflipSummary();
+
+        }
+
+
+        /* ==========================================
+           SELECT ALL
+        =========================================== */
+
+        if (coinflipSelectAll) {
+
+            coinflipSelectAll.addEventListener(
+                "click",
+                () => {
+
+                    const allSelected =
+                        coinflipInventoryItems.length > 0 &&
+                        coinflipInventoryItems.every(
+                            (item, index) =>
+                                Number(coinflipSelectedQuantities.get(getInventoryId(item, index))) === getItemQuantity(item)
+                        );
+
+
+                    if (allSelected) {
+
+                        coinflipSelectedQuantities.clear();
+
+                    } else {
+
+                        coinflipInventoryItems.forEach(
+                            (item, index) => {
+
+                                coinflipSelectedQuantities.set(getInventoryId(item, index), getItemQuantity(item));
+
+                            }
+                        );
+
+                    }
+
+
+                    renderCoinflipInventory();
+
+                    updateCoinflipSummary();
+
+                }
+            );
+
+        }
+
+
+        /* ==========================================
+           SELECTED ITEMS
+        =========================================== */
+
+        function getSelectedInventoryItems() {
+
+            return coinflipInventoryItems
+                .map((item, index) => ({
+                    ...item,
+                    quantity: Number(coinflipSelectedQuantities.get(getInventoryId(item, index))) || 0
+                }))
+                .filter((item) => item.quantity > 0);
+
+        }
+
+
+        function getSelectedWagerValue() {
+
+            return getSelectedInventoryItems()
+                .reduce(
+                    (total, item) => {
+
+                        const quantity =
+                            getItemQuantity(item);
+
+                        const value =
+                            getItemValue(item);
+
+                        return total +
+                            (value * quantity);
+
+                    },
+                    0
+                );
+
+        }
+
+
+        /* ==========================================
+           UPDATE SUMMARY
+        =========================================== */
+
+        function updateCoinflipSummary() {
+
+            const selectedItems =
+                getSelectedInventoryItems();
+
+
+            const selectedValue =
+                getSelectedWagerValue();
+
+
+            const selectedCount =
+                selectedItems.reduce(
+                    (total, item) =>
+                        total +
+                        getItemQuantity(item),
+                    0
+                );
+
+
+            if (coinflipSelectedCount) {
+
+                coinflipSelectedCount.textContent =
+                    formatValue(selectedCount);
+
+            }
+
+
+            if (coinflipSelectedValue) {
+
+                coinflipSelectedValue.textContent =
+                    `💎 ${formatValue(selectedValue)}`;
+
+            }
+
+
+            if (coinflipJoinRange) {
+
+                if (selectedValue > 0) {
+
+                    const minimum =
+                        Math.floor(
+                            selectedValue * 0.95
+                        );
+
+
+                    const maximum =
+                        Math.ceil(
+                            selectedValue * 1.05
+                        );
+
+
+                    coinflipJoinRange.textContent =
+                        `💎 ${formatValue(minimum)} - 💎 ${formatValue(maximum)}`;
+
+                } else {
+
+                    coinflipJoinRange.textContent =
+                        "💎 0 - 💎 0";
+
+                }
+
+            }
+
+
+            if (coinflipConfirmButton) {
+
+                coinflipConfirmButton.disabled =
+                    selectedItems.length === 0 ||
+                    !coinflipSelectedSide;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           CREATE MATCH
+        =========================================== */
+
+        if (coinflipConfirmButton) {
+
+            coinflipConfirmButton.addEventListener(
+                "click",
+                async () => {
+
+                    const selectedItems =
+                        getSelectedInventoryItems();
+
+
+                    if (!selectedItems.length) {
+
+                        showToast("Please select at least one pet.", "error");
+
+                        return;
+
+                    }
+
+
+                    if (!coinflipSelectedSide) {
+
+                        showToast("Please choose Heads or Tails.", "error");
+
+                        return;
+
+                    }
+
+
+                    coinflipConfirmButton.disabled =
+                        true;
+
+                    coinflipConfirmButton.textContent =
+                        "Creating...";
+
+
+                    try {
+
+                        const items =
+                            selectedItems.map(
+                                (item) => ({
+
+                                    inventoryId:
+                                        item.inventory_id ||
+                                        item.inventoryId ||
+                                        item.id,
+
+                                    quantity:
+                                        getItemQuantity(item)
+
+                                })
+                            );
+
+
+                        const response =
+                            await fetch(
+                                "/api/coinflip/create",
+                                {
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body:
+                                        JSON.stringify({
+                                            items,
+
+                                            creatorChoice:
+                                                coinflipSelectedSide
+                                        })
+                                }
+                            );
+
+
+                        const data =
+                            await response.json();
+
+
+                        if (
+                            !response.ok ||
+                            !data.success
+                        ) {
+
+                            throw new Error(
+                                data.error ||
+                                "Failed to create match."
+                            );
+
+                        }
+
+
+                        closeCoinflipModal();
+
+
+                        await loadCoinflipMatches();
+
+
+                        if (
+                            window.AdoptMeInventory &&
+                            typeof window.AdoptMeInventory.refresh ===
+                                "function"
+                        ) {
+
+                            await window.AdoptMeInventory.refresh();
+
+                        }
+
+
+                        showToast("Coinflip match created!");
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Create match error:",
+                            error
+                        );
+
+
+                        showToast(error.message || "Failed to create match.", "error");
+
+
+                    } finally {
+
+                        coinflipConfirmButton.disabled =
+                            false;
+
+                        coinflipConfirmButton.textContent =
+                            "Create Match";
+
+                        updateCoinflipSummary();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* ==========================================
+           LOAD MATCHES
+        =========================================== */
+
+        async function loadCoinflipMatches() {
+
+            if (!coinflipMatches) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/coinflip/"
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.error ||
+                        "Failed to load matches."
+                    );
+
+                }
+
+
+                const matches =
+                    Array.isArray(data.matches)
+                        ? data.matches
+                        : [];
+
+                loadedCoinflipMatches = matches;
+
+
+                updateCoinflipStats(matches);
+
+                renderCoinflipMatches(matches);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Coinflip matches error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* ==========================================
+           MATCH STATS
+        =========================================== */
+
+        function updateCoinflipStats(matches) {
+
+            if (openMatchesCount) {
+
+                openMatchesCount.textContent =
+                    matches.length;
+
+            }
+
+
+            const total =
+                matches.reduce(
+                    (sum, match) => {
+
+                        return sum +
+                            Number(
+                                match.creator_value ??
+                                match.creatorValue ??
+                                match.wager ??
+                                0
+                            );
+
+                    },
+                    0
+                );
+
+
+            if (totalWageredValue) {
+
+                totalWageredValue.textContent =
+                    `💎 ${formatValue(total)}`;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           RENDER MATCHES
+        =========================================== */
+
+        function renderCoinflipMatches(matches) {
+
+            if (!coinflipMatches) {
+                return;
+            }
+
+
+            if (!matches.length) {
+
+                coinflipMatches.innerHTML = `
+                    <div class="matches-empty">
+
+                        <div class="matches-empty-icon">
+                            🪙
+                        </div>
+
+                        <h3>
+                            No open matches
+                        </h3>
+
+                        <p>
+                            Create a match and be the first player to start a coinflip.
+                        </p>
+
+                        <button
+                            type="button"
+                            class="create-match-button empty-create-button"
+                            id="emptyCreateMatchButton"
+                        >
+
+                            <span>
+                                +
+                            </span>
+
+                            Create Match
+
+                        </button>
+
+                    </div>
+                `;
+
+
+                const button =
+                    document.getElementById(
+                        "emptyCreateMatchButton"
+                    );
+
+
+                if (button) {
+
+                    button.addEventListener(
+                        "click",
+                        openCoinflipModal
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            coinflipMatches.innerHTML =
+                matches
+                    .map(
+                        (match) =>
+                            renderMatchCard(match)
+                    )
+                    .join("");
+
+
+            coinflipMatches
+                .querySelectorAll(
+                    ".coinflip-cancel-match-button"
+                )
+                .forEach((button) => {
+
+                    button.addEventListener(
+                        "click",
+                        () =>
+                            cancelCoinflipMatch(
+                                button.dataset.matchId
+                            )
+                    );
+
+                });
+
+
+            coinflipMatches
+                .querySelectorAll(
+                    ".coinflip-view-match-button"
+                )
+                .forEach((button) => {
+
+                    button.addEventListener(
+                        "click",
+                        () => openGameView(
+                            button.dataset.matchId
+                        )
+                    );
+
+                });
+
+
+            coinflipMatches
+                .querySelectorAll(
+                    ".coinflip-join-match-button"
+                )
+                .forEach((button) => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            const matchId =
+                                button.dataset.matchId;
+
+                            openJoinMatch(matchId);
+
+                        }
+                    );
+
+                });
+
+        }
+
+
+        /* ==========================================
+           MATCH CARD
+        =========================================== */
+
+        function renderMatchCard(match) {
+
+            const creatorName =
+                match.creator_username ??
+                match.creatorUsername ??
+                match.roblox_username ??
+                match.robloxUsername ??
+                match.creator_display_name ??
+                match.creatorDisplayName ??
+                "Player";
+
+
+            const avatar =
+                match.creator_avatar_url ??
+                match.creatorAvatarUrl ??
+                match.creator_avatar ??
+                match.creatorAvatar ??
+                match.avatar_url ??
+                match.avatarUrl ??
+                match.avatar ??
+                "";
+
+
+            const choice =
+                String(
+                    match.creator_choice ??
+                    match.creatorChoice ??
+                    "heads"
+                ).toLowerCase();
+
+
+            const wager =
+                Number(
+                    match.creator_value ??
+                    match.creatorValue ??
+                    match.wager ??
+                    0
+                );
+
+
+            const minimum =
+                Number(
+                    match.min_join_value ??
+                    match.minJoinValue ??
+                    Math.floor(
+                        wager * 0.95
+                    )
+                );
+
+
+            const maximum =
+                Number(
+                    match.max_join_value ??
+                    match.maxJoinValue ??
+                    Math.ceil(
+                        wager * 1.05
+                    )
+                );
+
+
+            /*
+                IMPORTANT:
+                We no longer put EJS inside the JavaScript.
+
+                The logged-in user ID is stored on the
+                body element as data-user-id.
+            */
+
+            const currentUserId =
+                document.body.dataset.userId ||
+                null;
+
+
+            const matchCreatorId =
+                match.creator_id ??
+                match.creatorId ??
+                "";
+
+
+            const isCreator =
+                Boolean(
+                    match.is_creator ??
+                    match.isCreator
+                ) ||
+                (
+                    currentUserId &&
+                    String(matchCreatorId) ===
+                    String(currentUserId)
+                );
+
+
+            const avatarHTML =
+                avatar
+                    ? `
+                        <img
+                            src="${escapeAttribute(avatar)}"
+                            alt=""
+                            onerror="this.style.display='none'; this.parentElement.classList.add('avatar-failed');"
+                        >
+                    `
+                    : `
+                        ${escapeHtml(
+                            creatorName
+                                .charAt(0)
+                                .toUpperCase()
+                        )}
+                    `;
+
+
+            const pets =
+                Array.isArray(match.pets)
+                    ? match.pets
+                    : [];
+
+
+            const petPreviewHTML =
+                pets.length
+                    ? pets.slice(0, 4).map((pet) => {
+
+                        const name =
+                            pet.name ||
+                            "Wagered pet";
+
+                        const quantity =
+                            Math.max(
+                                1,
+                                Number(pet.quantity) || 1
+                            );
+
+
+                        return `
+                            <div
+                                class="coinflip-wager-pet${pet.image ? "" : " image-missing"}"
+                                title="${escapeAttribute(name)}${quantity > 1 ? ` ×${quantity}` : ""}"
+                            >
+                                ${
+                                    pet.image
+                                        ? `
+                                            <img
+                                                src="${escapeAttribute(pet.image)}"
+                                                alt="${escapeAttribute(name)}"
+                                                onerror="this.style.display='none'; this.parentElement.classList.add('image-missing');"
+                                            >
+                                        `
+                                        : ""
+                                }
+                                <span class="coinflip-wager-pet-fallback">🐾</span>
+                                ${
+                                    quantity > 1
+                                        ? `<em>×${quantity}</em>`
+                                        : ""
+                                }
+                            </div>
+                        `;
+
+                    }).join("")
+                    : `
+                        <div class="coinflip-wager-pet coinflip-wager-pet-empty">
+                            <span>🐾</span>
+                        </div>
+                    `;
+
+
+            const remainingPets =
+                Math.max(0, pets.length - 4);
+
+
+            const primaryActionHTML =
+                isCreator
+                    ? `
+                        <button
+                            type="button"
+                            class="coinflip-cancel-match-button"
+                            data-match-id="${escapeAttribute(match.id)}"
+                        >
+                            Cancel Match
+                        </button>
+                    `
+                    : `
+                        <button
+                            type="button"
+                            class="coinflip-join-match-button"
+                            data-match-id="${escapeAttribute(match.id)}"
+                        >
+                            Join Match
+                        </button>
+                    `;
+
+
+            const actionHTML = `
+                ${primaryActionHTML}
+                <button
+                    type="button"
+                    class="coinflip-view-match-button"
+                    data-match-id="${escapeAttribute(match.id)}"
+                >
+                    View Game
+                </button>
+            `;
+
+
+            return `
+                <article class="coinflip-match-card">
+
+                    <div class="coinflip-match-duel">
+
+                        <div class="coinflip-match-contender">
+                            <div class="coinflip-match-avatar">
+                                ${avatarHTML}
+                            </div>
+                            <span class="coinflip-match-choice">
+                                ${escapeHtml(choice)}
+                            </span>
+                        </div>
+
+                        <span class="coinflip-match-versus">VS</span>
+
+                        <div class="coinflip-match-contender coinflip-match-waiting">
+                            <div class="coinflip-match-avatar">?</div>
+                            <span>Waiting</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="coinflip-match-wager">
+
+                        <div class="coinflip-wager-pets">
+                            ${petPreviewHTML}
+                            ${
+                                remainingPets
+                                    ? `<span class="coinflip-wager-more">+${remainingPets}</span>`
+                                : ""
+                            }
+                        </div>
+
+                        <strong class="coinflip-match-value">
+                            💎 ${formatValue(wager)}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="coinflip-match-actions">
+
+                        ${actionHTML}
+
+                    </div>
+
+                </article>
+            `;
+
+        }
+
+
+        /* ==========================================
+           CANCEL MATCH
+        =========================================== */
+
+        async function cancelCoinflipMatch(matchId) {
+
+            if (!matchId) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/coinflip/${encodeURIComponent(matchId)}/cancel`,
+                        {
+                            method: "POST"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.error ||
+                        "Failed to cancel match."
+                    );
+
+                }
+
+
+                await loadCoinflipMatches();
+
+                showToast("Match cancelled — your pets are back in your inventory.");
+
+
+                if (
+                    window.AdoptMeInventory &&
+                    typeof window.AdoptMeInventory.refresh ===
+                        "function"
+                ) {
+
+                    await window.AdoptMeInventory.refresh();
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Cancel match error:",
+                    error
+                );
+
+
+                showToast(error.message || "Failed to cancel match.", "error");
+
+            }
+
+        }
+
+
+        /* ==========================================
+           JOIN MATCH
+        =========================================== */
+
+        function openJoinMatch(matchId) {
+
+            const match = loadedCoinflipMatches.find(
+                (item) => String(item.id) === String(matchId)
+            );
+
+            if (!match || !coinflipJoinModal) {
+                return;
+            }
+
+            joiningMatch = match;
+            selectedJoinItems = new Map();
+
+            if (coinflipJoinRangeText) {
+                coinflipJoinRangeText.textContent =
+                    `Your wager must be between 💎 ${formatValue(match.min_join_value)} and 💎 ${formatValue(match.max_join_value)}.`;
+            }
+
+            coinflipJoinModal.classList.add("open");
+            coinflipJoinModal.setAttribute("aria-hidden", "false");
+            document.body.classList.add("coinflip-game-modal-open");
+
+            loadJoinInventory();
+
+        }
+
+
+        /* ==========================================
+           LIVE COMMUNITY CHAT
+        =========================================== */
+
+        function escapeChat(value) {
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/\"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+
+        function renderChatMessage(chatMessage) {
+            if (!chatMessages || !chatMessage) return;
+
+            const empty = chatMessages.querySelector(".chat-empty");
+            if (empty) empty.remove();
+
+            const ownerClass = chatMessage.owner ? " chat-message-owner" : "";
+            const crown = chatMessage.owner ? " <span class=\"chat-owner-crown\">👑</span>" : "";
+            const message = document.createElement("article");
+
+            message.className = `chat-message${ownerClass}`;
+            message.innerHTML = `
+                <div class="chat-message-header">
+                    <strong>${escapeChat(chatMessage.username)}${crown}</strong>
+                    <span>${new Date(chatMessage.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                </div>
+                <p class="chat-message-text">${escapeChat(chatMessage.message)}</p>
+            `;
+
+            chatMessages.appendChild(message);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+
+        if (typeof io === "function") {
+            const chatSocket = io();
+
+            chatSocket.on("connect", () => {
+                if (chatInput) chatInput.disabled = false;
+                if (chatSendButton) chatSendButton.disabled = false;
+            });
+
+            chatSocket.on("disconnect", () => {
+                if (chatOnline) chatOnline.textContent = "Reconnecting...";
+            });
+
+            chatSocket.on("chat:history", (messages) => {
+                if (!chatMessages || !Array.isArray(messages)) return;
+                chatMessages.innerHTML = "";
+                messages.forEach(renderChatMessage);
+            });
+
+            chatSocket.on("chat:message", renderChatMessage);
+
+            chatSocket.on("chat:online", (count) => {
+                if (chatOnline) {
+                    chatOnline.textContent = `${Number(count) || 0} online`;
+                }
+            });
+
+            chatSocket.on("chat:error", (message) => {
+                if (chatInput) chatInput.placeholder = message;
+            });
+
+            chatSocket.on("chat:notice", (notice) => {
+                if (!chatMessages) return;
+
+                const empty = chatMessages.querySelector(".chat-empty");
+                if (empty) empty.remove();
+
+                const message = document.createElement("p");
+                message.className = "chat-command-notice";
+                message.textContent = notice;
+                chatMessages.appendChild(message);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+
+            const sendChatMessage = () => {
+                const message = chatInput?.value.trim();
+                if (!message) return;
+                chatSocket.emit("chat:send", message);
+                chatInput.value = "";
+            };
+
+            if (chatSendButton) {
+                chatSendButton.addEventListener("click", sendChatMessage);
+            }
+
+            if (chatInput) {
+                chatInput.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        sendChatMessage();
+                    }
+                });
+            }
+        }
+
+
+        function closeJoinMatch() {
+
+            if (!coinflipJoinModal) {
+                return;
+            }
+
+            coinflipJoinModal.classList.remove("open");
+            coinflipJoinModal.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("coinflip-game-modal-open");
+            joiningMatch = null;
+
+        }
+
+
+        function getJoinValue() {
+
+            return joinInventoryItems.reduce(
+                (total, item) => total +
+                    (Number(item.value) || 0) *
+                    (Number(selectedJoinItems.get(String(item.id))) || 0),
+                0
+            );
+
+        }
+
+
+        function renderJoinInventory() {
+
+            if (!coinflipJoinInventory || !joiningMatch) {
+                return;
+            }
+
+            if (!joinInventoryItems.length) {
+                coinflipJoinInventory.innerHTML =
+                    "<p class=\"coinflip-game-empty\">You do not have any available pets to wager.</p>";
+                return;
+            }
+
+            coinflipJoinInventory.innerHTML = joinInventoryItems.map((item) => {
+                const selectedQuantity = Number(selectedJoinItems.get(String(item.id))) || 0;
+                const selected = selectedQuantity > 0;
+                const name = item.name || "Pet";
+                const image = item.image
+                    ? `<img src="${escapeAttribute(item.image)}" alt="${escapeAttribute(name)}">`
+                    : "<span>🐾</span>";
+
+                return `
+                    <div class="coinflip-join-pet${selected ? " selected" : ""}" data-inventory-id="${escapeAttribute(item.id)}" role="button" tabindex="0" aria-pressed="${selected}">
+                        <span class="coinflip-join-check" aria-hidden="true">${selected ? "✓" : ""}</span>
+                        ${Number(item.quantity) > 1 ? `<span class="coinflip-join-stock">×${item.quantity}</span>` : ""}
+                        <div class="coinflip-join-pet-image">${image}</div>
+                        <strong>${escapeHtml(name)}</strong>
+                        <span class="coinflip-join-pet-value">💎 ${formatValue(item.value)}</span>
+                        <div class="coinflip-quantity-picker">
+                            <button type="button" class="coinflip-join-quantity" data-change="-1" ${selectedQuantity <= 0 ? "disabled" : ""}>−</button>
+                            <b>${selectedQuantity || "Add"}</b>
+                            <button type="button" class="coinflip-join-quantity" data-change="1" ${selectedQuantity >= Number(item.quantity) ? "disabled" : ""}>+</button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            coinflipJoinInventory.querySelectorAll(".coinflip-join-pet").forEach((card) => {
+                const togglePet = () => {
+                    const itemId = card.dataset.inventoryId;
+                    const item = joinInventoryItems.find((entry) => String(entry.id) === itemId);
+                    if (!item) return;
+                    selectedJoinItems.set(itemId, selectedJoinItems.get(itemId) ? 0 : Number(item.quantity) || 1);
+                    renderJoinInventory();
+                    updateJoinSummary();
+                };
+                card.addEventListener("click", togglePet);
+                card.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        togglePet();
+                    }
+                });
+            });
+
+            coinflipJoinInventory.querySelectorAll(".coinflip-join-quantity").forEach((button) => {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    const card = button.closest(".coinflip-join-pet");
+                    const item = joinInventoryItems.find((entry) => String(entry.id) === card.dataset.inventoryId);
+                    if (!item) return;
+                    const next = Math.max(0, Math.min(Number(item.quantity) || 1, (Number(selectedJoinItems.get(String(item.id))) || 0) + Number(button.dataset.change)));
+                    selectedJoinItems.set(String(item.id), next);
+                    renderJoinInventory();
+                    updateJoinSummary();
+                });
+            });
+
+        }
+
+
+        function updateJoinSummary() {
+
+            const value = getJoinValue();
+            const minimum = Number(joiningMatch?.min_join_value) || 0;
+            const maximum = Number(joiningMatch?.max_join_value) || 0;
+
+            if (coinflipJoinValue) {
+                coinflipJoinValue.textContent = `💎 ${formatValue(value)}`;
+            }
+
+            if (coinflipJoinPayout) {
+                const totalPot = (Number(joiningMatch?.creator_value) || 0) + value;
+                const taxRate = Number(joiningMatch?.tax_rate) || 10;
+                const tax = Math.floor(totalPot * taxRate / 100);
+                coinflipJoinPayout.textContent = `💎 ${formatValue(totalPot - tax)}`;
+            }
+
+            if (coinflipJoinConfirm) {
+                coinflipJoinConfirm.disabled =
+                    !Array.from(selectedJoinItems.values()).some((quantity) => quantity > 0) ||
+                    value < minimum ||
+                    value > maximum;
+            }
+
+        }
+
+
+        async function loadJoinInventory() {
+
+            if (!coinflipJoinInventory) {
+                return;
+            }
+
+            coinflipJoinInventory.innerHTML = "<p class=\"coinflip-game-empty\">Loading available pets...</p>";
+
+            try {
+                const response = await fetch("/api/inventory/");
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || "Failed to load inventory.");
+                }
+
+                joinInventoryItems = data.inventory?.items || [];
+                renderJoinInventory();
+                updateJoinSummary();
+
+            } catch (error) {
+                coinflipJoinInventory.innerHTML =
+                    `<p class="coinflip-game-empty">${escapeHtml(error.message || "Failed to load inventory.")}</p>`;
+            }
+
+        }
+
+
+        if (coinflipJoinClose) {
+            coinflipJoinClose.addEventListener("click", closeJoinMatch);
+        }
+
+        if (coinflipJoinModalOverlay) {
+            coinflipJoinModalOverlay.addEventListener("click", closeJoinMatch);
+        }
+
+        if (coinflipJoinConfirm) {
+            coinflipJoinConfirm.addEventListener("click", async () => {
+                if (!joiningMatch) {
+                    return;
+                }
+
+                coinflipJoinConfirm.disabled = true;
+                coinflipJoinConfirm.textContent = "Flipping...";
+
+                try {
+                    const selectedPets = joinInventoryItems
+                        .filter((item) => Number(selectedJoinItems.get(String(item.id))) > 0)
+                        .map((item) => ({
+                            ...item,
+                            quantity: Number(selectedJoinItems.get(String(item.id))) || 1
+                        }));
+                    const items = selectedPets.map((item) => ({
+                            inventoryId: item.id,
+                            quantity: Number(selectedJoinItems.get(String(item.id))) || 1
+                    }));
+
+                    const response = await fetch(
+                        `/api/coinflip/${encodeURIComponent(joiningMatch.id)}/join`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ items })
+                        }
+                    );
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+                        throw new Error(
+                            data.error ||
+                            "Failed to settle match."
+                        );
+                    }
+
+                    /*
+                     * The server decides the real result.
+                     * The animation only displays that result.
+                     */
+                    const result = String(
+                        data.result || ""
+                    ).toLowerCase();
+
+                    const winner = Boolean(data.winner);
+
+                    const gameMatch = joiningMatch;
+
+                    closeJoinMatch();
+
+                    await playCoinflipAnimation(
+                        result,
+                        winner,
+                        gameMatch,
+                        selectedPets,
+                        data
+                    );
+
+                    await loadCoinflipMatches();
+
+                    if (window.AdoptMeInventory?.refresh) {
+                        await window.AdoptMeInventory.refresh();
+                    }
+
+                } catch (error) {
+                    showToast(error.message || "Failed to join the coinflip.", "error");
+
+                } finally {
+                    if (coinflipJoinConfirm) {
+                        coinflipJoinConfirm.textContent =
+                            "Join & Flip";
+                        updateJoinSummary();
+                    }
+                }
+            });
+        }
+
+        if (coinflipJoinSelectAll) {
+            coinflipJoinSelectAll.addEventListener("click", () => {
+                const allSelected = joinInventoryItems.length > 0 && joinInventoryItems.every((item) =>
+                    (Number(selectedJoinItems.get(String(item.id))) || 0) >= (Number(item.quantity) || 1)
+                );
+
+                selectedJoinItems = new Map();
+                if (!allSelected) {
+                    joinInventoryItems.forEach((item) => {
+                        selectedJoinItems.set(String(item.id), Number(item.quantity) || 1);
+                    });
+                }
+
+                renderJoinInventory();
+                updateJoinSummary();
+            });
+        }
+
+
+        /* ==========================================
+           COINFLIP ANIMATION
+        =========================================== */
+
+        function playCoinflipAnimation(result, winner, match, joinerPets, settlement = {}) {
+
+            return new Promise((resolve) => {
+
+                if (!coinflipGameModal || !coinflipGameDetails) {
+                    resolve();
+                    return;
+                }
+
+                const finalResult =
+                    result === "tails"
+                        ? "tails"
+                        : "heads";
+
+                const finalLabel =
+                    finalResult.toUpperCase();
+
+                const finalRotation =
+                    finalResult === "tails"
+                        ? "2700deg"
+                        : "2520deg";
+
+                const resultMessage = winner
+                    ? "YOU WON!"
+                    : "YOU LOST";
+
+                const creatorName =
+                    match?.creator_username ||
+                    match?.creator_display_name ||
+                    "Creator";
+
+                const creatorAvatar = match?.creator_avatar_url
+                    ? `<img src="${escapeAttribute(match.creator_avatar_url)}" alt="${escapeAttribute(creatorName)}">`
+                    : escapeHtml(creatorName.charAt(0).toUpperCase());
+
+                const joinerAvatar = currentViewer.avatar
+                    ? `<img src="${escapeAttribute(currentViewer.avatar)}" alt="${escapeAttribute(currentViewer.username)}">`
+                    : escapeHtml(currentViewer.username.charAt(0).toUpperCase());
+
+                const creatorWon = finalResult === String(match?.creator_choice || "heads").toLowerCase();
+                const winnerName = creatorWon ? creatorName : currentViewer.username;
+
+                const renderPet = (pet) => `
+                    <div class="coinflip-play-pet" title="${escapeAttribute(pet.name || "Pet")}">
+                        ${pet.image ? `<img src="${escapeAttribute(pet.image)}" alt="${escapeAttribute(pet.name || "Pet")}">` : "🐾"}
+                        ${Number(pet.quantity) > 1 ? `<em>×${Number(pet.quantity)}</em>` : ""}
+                    </div>
+                `;
+
+                const creatorPets = Array.isArray(match?.pets) ? match.pets : [];
+                const creatorValue = Number(match?.creator_value) || 0;
+                const joinerValue = (joinerPets || []).reduce(
+                    (total, pet) => total + (Number(pet.value) || 0) * (Number(pet.quantity) || 1),
+                    0
+                );
+                const totalPot = creatorValue + joinerValue;
+                const taxValue = Number(settlement.taxValue) || Math.floor(totalPot * 0.10);
+                const payoutValue = Number(settlement.payoutValue) || totalPot - taxValue;
+
+                coinflipGameDetails.innerHTML = `
+                    <div class="coinflip-animation-view">
+                        <div class="coinflip-play-header">
+                            <span>LIVE COINFLIP</span>
+                            <strong># ${escapeHtml(String(match?.id || "").slice(0, 13))}</strong>
+                        </div>
+
+                        <div class="coinflip-play-contenders">
+                            <div class="coinflip-play-player${creatorWon ? " potential-winner" : ""}">
+                                <div class="coinflip-play-avatar">${creatorAvatar}</div>
+                                <strong>${escapeHtml(creatorName)}</strong>
+                                <span>${escapeHtml(String(match?.creator_choice || "heads").toUpperCase())}</span>
+                            </div>
+
+                            <div class="coinflip-animation-stage">
+                            <div
+                                id="coinflipAnimationCoin"
+                                class="coinflip-animation-coin coinflip-result-pending"
+                                style="transform: rotateY(${finalResult === "tails" ? "180deg" : "0deg"});"
+                            >
+                                <div class="coinflip-animation-face coinflip-animation-heads">
+                                    <img
+                                        src="/images/coin-heads.png"
+                                        alt="Heads"
+                                    >
+                                </div>
+
+                                <div class="coinflip-animation-face coinflip-animation-tails">
+                                    <img
+                                        src="/images/coin-tails.png"
+                                        alt="Tails"
+                                    >
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="coinflip-play-player${!creatorWon ? " potential-winner" : ""}">
+                                <div class="coinflip-play-avatar">${joinerAvatar}</div>
+                                <strong>${escapeHtml(currentViewer.username)}</strong>
+                                <span>${escapeHtml(String(match?.creator_choice === "heads" ? "TAILS" : "HEADS"))}</span>
+                            </div>
+                        </div>
+
+                        <div class="coinflip-play-wagers">
+                            <div class="coinflip-play-wager${creatorWon ? " winner-wager" : ""}">
+                                <div>${creatorPets.slice(0, 4).map(renderPet).join("")}</div>
+                                <strong>💎 ${formatValue(creatorValue)}</strong>
+                            </div>
+                            <div class="coinflip-play-wager${!creatorWon ? " winner-wager" : ""}">
+                                <div>${(joinerPets || []).slice(0, 4).map(renderPet).join("")}</div>
+                                <strong>💎 ${formatValue(joinerValue)}</strong>
+                            </div>
+                        </div>
+
+                        <div
+                            class="coinflip-animation-status"
+                            id="coinflipAnimationStatus"
+                            aria-live="polite"
+                        >
+                            <span id="coinflipCountdownLabel">5</span>
+                        </div>
+
+                        <div
+                            class="coinflip-animation-result"
+                            id="coinflipAnimationResult"
+                        >
+                            <span class="coinflip-animation-result-side">
+                                ${finalLabel}
+                            </span>
+                            <strong>${resultMessage} · ${escapeHtml(winnerName)} wins</strong>
+                            <small>10% game tax: 💎 ${formatValue(taxValue)} · Payout value: 💎 ${formatValue(payoutValue)}</small>
+                        </div>
+                    </div>
+                `;
+
+                coinflipGameModal.classList.add("open");
+                coinflipGameModal.setAttribute("aria-hidden", "false");
+                document.body.classList.add("coinflip-game-modal-open");
+
+                const status =
+                    document.getElementById("coinflipAnimationStatus");
+
+                const resultBox =
+                    document.getElementById("coinflipAnimationResult");
+
+                let finished = false;
+
+                const finishAnimation = () => {
+                    if (finished) return;
+                    finished = true;
+                    if (status) {
+                        status.textContent = finalLabel;
+                    }
+
+                    if (resultBox) {
+                        resultBox.classList.add("show");
+                    }
+
+                    const coin = document.getElementById("coinflipAnimationCoin");
+                    if (coin) coin.classList.remove("coinflip-result-pending");
+
+                    const title =
+                        document.getElementById("coinflipGameTitle");
+
+                    if (title) {
+                        title.textContent =
+                            winner
+                                ? "You won the coinflip!"
+                                : "You lost the coinflip.";
+                    }
+
+                    resolve();
+                };
+
+                const countdownLabel = document.getElementById("coinflipCountdownLabel");
+
+                /* The outcome is settled first; the UI only reveals it after five seconds. */
+                let secondsRemaining = 5;
+                if (countdownLabel) countdownLabel.textContent = String(secondsRemaining);
+
+                const countdown = window.setInterval(() => {
+                    secondsRemaining -= 1;
+                    if (secondsRemaining > 0) {
+                        if (countdownLabel) countdownLabel.textContent = String(secondsRemaining);
+                        return;
+                    }
+
+                    window.clearInterval(countdown);
+                    if (countdownLabel) countdownLabel.textContent = finalLabel;
+                    finishAnimation();
+                }, 1000);
+            });
+        }
+
+
+        /* ==========================================
+           GAME VIEW
+        =========================================== */
+
+        function closeGameView() {
+
+            if (!coinflipGameModal) {
+                return;
+            }
+
+            coinflipGameModal.classList.remove("open");
+            coinflipGameModal.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("coinflip-game-modal-open");
+
+        }
+
+
+        function openGameView(matchId) {
+
+            const match = loadedCoinflipMatches.find(
+                (item) => String(item.id) === String(matchId)
+            );
+
+            if (!match || !coinflipGameModal || !coinflipGameDetails) {
+                return;
+            }
+
+            const creatorName =
+                match.creator_username ||
+                match.creator_display_name ||
+                "Player";
+
+            const choice = String(
+                match.creator_choice || "heads"
+            ).toLowerCase();
+
+            const wager = Number(match.creator_value) || 0;
+
+            const avatar = match.creator_avatar_url || "";
+
+            const pets = Array.isArray(match.pets)
+                ? match.pets
+                : [];
+
+            const petList = pets.length
+                ? pets.map((pet) => {
+                    const name = pet.name || "Wagered pet";
+                    const quantity = Math.max(1, Number(pet.quantity) || 1);
+                    const image = pet.image
+                        ? `<img src="${escapeAttribute(pet.image)}" alt="${escapeAttribute(name)}">`
+                        : "<span>🐾</span>";
+
+                    const form = String(pet.form || "normal");
+                    const traits = [
+                        `<span class="pet-trait pet-trait-${escapeAttribute(form)}">${escapeHtml(form)}</span>`,
+                        pet.fly ? "<span class=\"pet-trait\">Fly</span>" : "",
+                        pet.ride ? "<span class=\"pet-trait\">Ride</span>" : ""
+                    ].join("");
+
+                    return `
+                        <li class="coinflip-game-pet">
+                            <div class="coinflip-game-pet-image">${image}</div>
+                            <div>
+                                <strong>${escapeHtml(name)}</strong>
+                                <span>${quantity > 1 ? `Quantity ×${quantity} · ` : ""}💎 ${formatValue(pet.value)}</span>
+                                <div class="coinflip-game-pet-traits">${traits}</div>
+                            </div>
+                        </li>
+                    `;
+                }).join("")
+                : "<li class=\"coinflip-game-empty\">The wagered pets are unavailable.</li>";
+
+            const creatorAvatar = avatar
+                ? `<img src="${escapeAttribute(avatar)}" alt="${escapeAttribute(creatorName)}">`
+                : escapeHtml(creatorName.charAt(0).toUpperCase());
+
+            const createdAt = match.created_at
+                ? new Date(match.created_at).toLocaleString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })
+                : "Recently";
+
+            coinflipGameDetails.innerHTML = `
+                <span class="coinflip-game-kicker">OPEN COINFLIP</span>
+                <h2 id="coinflipGameTitle">Coinflip game</h2>
+                <div class="coinflip-game-versus">
+                    <div class="coinflip-game-contender">
+                        <div class="coinflip-game-avatar">${creatorAvatar}</div>
+                        <strong>${escapeHtml(creatorName)}</strong>
+                        <span>${escapeHtml(choice.charAt(0).toUpperCase() + choice.slice(1))}</span>
+                    </div>
+                    <span class="coinflip-game-vs">VS</span>
+                    <div class="coinflip-game-contender waiting">
+                        <div class="coinflip-game-avatar">?</div>
+                        <strong>Waiting..</strong>
+                        <span>${choice === "heads" ? "Tails" : "Heads"}</span>
+                    </div>
+                </div>
+                <div class="coinflip-game-id"># ${escapeHtml(String(match.id).slice(0, 18))}...</div>
+                <div class="coinflip-game-odds">
+                    <strong>100.00 % <span>💎 ${formatValue(wager)}</span></strong>
+                    <strong>0.00 % <span>💎 0</span></strong>
+                </div>
+                <div class="coinflip-game-pets-heading">
+                    <h3>💎 ${formatValue(wager)}</h3>
+                    <span>${pets.length} ${pets.length === 1 ? "pet" : "pets"}</span>
+                </div>
+                <div class="coinflip-game-wagers">
+                    <ul class="coinflip-game-pets">${petList}</ul>
+                    <div class="coinflip-game-opponent-wager">Waiting for the opponent to join...</div>
+                </div>
+                <div class="coinflip-game-footer">Created ${escapeHtml(createdAt)} <span>PROVABLY FAIR</span></div>
+            `;
+
+            coinflipGameModal.classList.add("open");
+            coinflipGameModal.setAttribute("aria-hidden", "false");
+            document.body.classList.add("coinflip-game-modal-open");
+
+        }
+
+
+        if (coinflipGameClose) {
+            coinflipGameClose.addEventListener("click", closeGameView);
+        }
+
+        if (coinflipGameModalOverlay) {
+            coinflipGameModalOverlay.addEventListener("click", closeGameView);
+        }
+
+        document.addEventListener(
+            "keydown",
+            (event) => {
+                if (event.key === "Escape") {
+                    closeGameView();
+                    closeJoinMatch();
+                }
+            }
+        );
+
+
+        /* ==========================================
+           INVENTORY BUTTON
+        =========================================== */
+
+        const openInventoryButton =
+            document.getElementById(
+                "openInventoryButton"
+            );
+
+
+        if (openInventoryButton) {
+
+            openInventoryButton.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        window.AdoptMeInventory &&
+                        typeof window.AdoptMeInventory.open ===
+                            "function"
+                    ) {
+
+                        window.AdoptMeInventory.open();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* ==========================================
+           TABS
+        =========================================== */
+
+        const openMatchesTab =
+            document.getElementById(
+                "openMatchesTab"
+            );
+
+        const myMatchesTab =
+            document.getElementById(
+                "myMatchesTab"
+            );
+
+
+        if (openMatchesTab) {
+
+            openMatchesTab.addEventListener(
+                "click",
+                () => {
+
+                    openMatchesTab.classList.add(
+                        "active"
+                    );
+
+                    if (myMatchesTab) {
+
+                        myMatchesTab.classList.remove(
+                            "active"
+                        );
+
+                    }
+
+                    loadCoinflipMatches();
+
+                }
+            );
+
+        }
+
+
+        if (myMatchesTab) {
+
+            myMatchesTab.addEventListener(
+                "click",
+                () => {
+
+                    myMatchesTab.classList.add(
+                        "active"
+                    );
+
+                    if (openMatchesTab) {
+
+                        openMatchesTab.classList.remove(
+                            "active"
+                        );
+
+                    }
+
+                    /*
+                        My Matches functionality will be
+                        added when match history is built.
+                    */
+
+                    loadCoinflipMatches();
+
+                }
+            );
+
+        }
+
+
+        /* ==========================================
+           SORT
+        =========================================== */
+
+        const sortMatchesButton =
+            document.getElementById(
+                "sortMatchesButton"
+            );
+
+
+        let newestFirst = true;
+
+
+        if (sortMatchesButton) {
+
+            sortMatchesButton.addEventListener(
+                "click",
+                () => {
+
+                    newestFirst =
+                        !newestFirst;
+
+                    sortMatchesButton.innerHTML =
+                        `
+                            <span>
+                                ↕
+                            </span>
+                            ${newestFirst ? "Newest" : "Oldest"}
+                        `;
+
+                    loadCoinflipMatches();
+
+                }
+            );
+
+        }
+
+
+        /* ==========================================
+           INITIAL LOAD
+        =========================================== */
+
+        loadCoinflipMatches();
+
+        loadCoinflipInventory();
+
+
+        /* ==========================================
+           REFRESH OPEN MATCHES
+        =========================================== */
+
+        setInterval(
+            loadCoinflipMatches,
+            5000
+        );
+
+    </script>
+
+</body>
+
+</html>

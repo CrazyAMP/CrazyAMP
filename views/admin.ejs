@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrazyAMP · Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <main class="admin-page">
+        <header class="admin-header">
+            <div><span>OWNER TOOLS</span><h1>Admin panel</h1><p>Manage the pet catalogue and player inventories.</p></div>
+            <a href="/">← Back to Coinflip</a>
+        </header>
+        <p class="admin-notice" id="adminNotice" role="status"></p>
+
+        <section class="admin-grid">
+            <% if (isSuperOwner) { %>
+            <article class="admin-card admin-whitelist">
+                <h2>Admin whitelist</h2>
+                <p class="admin-help">Whitelisted players can access this panel and manage pets. Only you can change this list.</p>
+                <label>Player <input id="adminSearch" placeholder="Search Roblox username"></label>
+                <div class="admin-results" id="adminResults"></div>
+                <div class="admin-whitelist-list" id="adminWhitelist"></div>
+            </article>
+            <% } %>
+            <article class="admin-card">
+                <h2>Inventory manager</h2>
+                <label>Player <input id="userSearch" placeholder="Search Roblox username"></label>
+                <div class="admin-results" id="userResults"></div>
+                <label>Pet <select id="inventoryPet"></select></label>
+                <label>Quantity <input id="inventoryQuantity" type="number" min="1" max="999" value="1"></label>
+                <div class="admin-actions"><button id="grantPet">Add pet</button><button class="danger" id="removePet">Remove pet</button></div>
+            </article>
+
+            <article class="admin-card">
+                <h2>Add a pet</h2>
+                <label>Name <input id="petName" placeholder="e.g. Frost Dragon"></label>
+                <label>Value <input id="petValue" type="number" min="0" placeholder="0"></label>
+                <label>Image URL <input id="petImage" type="url" placeholder="https://..."></label>
+                <label>Form <select id="petForm"><option value="normal">Normal</option><option value="neon">Neon</option><option value="mega">Mega</option></select></label>
+                <div class="admin-checks"><label><input id="petFly" type="checkbox"> Fly</label><label><input id="petRide" type="checkbox"> Ride</label></div>
+                <button id="createPet">Add to database</button>
+            </article>
+        </section>
+
+        <section class="admin-card admin-catalogue">
+            <div class="catalogue-header"><div><h2>Pet database</h2><p id="petCount">Loading pets…</p></div><input id="petSearch" placeholder="Filter pets"></div>
+            <div class="admin-pets" id="petList"></div>
+        </section>
+    </main>
+
+    <script>
+        const state = { pets: [], selectedUser: null };
+        const byId = (id) => document.getElementById(id);
+        const escapeHtml = (value) => String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+        const request = async (url, options = {}) => {
+            const response = await fetch(url, { headers: { "Content-Type": "application/json" }, ...options });
+            const data = await response.json();
+            if (!response.ok || !data.success) throw new Error(data.message || "Request failed.");
+            return data;
+        };
+        function notice(message, error = false) { const element = byId("adminNotice"); element.textContent = message; element.classList.toggle("error", error); }
+        function renderPets() {
+            const query = byId("petSearch").value.trim().toLowerCase();
+            const pets = state.pets.filter((pet) => pet.name.toLowerCase().includes(query));
+            const selectedPetId = byId("inventoryPet").value;
+            byId("petCount").textContent = `${state.pets.length} pets in database`;
+            byId("inventoryPet").innerHTML = `<option value="">Choose a pet</option>${state.pets.map((pet) => `<option value="${pet.id}"${String(pet.id) === String(selectedPetId) ? " selected" : ""}>${escapeHtml(pet.name)} · 💎 ${Number(pet.value).toLocaleString()}</option>`).join("")}`;
+            byId("petList").innerHTML = pets.length ? pets.map((pet) => `<article class="admin-pet"><div class="admin-pet-image">${pet.image ? `<img src="${escapeHtml(pet.image)}" alt="">` : "🐾"}</div><div><strong>${escapeHtml(pet.name)}</strong><span>${escapeHtml(pet.form)}${pet.fly ? " · Fly" : ""}${pet.ride ? " · Ride" : ""}</span><b>💎 ${Number(pet.value).toLocaleString()}</b></div><button class="danger delete-pet" data-id="${pet.id}" data-name="${escapeHtml(pet.name)}">Delete</button></article>`).join("") : "<p class=\"admin-empty\">No pets match that search.</p>";
+            document.querySelectorAll(".delete-pet").forEach((button) => button.onclick = async () => {
+                if (!confirm(`Delete ${button.dataset.name} from the pet database?`)) return;
+                try { await request(`/api/admin/pets/${button.dataset.id}`, { method: "DELETE" }); notice("Pet deleted."); await loadPets(); } catch (error) { notice(error.message, true); }
+            });
+        }
+        async function loadPets() { try { state.pets = (await request("/api/admin/pets")).pets; renderPets(); } catch (error) { notice(error.message, true); } }
+        async function searchUsers() {
+            const query = byId("userSearch").value.trim();
+            try {
+                const users = (await request(`/api/admin/users?query=${encodeURIComponent(query)}`)).users;
+                byId("userResults").innerHTML = users.map((user) => `<button class="admin-user" data-id="${user.id}" data-name="${escapeHtml(user.roblox_username)}">${user.avatar_url ? `<img src="${escapeHtml(user.avatar_url)}" alt="">` : ""}<span>${escapeHtml(user.roblox_username)}<small>${escapeHtml(user.roblox_display_name || "")}</small></span></button>`).join("") || "<p class=\"admin-empty\">No players found.</p>";
+                document.querySelectorAll(".admin-user").forEach((button) => button.onclick = () => { state.selectedUser = { id: button.dataset.id, name: button.dataset.name }; byId("userSearch").value = state.selectedUser.name; byId("userResults").innerHTML = ""; notice(`Selected ${state.selectedUser.name}.`); });
+            } catch (error) { notice(error.message, true); }
+        }
+        function inventoryPayload() { return { userId: state.selectedUser?.id, petId: byId("inventoryPet").value, quantity: Number(byId("inventoryQuantity").value) }; }
+        byId("userSearch").addEventListener("input", searchUsers);
+        byId("petSearch").addEventListener("input", renderPets);
+        byId("grantPet").onclick = async () => { try { const data = inventoryPayload(); if (!data.userId) throw new Error("Select a player first."); await request("/api/admin/inventory", { method: "POST", body: JSON.stringify(data) }); notice("Pet added to inventory."); } catch (error) { notice(error.message, true); } };
+        byId("removePet").onclick = async () => { try { const data = inventoryPayload(); if (!data.userId) throw new Error("Select a player first."); await request("/api/admin/inventory", { method: "DELETE", body: JSON.stringify(data) }); notice("Pet removed from inventory."); } catch (error) { notice(error.message, true); } };
+        byId("createPet").onclick = async () => { try { await request("/api/admin/pets", { method: "POST", body: JSON.stringify({ name: byId("petName").value, value: byId("petValue").value, image: byId("petImage").value, form: byId("petForm").value, fly: byId("petFly").checked, ride: byId("petRide").checked }) }); notice("Pet added to the database."); ["petName","petValue","petImage"].forEach((id) => byId(id).value = ""); byId("petFly").checked = byId("petRide").checked = false; await loadPets(); } catch (error) { notice(error.message, true); } };
+
+        <% if (isSuperOwner) { %>
+        async function loadWhitelist() {
+            try {
+                const admins = (await request("/api/admin/whitelist")).admins;
+                byId("adminWhitelist").innerHTML = admins.length ? admins.map((admin) => `<div class="admin-whitelist-user">${admin.avatar_url ? `<img src="${escapeHtml(admin.avatar_url)}" alt="">` : ""}<span>${escapeHtml(admin.roblox_username)}<small>${escapeHtml(admin.roblox_display_name || "")}</small></span><button class="danger remove-admin" data-id="${admin.user_id}">Remove</button></div>`).join("") : "<p class=\"admin-empty\">No additional admins yet.</p>";
+                document.querySelectorAll(".remove-admin").forEach((button) => button.onclick = async () => { if (!confirm("Remove this admin?")) return; try { await request(`/api/admin/whitelist/${button.dataset.id}`, { method: "DELETE" }); notice("Admin removed."); loadWhitelist(); } catch (error) { notice(error.message, true); } });
+            } catch (error) { notice(error.message, true); }
+        }
+        async function searchAdmins() {
+            const query = byId("adminSearch").value.trim();
+            try {
+                const users = (await request(`/api/admin/users?query=${encodeURIComponent(query)}`)).users;
+                byId("adminResults").innerHTML = users.map((user) => `<button class="admin-user add-admin" data-id="${user.id}" data-name="${escapeHtml(user.roblox_username)}">${user.avatar_url ? `<img src="${escapeHtml(user.avatar_url)}" alt="">` : ""}<span>${escapeHtml(user.roblox_username)}<small>${escapeHtml(user.roblox_display_name || "")}</small></span><b>Whitelist</b></button>`).join("") || "<p class=\"admin-empty\">No players found.</p>";
+                document.querySelectorAll(".add-admin").forEach((button) => button.onclick = async () => { try { const result = await request("/api/admin/whitelist", { method: "POST", body: JSON.stringify({ userId: button.dataset.id }) }); notice(result.message || `${button.dataset.name} is now an admin.`); byId("adminResults").innerHTML = ""; loadWhitelist(); } catch (error) { notice(error.message, true); } });
+            } catch (error) { notice(error.message, true); }
+        }
+        byId("adminSearch").addEventListener("input", searchAdmins);
+        loadWhitelist();
+        <% } %>
+        loadPets();
+    </script>
+</body>
+</html>

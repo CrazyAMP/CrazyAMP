@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Adopt Me</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+
+<body>
+
+    <div class="background-glow"></div>
+
+    <main class="login-page">
+
+        <div class="login-card">
+
+            <div class="logo">
+                Crazy<span>AMP</span>
+            </div>
+
+            <h1>Welcome back</h1>
+
+            <p class="subtitle">
+                Login with your Roblox account to continue.
+            </p>
+
+            <form id="loginForm">
+
+                <div class="input-group">
+                    <label for="username">
+                        Roblox Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter your Roblox username"
+                        autocomplete="off"
+                        required
+                    >
+                </div>
+
+                <button type="submit" id="continueButton">
+                    Continue
+                </button>
+
+            </form>
+
+            <div id="message"></div>
+
+            <div class="login-footer">
+                <span>🔒</span>
+                Your Roblox account is never given to us.
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="/js/login.js"></script>
+
+</body>
+</html>
