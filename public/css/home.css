@@ -5358,3 +5358,264 @@ body.coinflip-game-modal-open {
         height: 64px;
     }
 }
+
+/* =========================================================
+   FINAL COINFLIP RESPONSIVE STABILIZATION
+   Overrides legacy layout rules from previous QoL updates.
+   ========================================================= */
+
+.coinflip-page,
+.coinflip-page * {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.coinflip-page {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    min-width: 0;
+}
+
+.coinflip-header,
+.coinflip-stats,
+.matches-toolbar,
+.coinflip-match-card,
+.coinflip-modal-header,
+.coinflip-modal-footer,
+.coinflip-join-heading,
+.coinflip-join-footer {
+    min-width: 0;
+}
+
+.coinflip-match-card {
+    display: grid !important;
+    grid-template-columns: minmax(190px, 1.1fr) minmax(150px, 1fr) auto !important;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 96px !important;
+    height: auto !important;
+    padding: 14px 16px !important;
+}
+
+.coinflip-match-duel {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.coinflip-match-contender,
+.coinflip-match-wager,
+.coinflip-match-actions {
+    min-width: 0;
+}
+
+.coinflip-match-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.coinflip-join-match-button,
+.coinflip-cancel-match-button,
+.coinflip-view-match-button {
+    width: auto;
+    min-width: 104px;
+    min-height: 36px;
+    height: auto;
+    padding: 9px 13px;
+    white-space: normal;
+}
+
+.coinflip-wager-pets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.coinflip-modal {
+    width: 100%;
+    height: 100%;
+    padding: clamp(10px, 3vw, 28px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.coinflip-modal-panel,
+.coinflip-game-panel {
+    width: min(100%, 920px);
+    max-width: 100%;
+    min-width: 0;
+    max-height: calc(100dvh - 24px);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.coinflip-inventory-grid {
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(min(132px, 100%), 1fr));
+    padding-inline: clamp(12px, 3vw, 25px);
+}
+
+.coinflip-inventory-item,
+.coinflip-join-pet {
+    width: 100%;
+    min-width: 0;
+}
+
+.coinflip-join-inventory {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(132px, 100%), 1fr));
+    gap: 10px;
+    overflow-x: hidden;
+}
+
+.coinflip-join-pet {
+    min-width: 0 !important;
+}
+
+@media (max-width: 900px) {
+    .coinflip-match-card {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        gap: 12px;
+    }
+
+    .coinflip-match-duel {
+        grid-column: 1 / -1;
+    }
+
+    .coinflip-match-actions {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 600px) {
+    .coinflip-page {
+        padding-inline: 12px !important;
+    }
+
+    .coinflip-heading h1 {
+        font-size: clamp(24px, 8vw, 32px) !important;
+        line-height: 1.1;
+    }
+
+    .coinflip-stats {
+        grid-template-columns: 1fr !important;
+    }
+
+    .matches-toolbar {
+        width: 100%;
+    }
+
+    .matches-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+    .match-tab,
+    .sort-button {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .coinflip-match-card {
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+        padding: 14px !important;
+    }
+
+    .coinflip-match-duel,
+    .coinflip-match-wager,
+    .coinflip-match-actions {
+        grid-column: 1;
+        width: 100%;
+    }
+
+    .coinflip-match-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .coinflip-join-match-button,
+    .coinflip-cancel-match-button,
+    .coinflip-view-match-button {
+        width: 100%;
+        min-width: 0;
+        min-height: 40px;
+    }
+
+    .coinflip-modal {
+        padding: 8px;
+        align-items: flex-start;
+    }
+
+    .coinflip-modal-panel,
+    .coinflip-game-panel {
+        width: 100%;
+        max-height: calc(100dvh - 16px);
+        border-radius: 14px;
+    }
+
+    .coinflip-side-options {
+        grid-template-columns: 1fr !important;
+    }
+
+    .coinflip-wager-summary {
+        grid-template-columns: 1fr 1fr !important;
+    }
+
+    .coinflip-inventory-grid,
+    .coinflip-join-inventory {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        padding-inline: 12px;
+    }
+
+    .coinflip-inventory-item,
+    .coinflip-join-pet {
+        min-height: 140px !important;
+    }
+
+    .coinflip-item-image,
+    .coinflip-join-pet-image,
+    .coinflip-join-pet-image img {
+        width: 64px !important;
+        height: 64px !important;
+    }
+
+    .coinflip-modal-footer,
+    .coinflip-join-footer {
+        gap: 10px;
+    }
+
+    .coinflip-footer-actions,
+    .coinflip-join-footer button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    .coinflip-inventory-grid,
+    .coinflip-join-inventory {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+
+    .coinflip-item-name,
+    .coinflip-item-value,
+    .coinflip-join-pet-value {
+        font-size: 9px !important;
+    }
+}
