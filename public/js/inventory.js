@@ -67,6 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const withdrawTotalValue =
         document.getElementById("withdrawTotalValue");
 
+    const withdrawConfirmButton =
+        document.getElementById("withdrawConfirmButton");
+
     const depositContinueButton =
         document.getElementById("depositContinueButton");
 
@@ -1648,6 +1651,65 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ======================================
+    // SUBMIT WITHDRAWAL
+    // ======================================
+
+    async function confirmWithdrawal() {
+        if (selectedItems.size === 0 || !withdrawConfirmButton) {
+            return;
+        }
+
+        const originalText = withdrawConfirmButton.textContent;
+        withdrawConfirmButton.disabled = true;
+        withdrawConfirmButton.textContent = "Submitting...";
+
+        try {
+            const response = await fetch("/api/inventory/withdraw", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({
+                    items: Array.from(selectedItems.values()).map(item => ({
+                        inventoryId: item.id,
+                        quantity: Number(item.quantity) || 1
+                    }))
+                })
+            });
+
+            const responseText = await response.text();
+            let data;
+
+            try {
+                data = JSON.parse(responseText);
+            } catch (_) {
+                throw new Error(`Withdrawal request failed (${response.status})`);
+            }
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || "Failed to submit withdrawal.");
+            }
+
+            closeWithdraw();
+            selectedItems.clear();
+            await loadInventory();
+            updateSelectionUI();
+
+            window.alert(
+                `Withdrawal submitted!\nRequest ID: ${data.withdrawal?.id || "pending"}`
+            );
+        } catch (error) {
+            console.error("Withdrawal error:", error);
+            window.alert(error.message || "Failed to submit withdrawal.");
+        } finally {
+            withdrawConfirmButton.disabled = false;
+            withdrawConfirmButton.textContent = originalText;
+        }
+    }
+
+
+    // ======================================
     // OPEN WITHDRAW
     // ======================================
 
@@ -1779,6 +1841,16 @@ document.addEventListener("DOMContentLoaded", () => {
         withdrawButton.addEventListener(
             "click",
             openWithdraw
+        );
+
+    }
+
+
+    if (withdrawConfirmButton) {
+
+        withdrawConfirmButton.addEventListener(
+            "click",
+            confirmWithdrawal
         );
 
     }
