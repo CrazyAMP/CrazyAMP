@@ -392,7 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         inventoryItems.innerHTML =
-            inventory.map(item => {
+            inventory.flatMap(item => Array.from({ length: Math.max(1, Number(item.quantity) || 1) }, (_, unitIndex) => {
 
                 // ==================================
                 // FORM
@@ -461,7 +461,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // ==================================
 
                 const quantity =
-                    Number(item.quantity) || 0;
+                    1;
 
 
                 const value =
@@ -469,8 +469,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 const totalValue =
-                    Number(item.totalValue) ||
-                    value * quantity;
+                    value;
 
 
                 // ==================================
@@ -527,12 +526,14 @@ document.addEventListener("DOMContentLoaded", () => {
                             ${isSelected ? "selected" : ""}
                         "
                         data-item-id="${escapeHtml(item.id)}"
+                        data-unit-index="${unitIndex}"
                     >
 
                         <button
                             type="button"
                             class="inventory-item-select"
                             data-select-item="${escapeHtml(item.id)}"
+                            data-unit-index="${unitIndex}"
                             aria-label="Select ${escapeHtml(item.name)}"
                         >
 
@@ -597,7 +598,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 `;
 
-            }).join("");
+            })).join("");
 
 
         // ======================================
