@@ -8,6 +8,89 @@ const router = express.Router();
 
 const TAX_RATE = 10;
 
+/*
+ * Select whole pets whose combined value is as close as possible to
+ * the 10% tax target without exceeding it. A match with two or fewer
+ * total pets is not tax-eligible by design.
+ */
+function selectTaxedWagers(wagers, totalValue) {
+    const totalPetCount = wagers.reduce(
+        (sum, wager) => sum + Number(wager.quantity || 0),
+        0
+    );
+
+    if (totalPetCount <= 2) {
+        return {
+            taxValue: 0,
+            taxedQuantities: new Map()
+        };
+    }
+
+    const target = Math.floor(
+        Number(totalValue) * TAX_RATE / 100
+    );
+
+    if (target <= 0) {
+        return {
+            taxValue: 0,
+            taxedQuantities: new Map()
+        };
+    }
+
+    /*
+     * Bounded subset-sum over individual pet units. Each state stores
+     * the selected quantity for each match-item row. We only retain
+     * sums at or below the target, ensuring the tax never exceeds 10%.
+     */
+    let states = new Map();
+    states.set(0, new Map());
+
+    for (const wager of wagers) {
+        const value = Number(wager.value_per_item || 0);
+        const quantity = Number(wager.quantity || 0);
+
+        if (!Number.isInteger(quantity) || quantity <= 0 || value <= 0) {
+            continue;
+        }
+
+        for (let unit = 0; unit < quantity; unit += 1) {
+            const nextStates = new Map(states);
+
+            for (const [sum, quantities] of states.entries()) {
+                const nextSum = sum + value;
+
+                if (nextSum > target || nextStates.has(nextSum)) {
+                    continue;
+                }
+
+                const nextQuantities = new Map(quantities);
+                const rowId = String(wager.id);
+                nextQuantities.set(
+                    rowId,
+                    (nextQuantities.get(rowId) || 0) + 1
+                );
+
+                nextStates.set(nextSum, nextQuantities);
+            }
+
+            states = nextStates;
+        }
+    }
+
+    let bestSum = 0;
+
+    for (const sum of states.keys()) {
+        if (sum > bestSum && sum <= target) {
+            bestSum = sum;
+        }
+    }
+
+    return {
+        taxValue: bestSum,
+        taxedQuantities: states.get(bestSum) || new Map()
+    };
+}
+
 function requireLogin(req, res, next) {
     const userId =
         req.session?.userId ||
@@ -331,16 +414,13 @@ router.post("/create", async (req, res) => {
         const estimatedTotalValue =
             creatorValue;
 
-        const estimatedTaxValue =
-            Math.floor(
-                estimatedTotalValue *
-                TAX_RATE /
-                100
-            );
-
-        const estimatedPayoutValue =
-            estimatedTotalValue -
-            estimatedTaxValue;
+        /*
+         * Tax is calculated only after both sides join because the
+         * final pot and the complete pet list are required. Do not
+         * display a creator-only tax estimate for open matches.
+         */
+        const estimatedTaxValue = 0;
+        const estimatedPayoutValue = estimatedTotalValue;
 
         const matchId = uuidv4();
 
@@ -792,26 +872,69 @@ router.post("/:matchId/join", async (req, res) => {
         /*
          * Get every wager in this match.
          */
+        const totalValue =
+            Number(match.creator_value) +
+            joinerValue;
+
         const allWagersResult =
             await client.query(
                 `
                 SELECT
+                    id,
                     inventory_id,
                     item_id,
                     user_id,
-                    quantity
+                    quantity,
+                    value_per_item,
+                    total_value,
+                    it.name AS item_name,
+                    it.form,
+                    it.fly,
+                    it.ride
 
-                FROM coinflip_match_items
+                FROM coinflip_match_items cmi
+                INNER JOIN items it
+                    ON it.id = cmi.item_id
 
-                WHERE match_id = $1
+                WHERE cmi.match_id = $1
 
                 FOR UPDATE
                 `,
                 [matchId]
             );
 
+        const { taxValue, taxedQuantities } =
+            selectTaxedWagers(allWagersResult.rows, totalValue);
+
+        const taxedPets = allWagersResult.rows
+            .map(wager => {
+                const taxedQuantity = Math.min(
+                    Number(wager.quantity || 0),
+                    Number(taxedQuantities.get(String(wager.id)) || 0)
+                );
+
+                if (taxedQuantity <= 0) return null;
+
+                const traits = [
+                    wager.form && wager.form !== "normal" ? wager.form : null,
+                    wager.fly && wager.ride ? "FR" : wager.fly ? "F" : wager.ride ? "R" : null
+                ].filter(Boolean).join(" · ");
+
+                return {
+                    name: wager.item_name || "Unknown pet",
+                    traits,
+                    quantity: taxedQuantity,
+                    value: Number(wager.value_per_item || 0) * taxedQuantity,
+                    userId: wager.user_id
+                };
+            })
+            .filter(Boolean);
+
         /*
          * SETTLE ALL WAGERS
+         *
+         * Taxed whole pets are removed from the pot and are not
+         * credited to the winner. All remaining pets go to the winner.
          *
          * Important:
          * inventory.quantity must remain positive.
@@ -948,9 +1071,21 @@ router.post("/:matchId/join", async (req, res) => {
                 );
             }
 
+            const taxedQuantity = Math.min(
+                quantity,
+                Number(taxedQuantities.get(String(wageredItem.id)) || 0)
+            );
+
+            const winnerQuantity = quantity - taxedQuantity;
+
             /*
-             * Credit the exact wagered item to the winner.
+             * Credit only the non-taxed portion of the wagered item
+             * to the winner. Taxed pets are intentionally removed.
              */
+            if (winnerQuantity <= 0) {
+                continue;
+            }
+
             const winnerItem =
                 await client.query(
                     `
@@ -983,7 +1118,7 @@ router.post("/:matchId/join", async (req, res) => {
                     WHERE id = $2
                     `,
                     [
-                        quantity,
+                        winnerQuantity,
                         winnerItem.rows[0].id
                     ]
                 );
@@ -1011,27 +1146,16 @@ router.post("/:matchId/join", async (req, res) => {
                         uuidv4(),
                         winnerId,
                         wageredItem.item_id,
-                        quantity
+                        winnerQuantity
                     ]
                 );
             }
         }
 
         /*
-         * Calculate final match values.
+         * Final values were calculated before settlement so the
+         * selected whole-pet tax can be applied consistently.
          */
-        const totalValue =
-            Number(match.creator_value) +
-            joinerValue;
-
-        const taxValue =
-            Math.floor(
-                totalValue *
-                Number(
-                    match.tax_rate || TAX_RATE
-                ) /
-                100
-            );
 
         /*
          * Mark the match as completed.
@@ -1070,6 +1194,49 @@ router.post("/:matchId/join", async (req, res) => {
         );
 
         await client.query("COMMIT");
+
+        const taxWebhookUrl = String(process.env.DISCORD_TAX_WEBHOOK_URL || "").trim();
+        if (taxWebhookUrl && taxedPets.length > 0) {
+            const taxLines = taxedPets.map(pet =>
+                `• ${pet.name}${pet.traits ? ` (${pet.traits})` : ""} ×${pet.quantity} — 💎 ${pet.value.toLocaleString("en-US")} — User: ${pet.userId}`
+            ).join("\n");
+
+            try {
+                const webhookResponse = await fetch(`${taxWebhookUrl}${taxWebhookUrl.includes("?") ? "&" : "?"}wait=true`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        username: "CrazyAMP Tax",
+                        embeds: [{
+                            title: "🧾 Coinflip Tax Collected",
+                            color: 0xf59e0b,
+                            fields: [
+                                { name: "Match ID", value: String(matchId), inline: false },
+                                { name: "Total Pot", value: `💎 ${totalValue.toLocaleString("en-US")}`, inline: true },
+                                { name: "Tax Target", value: "10%", inline: true },
+                                { name: "Actual Tax", value: `💎 ${taxValue.toLocaleString("en-US")}`, inline: true },
+                                { name: "Taxed Pets", value: taxLines.slice(0, 1024) || "None", inline: false },
+                                { name: "Winner ID", value: String(winnerId), inline: false }
+                            ],
+                            timestamp: new Date().toISOString(),
+                            footer: { text: "CrazyAMP coinflip tax system" }
+                        }],
+                        allowed_mentions: { parse: [] }
+                    })
+                });
+
+                const webhookResponseBody = await webhookResponse.text();
+                if (!webhookResponse.ok) {
+                    console.error("Discord tax webhook failed:", webhookResponse.status, webhookResponseBody);
+                } else {
+                    console.log("Discord tax webhook sent successfully:", webhookResponse.status);
+                }
+            } catch (webhookError) {
+                console.error("Discord tax webhook error:", webhookError.message);
+            }
+        } else if (!taxWebhookUrl && taxedPets.length > 0) {
+            console.error("DISCORD_TAX_WEBHOOK_URL is not configured. Add it to Railway Variables and redeploy.");
+        }
 
         /*
          * Return the actual server-side result

@@ -879,7 +879,7 @@
             <div class="coinflip-join-footer">
                 <div class="coinflip-join-totals">
                     <div><span>Your wager</span><strong id="coinflipJoinValue">💎 0</strong></div>
-                    <div><span>Winner receives after 10% tax</span><strong id="coinflipJoinPayout">💎 0</strong></div>
+                    <div><span>Estimated winner payout (up to 10% tax)</span><strong id="coinflipJoinPayout">💎 0</strong></div>
                 </div>
                 <button type="button" class="coinflip-join-match-button" id="coinflipJoinConfirm" disabled>Join & Flip</button>
             </div>
@@ -3019,8 +3019,12 @@
                     0
                 );
                 const totalPot = creatorValue + joinerValue;
-                const taxValue = Number(settlement.taxValue) || Math.floor(totalPot * 0.10);
-                const payoutValue = Number(settlement.payoutValue) || totalPot - taxValue;
+                const taxValue = settlement.taxValue === undefined || settlement.taxValue === null
+                    ? 0
+                    : Number(settlement.taxValue) || 0;
+                const payoutValue = settlement.payoutValue === undefined || settlement.payoutValue === null
+                    ? totalPot - taxValue
+                    : Number(settlement.payoutValue) || 0;
 
                 coinflipGameDetails.innerHTML = `
                     <div class="coinflip-animation-view">
@@ -3092,7 +3096,7 @@
                                 ${finalLabel}
                             </span>
                             <strong>${resultMessage} · ${escapeHtml(winnerName)} wins</strong>
-                            <small>10% game tax: 💎 ${formatValue(taxValue)} · Payout value: 💎 ${formatValue(payoutValue)}</small>
+                            <small>Up to 10% game tax: 💎 ${formatValue(taxValue)} · Payout value: 💎 ${formatValue(payoutValue)}</small>
                         </div>
                     </div>
                 `;
