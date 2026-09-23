@@ -643,3 +643,41 @@
         transform: translateY(0) scale(1);
     }
 }
+/* =========================================================
+   MOBILE LOGIN QUALITY OF LIFE
+   ========================================================= */
+
+@media (max-width: 600px) {
+    .login-page {
+        min-height: 100dvh;
+        padding: 18px 12px;
+    }
+
+    .login-card,
+    .verification-card {
+        width: 100%;
+        max-width: 100%;
+        padding: 22px 17px;
+        border-radius: 18px;
+    }
+
+    .logo {
+        font-size: 27px;
+    }
+
+    .subtitle {
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .profile-button,
+    .verify-button {
+        min-height: 48px;
+        border-radius: 11px;
+    }
+
+    .code-box {
+        font-size: 20px;
+        letter-spacing: .18em;
+    }
+}
