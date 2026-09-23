@@ -658,14 +658,55 @@
                     </select>
                 </label>
             </div>
+            <!-- INVENTORY HEADER -->
+
+            <div class="coinflip-inventory-header">
+
+                <div>
+
+                    <h3>
+                        Select your pets
+                    </h3>
+
+                    <p>
+                        Only deposited pets can be used in a match.
+                    </p>
+
+                </div>
 
 
+                <button
+                    type="button"
+                    class="coinflip-select-all"
+                    id="coinflipSelectAll"
+                >
+                    Select All
+                </button>
+
+            </div>
+
+
+            <!-- INVENTORY -->
+
+            <div
+                class="coinflip-inventory-grid"
+                id="coinflipInventory"
+            >
+
+                <div class="coinflip-inventory-loading">
+
+                    <div class="coinflip-loading-spinner"></div>
+
+                    Loading inventory...
+
+                </div>
+
+            </div>
             <div class="coinflip-max-pets-setting">
                 <label for="coinflipMaxJoinPets">Maximum pets the joiner can use</label>
                 <input type="number" id="coinflipMaxJoinPets" min="1" max="100" value="3" inputmode="numeric">
                 <small>Example: 3 means the opponent can join with up to 3 pets total.</small>
             </div>
-
             <!-- SIDE SELECTION -->
 
             <div
@@ -748,15 +789,11 @@
                 </div>
 
             </div>
-
-
             <div class="coinflip-inventory-overview">
                 <div><span>Selected:</span> <strong id="coinflipToolbarSelectedValue">💎 0</strong></div>
                 <div><span>Inventory value:</span> <strong id="coinflipToolbarInventoryValue">💎 0</strong></div>
                 <div><span>Items:</span> <strong id="coinflipToolbarInventoryCount">0</strong></div>
             </div>
-
-
             <!-- WAGER SUMMARY -->
 
             <div class="coinflip-wager-summary">
@@ -796,52 +833,6 @@
                     <strong id="coinflipJoinRange">
                         💎 0 - 💎 0
                     </strong>
-
-                </div>
-
-            </div>
-
-
-            <!-- INVENTORY HEADER -->
-
-            <div class="coinflip-inventory-header">
-
-                <div>
-
-                    <h3>
-                        Select your pets
-                    </h3>
-
-                    <p>
-                        Only deposited pets can be used in a match.
-                    </p>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="coinflip-select-all"
-                    id="coinflipSelectAll"
-                >
-                    Select All
-                </button>
-
-            </div>
-
-
-            <!-- INVENTORY -->
-
-            <div
-                class="coinflip-inventory-grid"
-                id="coinflipInventory"
-            >
-
-                <div class="coinflip-inventory-loading">
-
-                    <div class="coinflip-loading-spinner"></div>
-
-                    Loading inventory...
 
                 </div>
 

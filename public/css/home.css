@@ -6441,3 +6441,99 @@ body {
         gap: 6px;
     }
 }
+
+
+/* ==========================================
+   COINFLIP FLOW / MOBILE-FIRST ORDER FIX
+   Inventory comes first; configuration follows.
+========================================== */
+.coinflip-modal-panel {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+.coinflip-inventory-grid {
+    flex: 0 0 auto;
+    min-height: 180px;
+    max-height: 360px;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.coinflip-max-pets-setting,
+.coinflip-side-section,
+.coinflip-inventory-overview,
+.coinflip-wager-summary {
+    flex-shrink: 0;
+}
+
+@media (max-width: 700px) {
+    .coinflip-modal {
+        align-items: flex-start;
+        padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom));
+        overflow: hidden;
+    }
+
+    .coinflip-modal-panel {
+        width: 100%;
+        max-width: 100%;
+        max-height: calc(100dvh - max(16px, env(safe-area-inset-top) + env(safe-area-inset-bottom)));
+        border-radius: 18px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+
+    .coinflip-modal-header {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: rgba(12, 10, 20, .98);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+    }
+
+    .coinflip-inventory-grid {
+        min-height: 190px;
+        max-height: 330px;
+        overflow-y: auto;
+        padding-bottom: 14px;
+    }
+
+    .coinflip-max-pets-setting {
+        margin-top: 12px;
+    }
+
+    .coinflip-side-section {
+        margin-top: 12px;
+    }
+
+    .coinflip-inventory-overview,
+    .coinflip-wager-summary {
+        margin-top: 10px;
+    }
+
+    .coinflip-modal-footer {
+        position: sticky;
+        bottom: 0;
+        z-index: 6;
+        box-shadow: 0 -12px 28px rgba(0, 0, 0, .28);
+    }
+}
+
+@media (max-width: 380px) {
+    .coinflip-modal-header {
+        padding: 18px 16px 14px;
+    }
+
+    .coinflip-modal-header h2 {
+        font-size: 21px;
+    }
+
+    .coinflip-inventory-grid {
+        max-height: 290px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
