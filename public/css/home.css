@@ -5747,3 +5747,11 @@ body {
 .chat-avatar-fallback[hidden] {
     display: none;
 }
+
+/* GIVEAWAYS */
+.chat-giveaways{display:flex;flex-direction:column;gap:8px;padding:10px 12px 0}
+.chat-giveaway-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid rgba(168,85,247,.35);border-radius:14px;background:linear-gradient(135deg,rgba(124,58,237,.16),rgba(15,23,42,.75));box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.chat-giveaway-icon{font-size:24px}.chat-giveaway-main{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}.chat-giveaway-main strong{font-size:12px;line-height:1.35}.chat-giveaway-main span{font-size:11px;color:var(--muted-text,#a1a1aa)}
+.chat-giveaway-join{border:1px solid rgba(167,139,250,.65);background:#7c3aed;color:white;border-radius:9px;padding:8px 11px;font-weight:800;cursor:pointer}.chat-giveaway-join:disabled{opacity:.55}
+.giveaway-modal[hidden]{display:none}.giveaway-modal{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:18px}.giveaway-modal-overlay{position:absolute;inset:0;background:rgba(2,6,23,.75);backdrop-filter:blur(7px)}.giveaway-modal-panel{position:relative;z-index:1;width:min(440px,100%);display:flex;flex-direction:column;gap:10px;padding:24px;border:1px solid rgba(167,139,250,.4);border-radius:20px;background:#111827;box-shadow:0 25px 80px rgba(0,0,0,.45)}.giveaway-modal-panel h2{margin:0}.giveaway-modal-panel p{color:#a1a1aa;font-size:13px}.giveaway-modal-panel label{font-size:12px;font-weight:800}.giveaway-modal-panel select{width:100%;padding:12px;border-radius:10px;border:1px solid #374151;background:#0f172a;color:white}.giveaway-close{position:absolute;right:14px;top:10px;border:0;background:transparent;color:white;font-size:25px;cursor:pointer}.giveaway-eligibility-note{margin:2px 0}.giveaway-form-status{min-height:18px;color:#fca5a5!important}
+@media(max-width:600px){.chat-giveaway-card{align-items:flex-start}.chat-giveaway-join{padding:8px}.giveaway-modal-panel{padding:20px}}

@@ -506,6 +506,21 @@ async function setupDatabase() {
         */
 
 
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS giveaways (
+                id UUID PRIMARY KEY, user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                inventory_id UUID NOT NULL, item_name VARCHAR(200) NOT NULL, item_value BIGINT NOT NULL DEFAULT 0,
+                item_image TEXT, form VARCHAR(50), fly BOOLEAN, ride BOOLEAN, ends_at TIMESTAMP NOT NULL,
+                status VARCHAR(20) NOT NULL DEFAULT 'active', winner_id UUID REFERENCES users(id) ON DELETE SET NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE TABLE IF NOT EXISTS giveaway_entries (
+                id UUID PRIMARY KEY, giveaway_id UUID NOT NULL REFERENCES giveaways(id) ON DELETE CASCADE,
+                user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(giveaway_id,user_id)
+            );
+            CREATE INDEX IF NOT EXISTS giveaways_status_ends_idx ON giveaways(status, ends_at);
+        `);
+
         await client.query("COMMIT");
 
 

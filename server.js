@@ -15,6 +15,7 @@ const items = require("./routes/items");
 const coinflipRoutes = require("./routes/coinflip");
 const accountRoutes = require("./routes/account");
 const { router: adminRoutes, isAdmin, isSuperOwner } = require("./routes/admin");
+const giveawayRoutes = require("./routes/giveaways");
 
 const app = express();
 const httpServer = http.createServer(app);
