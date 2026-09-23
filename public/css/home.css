@@ -5187,3 +5187,174 @@ body.coinflip-game-modal-open {
 .coinflip-max-pets-setting small {
     color: #94a3b8;
 }
+
+/* Individual pet cards + Coinflip QoL polish */
+.coinflip-individual-pet {
+    position: relative;
+    min-width: 0;
+    min-height: 172px;
+    padding: 14px 10px 12px;
+    border: 1px solid rgba(190, 145, 255, .14);
+    border-radius: 16px;
+    background: linear-gradient(160deg, rgba(34, 24, 58, .94), rgba(19, 17, 34, .96));
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 7px;
+    text-align: center;
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.coinflip-individual-pet:hover {
+    transform: translateY(-3px);
+    border-color: rgba(190, 145, 255, .6);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, .24), 0 0 0 1px rgba(190, 145, 255, .08);
+}
+
+.coinflip-individual-pet.selected {
+    border-color: #b85cff;
+    background: linear-gradient(160deg, rgba(100, 44, 158, .5), rgba(37, 24, 66, .98));
+    box-shadow: 0 0 0 1px rgba(184, 92, 255, .28), 0 10px 24px rgba(111, 42, 180, .18);
+}
+
+.coinflip-individual-pet .coinflip-item-check,
+.coinflip-individual-pet .coinflip-join-check {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    width: 23px;
+    height: 23px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .08);
+    color: #d7b9ff;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.coinflip-individual-pet.selected .coinflip-item-check,
+.coinflip-individual-pet.selected .coinflip-join-check {
+    background: #9a46e8;
+    color: #fff;
+}
+
+.coinflip-individual-pet .coinflip-item-quantity,
+.coinflip-individual-pet .coinflip-join-stock {
+    align-self: flex-start;
+    min-height: 17px;
+    color: #bfa9dc;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.coinflip-individual-pet .coinflip-item-image-wrap {
+    width: 84px;
+    height: 84px;
+    display: grid;
+    place-items: center;
+    margin-top: 4px;
+}
+
+.coinflip-individual-pet .coinflip-item-image {
+    width: 84px;
+    height: 84px;
+    object-fit: contain;
+}
+
+.coinflip-individual-pet .coinflip-item-name,
+.coinflip-individual-pet .coinflip-join-pet-value,
+.coinflip-individual-pet .coinflip-item-value {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.coinflip-individual-pet .coinflip-item-name,
+.coinflip-individual-pet strong {
+    color: #f7f0ff;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.coinflip-individual-pet .coinflip-item-value,
+.coinflip-individual-pet .coinflip-join-pet-value {
+    color: #c49aff;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.coinflip-join-pet.coinflip-individual-pet {
+    min-height: 190px;
+    padding: 14px 10px 12px;
+}
+
+.coinflip-join-pet.coinflip-individual-pet .coinflip-join-pet-image {
+    width: 84px;
+    height: 84px;
+    margin-top: 4px;
+    display: grid;
+    place-items: center;
+}
+
+.coinflip-join-pet.coinflip-individual-pet .coinflip-join-pet-image img {
+    width: 84px;
+    height: 84px;
+    object-fit: contain;
+}
+
+.coinflip-join-pet.coinflip-individual-pet .coinflip-join-pet-value {
+    display: block;
+    margin-top: 0;
+}
+
+.coinflip-join-match-button,
+.coinflip-confirm-button {
+    position: relative;
+    overflow: hidden;
+    letter-spacing: .01em;
+    box-shadow: 0 8px 20px rgba(126, 54, 214, .16);
+}
+
+.coinflip-join-match-button::after,
+.coinflip-confirm-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 25%, rgba(255,255,255,.14) 50%, transparent 75%);
+    transform: translateX(-130%);
+    transition: transform .5s ease;
+}
+
+.coinflip-join-match-button:hover::after,
+.coinflip-confirm-button:hover::after {
+    transform: translateX(130%);
+}
+
+.coinflip-join-match-button:focus-visible,
+.coinflip-confirm-button:focus-visible,
+.coinflip-individual-pet:focus-visible {
+    outline: 3px solid rgba(207, 151, 255, .85);
+    outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+    .coinflip-individual-pet,
+    .coinflip-join-pet.coinflip-individual-pet {
+        min-height: 148px;
+        padding: 10px 7px;
+        border-radius: 13px;
+    }
+
+    .coinflip-individual-pet .coinflip-item-image-wrap,
+    .coinflip-join-pet.coinflip-individual-pet .coinflip-join-pet-image,
+    .coinflip-individual-pet .coinflip-item-image,
+    .coinflip-join-pet.coinflip-individual-pet .coinflip-join-pet-image img {
+        width: 64px;
+        height: 64px;
+    }
+}
