@@ -5786,3 +5786,109 @@ body {
 .giveaway-inventory-panel{width:min(920px,calc(100vw - 28px));max-height:min(88vh,900px);overflow:auto;padding:28px;background:linear-gradient(145deg,#111827,#0c1221);border:1px solid rgba(145,94,255,.45);box-shadow:0 24px 80px rgba(0,0,0,.55)}
 .giveaway-inventory-header{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.giveaway-inventory-header h2{margin:10px 0 8px}.giveaway-inventory-header p{margin:0;color:#a6adbd}.giveaway-inventory-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:24px 0 20px}.giveaway-inventory-summary>div{padding:14px 16px;border:1px solid rgba(148,163,184,.18);border-radius:14px;background:rgba(255,255,255,.035)}.giveaway-inventory-summary span,.giveaway-inventory-summary strong{display:block}.giveaway-inventory-summary span{font-size:12px;color:#9ca3b4;text-transform:uppercase;letter-spacing:.08em}.giveaway-inventory-summary strong{margin-top:5px;font-size:23px;color:#fff}.giveaway-inventory-section-heading{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:12px}.giveaway-inventory-section-heading h3{margin:0 0 4px}.giveaway-inventory-section-heading p{margin:0;color:#929bad;font-size:13px}.giveaway-selection-hint{font-size:12px;color:#b98aff;border:1px solid rgba(168,85,247,.35);border-radius:999px;padding:7px 10px;white-space:nowrap}.giveaway-inventory-grid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:12px;max-height:350px;overflow:auto;padding:4px 2px 8px}.giveaway-pet-option{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:154px;padding:14px 8px;border:1px solid rgba(148,163,184,.22);border-radius:16px;background:rgba(15,23,42,.78);color:#fff;cursor:pointer;transition:transform .18s,border-color .18s,background .18s,box-shadow .18s}.giveaway-pet-option:hover{transform:translateY(-2px);border-color:rgba(168,85,247,.65);background:rgba(124,58,237,.10)}.giveaway-pet-option.selected{border-color:#a855f7;background:linear-gradient(145deg,rgba(124,58,237,.25),rgba(15,23,42,.95));box-shadow:0 0 0 2px rgba(168,85,247,.2),0 10px 30px rgba(124,58,237,.12)}.giveaway-pet-option.selected:after{content:'✓';position:absolute;top:8px;right:9px;width:21px;height:21px;display:grid;place-items:center;border-radius:50%;background:#9333ea;color:#fff;font-size:12px;font-weight:800}.giveaway-pet-option img,.giveaway-pet-placeholder{width:78px;height:78px;object-fit:contain;border-radius:12px;background:rgba(2,6,23,.7)}.giveaway-pet-option-name{font-size:12px;font-weight:750;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.giveaway-pet-option-value{font-size:11px;color:#aeb7ca}.giveaway-options-row{display:grid;grid-template-columns:minmax(0,190px) 1fr;gap:12px;align-items:end;margin-top:18px}.giveaway-duration-field label{display:block;margin-bottom:8px;font-size:12px;font-weight:750;color:#cbd5e1}.giveaway-duration-field select{width:100%;min-height:46px;padding:0 12px;border-radius:12px;border:1px solid rgba(148,163,184,.28);background:#0f172a;color:#fff}.giveaway-selected-preview{min-height:46px;display:flex;align-items:center;padding:0 14px;border:1px dashed rgba(168,85,247,.4);border-radius:12px;color:#c4b5fd;background:rgba(124,58,237,.06);font-size:13px}.giveaway-inventory-actions{margin-top:18px}.giveaway-create-button{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;padding:14px 18px;border:1px solid rgba(168,85,247,.8);border-radius:13px;background:linear-gradient(135deg,#9333ea,#6d28d9);color:#fff;cursor:pointer;transition:filter .2s,transform .2s}.giveaway-create-button:hover:not(:disabled){filter:brightness(1.12);transform:translateY(-1px)}.giveaway-create-button:disabled{opacity:.42;cursor:not-allowed}.giveaway-create-button>span:first-child{font-size:22px}.giveaway-create-button strong,.giveaway-create-button small{display:block;text-align:left}.giveaway-create-button small{margin-top:3px;color:#e9d5ff;font-size:11px}.giveaway-form-status{color:#fca5a5}
 @media(max-width:600px){.giveaway-inventory-panel{padding:20px 15px}.giveaway-inventory-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-height:300px}.giveaway-options-row{grid-template-columns:1fr}.giveaway-inventory-section-heading{align-items:flex-start;flex-direction:column}.giveaway-pet-option{min-height:145px}.giveaway-inventory-summary{margin-top:18px}}
+
+/* ==========================================
+   COINFLIP INVENTORY POLISH / CLEAN TOOLBAR
+========================================== */
+.coinflip-modal-panel {
+    max-width: 1120px;
+    background: linear-gradient(145deg, #111827 0%, #101522 58%, #0c101b 100%);
+    border-color: rgba(129, 140, 248, .24);
+    border-radius: 24px;
+    box-shadow: 0 35px 110px rgba(0,0,0,.72), 0 0 70px rgba(99,102,241,.10);
+}
+
+.coinflip-modal-header {
+    padding: 28px 36px 24px;
+    border-bottom-color: rgba(148,163,184,.12);
+}
+
+.coinflip-modal-header h2 { font-size: 30px; letter-spacing: -1px; }
+.coinflip-modal-header p { color: #8d98af; font-size: 13px; }
+.coinflip-modal-label { color: #818cf8; font-size: 10px; letter-spacing: 2px; }
+.coinflip-modal-close { width: 38px; height: 38px; border-radius: 11px; font-size: 26px; }
+
+.coinflip-inventory-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 220px 220px;
+    gap: 16px;
+    padding: 22px 36px 14px;
+}
+
+.coinflip-search-box,
+.coinflip-filter-select { min-width: 0; position: relative; display: flex; align-items: center; }
+.coinflip-search-box span { position: absolute; left: 18px; color: #8390ab; font-size: 28px; line-height: 1; transform: translateY(-2px); }
+.coinflip-search-box input,
+.coinflip-filter-select select {
+    width: 100%; height: 56px; border: 1px solid #2b3852; border-radius: 16px;
+    background: #121a2a; color: #e8edf8; padding: 0 18px; font: inherit; font-size: 15px;
+    outline: none; transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.coinflip-search-box input { padding-left: 52px; }
+.coinflip-search-box input::placeholder { color: #77839c; }
+.coinflip-search-box input:focus,
+.coinflip-filter-select select:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,.14); background: #151f32; }
+.coinflip-filter-select select { appearance: auto; cursor: pointer; }
+
+.coinflip-max-pets-setting {
+    margin: 0 36px 8px; padding: 16px 18px; border: 1px solid rgba(148,163,184,.15);
+    border-radius: 15px; background: rgba(15,23,42,.45);
+}
+.coinflip-max-pets-setting label { color: #e5e7eb; font-size: 13px; font-weight: 800; }
+.coinflip-max-pets-setting input { background: #0d1422; border-color: #2b3852; color: #f8fafc; border-radius: 11px; }
+.coinflip-max-pets-setting small { color: #8290a9; font-size: 12px; }
+
+.coinflip-side-section { margin: 16px 36px 0; padding: 22px; border: 1px solid rgba(148,163,184,.14); border-radius: 18px; background: rgba(15,23,42,.38); }
+.coinflip-side-heading h3, .coinflip-inventory-header h3 { font-size: 15px; color: #f8fafc; }
+.coinflip-side-heading p, .coinflip-inventory-header p { font-size: 12px; color: #8490a7; }
+.coinflip-side-options { gap: 14px; }
+.coinflip-side-button { border-radius: 15px; border-color: #2b3852; background: #121a2a; min-height: 92px; }
+.coinflip-side-button.selected { border-color: #818cf8; background: linear-gradient(135deg, rgba(99,102,241,.17), rgba(30,41,59,.65)); box-shadow: 0 0 0 1px rgba(129,140,248,.15); }
+
+.coinflip-inventory-overview {
+    display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; padding: 16px 36px 4px;
+}
+.coinflip-inventory-overview > div { padding: 16px 18px; border: 1px solid rgba(148,163,184,.13); border-radius: 14px; background: rgba(15,23,42,.38); color: #8995ad; font-size: 12px; }
+.coinflip-inventory-overview strong { color: #60a5fa; font-size: 16px; margin-left: 4px; }
+
+.coinflip-wager-summary { margin: 12px 36px 0; gap: 12px; }
+.coinflip-wager-stat { border-color: rgba(148,163,184,.13); background: rgba(15,23,42,.38); border-radius: 14px; padding: 15px 18px; }
+.coinflip-wager-stat span { color: #8390a9; font-size: 10px; }
+.coinflip-wager-stat strong { font-size: 16px; }
+
+.coinflip-inventory-header { padding: 24px 36px 14px; }
+.coinflip-select-all { height: 38px; border-radius: 11px; padding: 0 15px; font-size: 11px; background: rgba(99,102,241,.09); border-color: rgba(129,140,248,.3); color: #a5b4fc; }
+.coinflip-inventory-grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; max-height: 390px; padding: 6px 36px 24px; }
+.coinflip-inventory-item { min-height: 174px; padding: 14px 11px 13px; border-radius: 16px; border-color: #27334b; background: linear-gradient(145deg, #131c2d, #101827); }
+.coinflip-inventory-item:hover { border-color: #5965a0; background: linear-gradient(145deg, #18233a, #121b2c); }
+.coinflip-inventory-item.selected { border-color: #818cf8; background: linear-gradient(145deg, rgba(79,70,229,.25), #131d32); box-shadow: 0 0 0 1px rgba(129,140,248,.18), 0 12px 30px rgba(30,41,59,.35); }
+.coinflip-item-image { width: 92px; height: 92px; }
+.coinflip-item-name { color: #e5e7eb; font-size: 11px; }
+.coinflip-item-value { color: #a5b4fc; font-size: 10px; }
+.coinflip-item-quantity { background: #202b40; color: #aab7d0; }
+.coinflip-item-check { border-radius: 8px; background: #1b2639; }
+.coinflip-inventory-item.selected .coinflip-item-check { background: #6366f1; border-color: #818cf8; }
+
+.coinflip-modal-footer { padding: 20px 36px; background: rgba(9,14,25,.75); border-top-color: rgba(148,163,184,.13); }
+.coinflip-footer-info { color: #8b97ae; font-size: 12px; }
+.coinflip-footer-info strong { color: #a5b4fc; font-size: 13px; }
+.coinflip-cancel-button, .coinflip-confirm-button { height: 46px; border-radius: 13px; font-size: 12px; }
+.coinflip-confirm-button { min-width: 170px; background: linear-gradient(135deg, #4f46e5, #6366f1); border-color: #818cf8; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+@media (max-width: 760px) {
+    .coinflip-modal { padding: 8px; }
+    .coinflip-modal-panel { max-height: 96vh; border-radius: 18px; }
+    .coinflip-modal-header, .coinflip-inventory-toolbar, .coinflip-inventory-header, .coinflip-modal-footer { padding-left: 18px; padding-right: 18px; }
+    .coinflip-modal-header h2 { font-size: 24px; }
+    .coinflip-inventory-toolbar { grid-template-columns: 1fr; gap: 10px; }
+    .coinflip-max-pets-setting, .coinflip-side-section { margin-left: 18px; margin-right: 18px; }
+    .coinflip-inventory-overview { padding-left: 18px; padding-right: 18px; grid-template-columns: 1fr; }
+    .coinflip-wager-summary { margin-left: 18px; margin-right: 18px; grid-template-columns: 1fr; }
+    .coinflip-inventory-grid { padding-left: 18px; padding-right: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: 330px; }
+    .coinflip-inventory-item { min-height: 158px; }
+    .coinflip-modal-footer { align-items: stretch; flex-direction: column; gap: 12px; }
+    .coinflip-footer-actions { width: 100%; }
+    .coinflip-footer-actions button { flex: 1; }
+}

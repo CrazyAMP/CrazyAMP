@@ -635,6 +635,31 @@
             </div>
 
 
+            <div class="coinflip-inventory-toolbar" aria-label="Inventory filters">
+                <label class="coinflip-search-box" for="coinflipInventorySearch">
+                    <span aria-hidden="true">⌕</span>
+                    <input type="search" id="coinflipInventorySearch" placeholder="Search for items" autocomplete="off">
+                </label>
+                <label class="coinflip-filter-select">
+                    <span class="sr-only">Sort inventory</span>
+                    <select id="coinflipInventorySort">
+                        <option value="value-desc">High to low</option>
+                        <option value="value-asc">Low to high</option>
+                        <option value="name-asc">Name A–Z</option>
+                        <option value="name-desc">Name Z–A</option>
+                    </select>
+                </label>
+                <label class="coinflip-filter-select">
+                    <span class="sr-only">Filter inventory</span>
+                    <select id="coinflipInventoryFilter">
+                        <option value="all">All items</option>
+                        <option value="selected">Selected only</option>
+                        <option value="unselected">Unselected only</option>
+                    </select>
+                </label>
+            </div>
+
+
             <div class="coinflip-max-pets-setting">
                 <label for="coinflipMaxJoinPets">Maximum pets the joiner can use</label>
                 <input type="number" id="coinflipMaxJoinPets" min="1" max="100" value="3" inputmode="numeric">
@@ -722,6 +747,13 @@
 
                 </div>
 
+            </div>
+
+
+            <div class="coinflip-inventory-overview">
+                <div><span>Selected:</span> <strong id="coinflipToolbarSelectedValue">💎 0</strong></div>
+                <div><span>Inventory value:</span> <strong id="coinflipToolbarInventoryValue">💎 0</strong></div>
+                <div><span>Items:</span> <strong id="coinflipToolbarInventoryCount">0</strong></div>
             </div>
 
 
