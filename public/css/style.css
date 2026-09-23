@@ -137,8 +137,9 @@ a[role="button"] {
         padding-bottom: calc(78px + env(safe-area-inset-bottom));
     }
 
+    /* Keep the page scrollable and interactive while a mobile panel is open. */
     body.mobile-nav-open {
-        overflow: hidden;
+        overflow: auto;
     }
 
     .mobile-bottom-nav {
@@ -148,7 +149,7 @@ a[role="button"] {
         bottom: max(12px, env(safe-area-inset-bottom));
         left: 12px;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
         gap: 6px;
         padding: 8px;
         border: 1px solid rgba(168, 85, 247, 0.28);
@@ -180,8 +181,7 @@ a[role="button"] {
     }
 
     .mobile-bottom-nav-item:active,
-    .mobile-bottom-nav-item[aria-expanded="true"],
-    .mobile-bottom-nav-home {
+    .mobile-bottom-nav-item[aria-expanded="true"] {
         color: #fff;
         background: linear-gradient(135deg, rgba(124, 58, 237, 0.42), rgba(168, 85, 247, 0.18));
     }
@@ -208,14 +208,10 @@ a[role="button"] {
         color: #f0abfc;
     }
 
+    /* No full-screen backdrop: the rest of the page remains visible, scrollable,
+       and usable while the menu or games panel is open. */
     .mobile-nav-backdrop {
-        position: fixed;
-        z-index: 1190;
-        inset: 0;
-        display: block;
-        background: rgba(3, 2, 7, 0.72);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
+        display: none !important;
     }
 
     .mobile-nav-panel {
