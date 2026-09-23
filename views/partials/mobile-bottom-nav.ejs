@@ -1,0 +1,126 @@
+<!-- MOBILE BOTTOM NAVIGATION -->
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+    <button type="button" class="mobile-bottom-nav-item" data-mobile-panel="menu" aria-expanded="false" aria-controls="mobileMenuPanel">
+        <span class="mobile-bottom-nav-icon" aria-hidden="true">☰</span>
+        <span>Menu</span>
+    </button>
+    <a href="/" class="mobile-bottom-nav-item mobile-bottom-nav-home" aria-label="Coinflip home">
+        <span class="mobile-bottom-nav-logo">C<span>A</span></span>
+        <span>Home</span>
+    </a>
+    <button type="button" class="mobile-bottom-nav-item" data-mobile-panel="games" aria-expanded="false" aria-controls="mobileGamesPanel">
+        <span class="mobile-bottom-nav-icon" aria-hidden="true">🎮</span>
+        <span>Games</span>
+    </button>
+</nav>
+
+<div class="mobile-nav-backdrop" id="mobileNavBackdrop" hidden></div>
+
+<section class="mobile-nav-panel" id="mobileMenuPanel" aria-label="Account menu" hidden>
+    <div class="mobile-nav-panel-handle" aria-hidden="true"></div>
+    <div class="mobile-nav-panel-heading">
+        <div>
+            <span class="mobile-nav-eyebrow">ACCOUNT</span>
+            <h2>Quick access</h2>
+        </div>
+        <button type="button" class="mobile-nav-close" data-mobile-close aria-label="Close menu">×</button>
+    </div>
+    <div class="mobile-nav-panel-links">
+        <a href="/?openInventory=1" class="mobile-nav-panel-link">
+            <span class="mobile-nav-panel-link-icon">🎒</span>
+            <span><strong>Inventory</strong><small>View and select your pets</small></span>
+            <span aria-hidden="true">›</span>
+        </a>
+        <a href="/profile" class="mobile-nav-panel-link">
+            <span class="mobile-nav-panel-link-icon">👤</span>
+            <span><strong>Profile</strong><small>Account stats and details</small></span>
+            <span aria-hidden="true">›</span>
+        </a>
+        <a href="/history" class="mobile-nav-panel-link">
+            <span class="mobile-nav-panel-link-icon">🕘</span>
+            <span><strong>Match history</strong><small>Review your previous games</small></span>
+            <span aria-hidden="true">›</span>
+        </a>
+        <% if (typeof canAdmin !== "undefined" && canAdmin) { %>
+            <a href="/admin" class="mobile-nav-panel-link mobile-nav-admin-link">
+                <span class="mobile-nav-panel-link-icon">🛡️</span>
+                <span><strong>Admin panel</strong><small>Manage CrazyAMP</small></span>
+                <span aria-hidden="true">›</span>
+            </a>
+        <% } %>
+    </div>
+</section>
+
+<section class="mobile-nav-panel" id="mobileGamesPanel" aria-label="Games menu" hidden>
+    <div class="mobile-nav-panel-handle" aria-hidden="true"></div>
+    <div class="mobile-nav-panel-heading">
+        <div>
+            <span class="mobile-nav-eyebrow">PLAY</span>
+            <h2>Games</h2>
+        </div>
+        <button type="button" class="mobile-nav-close" data-mobile-close aria-label="Close games">×</button>
+    </div>
+    <div class="mobile-nav-game-grid">
+        <a href="/" class="mobile-nav-game-link"><span>🪙</span><strong>Coinflip</strong><small>Classic coinflip</small></a>
+        <a href="/dice-duels" class="mobile-nav-game-link"><span>🎲</span><strong>Dice Duels</strong><small>Roll and compete</small></a>
+        <a href="/colour-dice" class="mobile-nav-game-link"><span>🌈</span><strong>Colour Dice</strong><small>Pick your colour</small></a>
+        <a href="/blackjack" class="mobile-nav-game-link"><span>🃏</span><strong>Blackjack</strong><small>Beat the dealer</small></a>
+        <a href="/upgrader" class="mobile-nav-game-link"><span>⬆️</span><strong>Upgrader</strong><small>Upgrade your pets</small></a>
+    </div>
+</section>
+
+<script>
+(() => {
+    const backdrop = document.getElementById('mobileNavBackdrop');
+    const panels = {
+        menu: document.getElementById('mobileMenuPanel'),
+        games: document.getElementById('mobileGamesPanel')
+    };
+    const triggers = document.querySelectorAll('[data-mobile-panel]');
+
+    if (!backdrop || !panels.menu || !panels.games) return;
+
+    function closePanels() {
+        Object.values(panels).forEach((panel) => {
+            panel.hidden = true;
+            panel.classList.remove('is-open');
+        });
+        backdrop.hidden = true;
+        document.body.classList.remove('mobile-nav-open');
+        triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
+    }
+
+    function openPanel(name) {
+        const panel = panels[name];
+        if (!panel) return;
+        closePanels();
+        panel.hidden = false;
+        requestAnimationFrame(() => panel.classList.add('is-open'));
+        backdrop.hidden = false;
+        document.body.classList.add('mobile-nav-open');
+        triggers.forEach((trigger) => {
+            trigger.setAttribute('aria-expanded', trigger.dataset.mobilePanel === name ? 'true' : 'false');
+        });
+    }
+
+    triggers.forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+            const name = trigger.dataset.mobilePanel;
+            const panel = panels[name];
+            if (panel && !panel.hidden) closePanels();
+            else openPanel(name);
+        });
+    });
+
+    document.querySelectorAll('[data-mobile-close]').forEach((button) => {
+        button.addEventListener('click', closePanels);
+    });
+    backdrop.addEventListener('click', closePanels);
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closePanels();
+    });
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 760) closePanels();
+    });
+})();
+</script>

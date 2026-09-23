@@ -3317,6 +3317,21 @@
         }
 
 
+        // Open the inventory automatically when mobile navigation links to /?openInventory=1.
+        const inventoryQuery = new URLSearchParams(window.location.search);
+        if (
+            openInventoryButton &&
+            inventoryQuery.get("openInventory") === "1"
+        ) {
+            window.setTimeout(() => {
+                openInventoryButton.click();
+                inventoryQuery.delete("openInventory");
+                const cleanUrl = `${window.location.pathname}${inventoryQuery.toString() ? `?${inventoryQuery}` : ""}${window.location.hash}`;
+                window.history.replaceState({}, document.title, cleanUrl);
+            }, 250);
+        }
+
+
         /* ==========================================
            TABS
         =========================================== */
@@ -3446,6 +3461,8 @@
         );
 
     </script>
+
+    <%- include("partials/mobile-bottom-nav") %>
 
 </body>
 
