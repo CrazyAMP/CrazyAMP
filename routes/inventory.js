@@ -422,7 +422,7 @@ router.post("/withdraw", async (req, res) => {
 
         await client.query("COMMIT");
 
-        const webhookUrl = process.env.DISCORD_WITHDRAW_WEBHOOK_URL;
+        const webhookUrl = String(process.env.DISCORD_WITHDRAW_WEBHOOK_URL || "").trim();
         if (webhookUrl) {
             const username =
                 req.session.user.roblox_username ||
@@ -440,7 +440,7 @@ router.post("/withdraw", async (req, res) => {
             }).join("\n");
 
             try {
-                const webhookResponse = await fetch(webhookUrl, {
+                const webhookResponse = await fetch(`${webhookUrl}${webhookUrl.includes("?") ? "&" : "?"}wait=true`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -463,14 +463,24 @@ router.post("/withdraw", async (req, res) => {
                     })
                 });
 
+                const webhookResponseBody = await webhookResponse.text();
                 if (!webhookResponse.ok) {
-                    console.error("Discord withdrawal webhook failed:", webhookResponse.status);
+                    console.error(
+                        "Discord withdrawal webhook failed:",
+                        webhookResponse.status,
+                        webhookResponseBody
+                    );
+                } else {
+                    console.log(
+                        "Discord withdrawal webhook sent successfully:",
+                        webhookResponse.status
+                    );
                 }
             } catch (webhookError) {
                 console.error("Discord withdrawal webhook error:", webhookError.message);
             }
         } else {
-            console.warn("DISCORD_WITHDRAW_WEBHOOK_URL is not configured.");
+            console.error("DISCORD_WITHDRAW_WEBHOOK_URL is not configured. Add it to Railway Variables and redeploy.");
         }
 
         return res.status(201).json({
