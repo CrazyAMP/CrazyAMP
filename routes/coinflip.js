@@ -880,13 +880,13 @@ router.post("/:matchId/join", async (req, res) => {
             await client.query(
                 `
                 SELECT
-                    id,
-                    inventory_id,
-                    item_id,
-                    user_id,
-                    quantity,
-                    value_per_item,
-                    total_value,
+                    cmi.id,
+                    cmi.inventory_id,
+                    cmi.item_id,
+                    cmi.user_id,
+                    cmi.quantity,
+                    cmi.value_per_item,
+                    cmi.total_value,
                     it.name AS item_name,
                     it.form,
                     it.fly,
