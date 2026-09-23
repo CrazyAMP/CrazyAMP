@@ -5892,3 +5892,262 @@ body {
     .coinflip-footer-actions { width: 100%; }
     .coinflip-footer-actions button { flex: 1; }
 }
+
+/* ==========================================
+   COMPACT COINFLIP INVENTORY MODAL
+   Keeps the modal fixed in the viewport and
+   makes only the pet grid scroll when needed.
+========================================== */
+.coinflip-modal-panel {
+    width: min(1120px, calc(100vw - 32px));
+    height: min(900px, calc(100vh - 32px));
+    max-height: calc(100vh - 32px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.coinflip-modal-header {
+    padding: 22px 32px 18px;
+}
+
+.coinflip-modal-header h2 {
+    font-size: 28px;
+}
+
+.coinflip-inventory-toolbar {
+    grid-template-columns: minmax(0, 1fr) 190px 190px;
+    gap: 12px;
+    padding: 16px 32px 12px;
+}
+
+.coinflip-search-box input,
+.coinflip-filter-select select {
+    height: 48px;
+    border-radius: 13px;
+    font-size: 14px;
+}
+
+.coinflip-max-pets-setting {
+    display: grid;
+    grid-template-columns: auto 170px;
+    align-items: center;
+    gap: 4px 14px;
+    margin: 0 32px 10px;
+    padding: 12px 14px;
+    border-radius: 13px;
+}
+
+.coinflip-max-pets-setting label {
+    font-size: 12px;
+}
+
+.coinflip-max-pets-setting input {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+}
+
+.coinflip-max-pets-setting small {
+    grid-column: 1 / -1;
+    font-size: 11px;
+}
+
+.coinflip-side-section {
+    margin: 0 32px 10px;
+    padding: 14px 16px;
+    border-radius: 14px;
+}
+
+.coinflip-side-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+.coinflip-side-heading h3 {
+    font-size: 13px;
+}
+
+.coinflip-side-heading p {
+    font-size: 11px;
+}
+
+.coinflip-side-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.coinflip-side-button {
+    min-height: 62px;
+    padding: 8px 14px;
+    border-radius: 12px;
+}
+
+.coinflip-side-icon,
+.coinflip-side-icon img {
+    width: 48px;
+    height: 48px;
+}
+
+.coinflip-side-name {
+    font-size: 12px;
+}
+
+.coinflip-inventory-overview {
+    gap: 10px;
+    padding: 0 32px 10px;
+}
+
+.coinflip-inventory-overview > div {
+    padding: 11px 14px;
+    border-radius: 12px;
+    font-size: 11px;
+}
+
+.coinflip-inventory-overview strong {
+    font-size: 14px;
+}
+
+/* The overview row replaces the duplicate large wager summary. */
+.coinflip-wager-summary {
+    display: none;
+}
+
+.coinflip-inventory-header {
+    padding: 10px 32px 10px;
+}
+
+.coinflip-inventory-header h3 {
+    font-size: 13px;
+}
+
+.coinflip-inventory-header p {
+    font-size: 11px;
+}
+
+.coinflip-inventory-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+    grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+    gap: 10px;
+    padding: 4px 32px 16px;
+}
+
+.coinflip-inventory-item {
+    min-height: 145px;
+    padding: 10px 8px;
+    border-radius: 13px;
+}
+
+.coinflip-item-image {
+    width: 76px;
+    height: 76px;
+}
+
+.coinflip-modal-footer {
+    padding: 14px 32px;
+}
+
+/* Keep the modal itself fixed; only the inventory grid can scroll. */
+.coinflip-modal-panel::-webkit-scrollbar {
+    display: none;
+}
+
+@media (max-width: 760px) {
+    .coinflip-modal {
+        padding: 8px;
+    }
+
+    .coinflip-modal-panel {
+        width: calc(100vw - 16px);
+        height: calc(100vh - 16px);
+        max-height: calc(100vh - 16px);
+        border-radius: 18px;
+    }
+
+    .coinflip-modal-header {
+        padding: 18px 18px 14px;
+    }
+
+    .coinflip-modal-header h2 {
+        font-size: 23px;
+    }
+
+    .coinflip-inventory-toolbar {
+        grid-template-columns: minmax(0, 1fr) 1fr;
+        padding: 12px 18px 10px;
+        gap: 8px;
+    }
+
+    .coinflip-search-box {
+        grid-column: 1 / -1;
+    }
+
+    .coinflip-max-pets-setting {
+        grid-template-columns: minmax(0, 1fr) 110px;
+        margin: 0 18px 8px;
+        padding: 10px 12px;
+    }
+
+    .coinflip-side-section {
+        margin: 0 18px 8px;
+        padding: 12px;
+    }
+
+    .coinflip-side-heading {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .coinflip-side-heading p {
+        margin-top: 3px;
+    }
+
+    .coinflip-side-button {
+        min-height: 54px;
+        padding: 6px 9px;
+    }
+
+    .coinflip-side-icon,
+    .coinflip-side-icon img {
+        width: 38px;
+        height: 38px;
+    }
+
+    .coinflip-inventory-overview {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding: 0 18px 8px;
+        gap: 7px;
+    }
+
+    .coinflip-inventory-overview > div {
+        padding: 9px 8px;
+        font-size: 9px;
+    }
+
+    .coinflip-inventory-overview strong {
+        display: block;
+        margin: 3px 0 0;
+        font-size: 12px;
+    }
+
+    .coinflip-inventory-header {
+        padding: 8px 18px;
+    }
+
+    .coinflip-inventory-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 4px 18px 12px;
+    }
+
+    .coinflip-modal-footer {
+        padding: 12px 18px;
+        gap: 10px;
+    }
+}
