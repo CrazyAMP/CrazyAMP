@@ -2446,16 +2446,24 @@
             if (empty) empty.remove();
 
             const ownerClass = chatMessage.owner ? " chat-message-owner" : "";
-            const crown = chatMessage.owner ? " <span class=\"chat-owner-crown\">👑</span>" : "";
+            const username = String(chatMessage.username || "User");
+            const initials = username.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "U";
+            const crown = chatMessage.owner ? " <span class=\"chat-owner-crown\" aria-label=\"Owner\">👑</span>" : "";
+            const createdAt = new Date(chatMessage.createdAt);
+            const time = Number.isNaN(createdAt.getTime()) ? "" : createdAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+            const fullDate = Number.isNaN(createdAt.getTime()) ? "" : createdAt.toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
             const message = document.createElement("article");
 
             message.className = `chat-message${ownerClass}`;
             message.innerHTML = `
-                <div class="chat-message-header">
-                    <strong>${escapeChat(chatMessage.username)}${crown}</strong>
-                    <span>${new Date(chatMessage.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                <div class="chat-message-avatar" aria-hidden="true">${escapeChat(initials)}</div>
+                <div class="chat-message-content">
+                    <div class="chat-message-header">
+                        <strong>${escapeChat(username)}${crown}</strong>
+                        <time datetime="${escapeChat(chatMessage.createdAt || "")}" title="${escapeChat(fullDate)}">${escapeChat(time)}</time>
+                    </div>
+                    <p class="chat-message-text">${escapeChat(chatMessage.message)}</p>
                 </div>
-                <p class="chat-message-text">${escapeChat(chatMessage.message)}</p>
             `;
 
             chatMessages.appendChild(message);
