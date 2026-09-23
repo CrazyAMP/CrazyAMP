@@ -2195,46 +2195,37 @@
                     : [];
 
 
+            // Expand stacked inventory quantities into separate visual pet cards.
+            // The database may store 8 identical pets as one row with quantity: 8,
+            // but the UI should show eight individual cards instead of "×8".
+            const individualPreviewPets = pets.flatMap((pet) => {
+                const quantity = Math.max(1, Number(pet.quantity) || 1);
+                return Array.from({ length: quantity }, (_, index) => ({
+                    ...pet,
+                    quantity: 1,
+                    individualIndex: index + 1
+                }));
+            });
+
             const petPreviewHTML =
-                pets.length
-                    ? pets.slice(0, 4).map((pet) => {
-
-                        const name =
-                            pet.name ||
-                            "Wagered pet";
-
-                        const quantity =
-                            Math.max(
-                                1,
-                                Number(pet.quantity) || 1
-                            );
-
-
+                individualPreviewPets.length
+                    ? individualPreviewPets.map((pet) => {
+                        const name = pet.name || "Wagered pet";
                         return `
                             <div
                                 class="coinflip-wager-pet${pet.image ? "" : " image-missing"}"
-                                title="${escapeAttribute(name)}${quantity > 1 ? ` ×${quantity}` : ""}"
+                                title="${escapeAttribute(name)}"
                             >
-                                ${
-                                    pet.image
-                                        ? `
-                                            <img
-                                                src="${escapeAttribute(pet.image)}"
-                                                alt="${escapeAttribute(name)}"
-                                                onerror="this.style.display='none'; this.parentElement.classList.add('image-missing');"
-                                            >
-                                        `
-                                        : ""
-                                }
+                                ${pet.image ? `
+                                    <img
+                                        src="${escapeAttribute(pet.image)}"
+                                        alt="${escapeAttribute(name)}"
+                                        onerror="this.style.display='none'; this.parentElement.classList.add('image-missing');"
+                                    >
+                                ` : ""}
                                 <span class="coinflip-wager-pet-fallback">🐾</span>
-                                ${
-                                    quantity > 1
-                                        ? `<em>×${quantity}</em>`
-                                        : ""
-                                }
                             </div>
                         `;
-
                     }).join("")
                     : `
                         <div class="coinflip-wager-pet coinflip-wager-pet-empty">
@@ -2242,9 +2233,7 @@
                         </div>
                     `;
 
-
-            const remainingPets =
-                Math.max(0, pets.length - 4);
+            const remainingPets = 0;
 
 
             const primaryActionHTML =
@@ -2847,12 +2836,21 @@
                 const renderPet = (pet) => `
                     <div class="coinflip-play-pet" title="${escapeAttribute(pet.name || "Pet")}">
                         ${pet.image ? `<img src="${escapeAttribute(pet.image)}" alt="${escapeAttribute(pet.name || "Pet")}">` : "🐾"}
-                        ${Number(pet.quantity) > 1 ? `<em>×${Number(pet.quantity)}</em>` : ""}
                     </div>
                 `;
 
-                const creatorPets = Array.isArray(match?.pets) ? match.pets : [];
+                const expandPetUnits = (petList) => (Array.isArray(petList) ? petList : []).flatMap((pet) => {
+                    const quantity = Math.max(1, Number(pet.quantity) || 1);
+                    return Array.from({ length: quantity }, (_, index) => ({
+                        ...pet,
+                        quantity: 1,
+                        individualIndex: index + 1
+                    }));
+                });
+
+                const creatorPets = expandPetUnits(match?.pets);
                 const creatorValue = Number(match?.creator_value) || 0;
+                const expandedJoinerPets = expandPetUnits(joinerPets);
                 const joinerValue = (joinerPets || []).reduce(
                     (total, pet) => total + (Number(pet.value) || 0) * (Number(pet.quantity) || 1),
                     0
@@ -2910,11 +2908,11 @@
 
                         <div class="coinflip-play-wagers">
                             <div class="coinflip-play-wager${creatorWon ? " winner-wager" : ""}">
-                                <div>${creatorPets.slice(0, 4).map(renderPet).join("")}</div>
+                                <div>${creatorPets.map(renderPet).join("")}</div>
                                 <strong>💎 ${formatValue(creatorValue)}</strong>
                             </div>
                             <div class="coinflip-play-wager${!creatorWon ? " winner-wager" : ""}">
-                                <div>${(joinerPets || []).slice(0, 4).map(renderPet).join("")}</div>
+                                <div>${expandedJoinerPets.map(renderPet).join("")}</div>
                                 <strong>💎 ${formatValue(joinerValue)}</strong>
                             </div>
                         </div>
