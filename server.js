@@ -3,6 +3,7 @@ const http = require("http");
 const path = require("path");
 const crypto = require("crypto");
 const session = require("express-session");
+const pgSession = require("connect-pg-simple")(session);
 const { Server } = require("socket.io");
 require("dotenv").config();
 
@@ -48,20 +49,33 @@ app.use(
     )
 );
 
+// Trust Railway's reverse proxy so secure cookies work correctly in production.
+app.set("trust proxy", 1);
+
+// Store sessions in PostgreSQL instead of Express's in-memory store.
+// This keeps users logged in when the server restarts or redeploys.
 const sessionMiddleware =
     session({
-        secret:
-            process.env.SESSION_SECRET ||
-            "development-secret",
+        store: new pgSession({
+            pool,
+            tableName: "user_sessions",
+            createTableIfMissing: true
+        }),
+
+        secret: process.env.SESSION_SECRET,
 
         resave: false,
 
         saveUninitialized: false,
 
+        rolling: true,
+
         cookie: {
             httpOnly: true,
 
-            secure: false,
+            secure: process.env.NODE_ENV === "production",
+
+            sameSite: "lax",
 
             maxAge:
                 1000 *
