@@ -557,18 +557,31 @@
 
     <div class="giveaway-modal" id="giveawayModal" hidden>
         <div class="giveaway-modal-overlay" id="giveawayModalOverlay"></div>
-        <section class="giveaway-modal-panel" role="dialog" aria-modal="true" aria-labelledby="giveawayModalTitle">
-            <button type="button" class="giveaway-close" id="giveawayClose">×</button>
-            <span class="coinflip-modal-label">COMMUNITY EVENT</span>
-            <h2 id="giveawayModalTitle">Create Giveaway</h2>
-            <p>Choose one available pet and how long the giveaway should run.</p>
-            <label>Choose a pet from your inventory</label>
-            <div id="giveawayPetGrid" class="giveaway-pet-grid" aria-label="Giveaway pet inventory"><div class="giveaway-loading">Loading inventory...</div></div>
+        <section class="giveaway-modal-panel giveaway-inventory-panel" role="dialog" aria-modal="true" aria-labelledby="giveawayModalTitle">
+            <div class="giveaway-inventory-header">
+                <div>
+                    <span class="coinflip-modal-label">COMMUNITY EVENT</span>
+                    <h2 id="giveawayModalTitle">Create Giveaway</h2>
+                    <p>Select one pet from your inventory to give away.</p>
+                </div>
+                <button type="button" class="giveaway-close" id="giveawayClose" aria-label="Close giveaway">×</button>
+            </div>
+            <div class="giveaway-inventory-summary">
+                <div><span>Available pets</span><strong id="giveawayAvailableCount">0</strong></div>
+                <div><span>Selected</span><strong id="giveawaySelectedCount">0 / 1</strong></div>
+            </div>
+            <div class="giveaway-inventory-section-heading">
+                <div><h3>Your Inventory</h3><p>Choose the pet you want to give away.</p></div>
+                <span class="giveaway-selection-hint">1 pet maximum</span>
+            </div>
+            <div id="giveawayPetGrid" class="giveaway-pet-grid giveaway-inventory-grid" aria-label="Giveaway pet inventory"><div class="giveaway-loading">Loading inventory...</div></div>
             <input type="hidden" id="giveawayPet" value="">
-            <label for="giveawayDuration">Duration</label>
-            <select id="giveawayDuration"><option value="30">30 seconds</option><option value="60">1 minute</option><option value="120">2 minutes</option><option value="180">3 minutes</option><option value="240">4 minutes</option><option value="300">5 minutes</option><option value="360">6 minutes</option><option value="420">7 minutes</option><option value="480">8 minutes</option><option value="540">9 minutes</option><option value="600">10 minutes</option></select>
+            <div class="giveaway-options-row">
+                <div class="giveaway-duration-field"><label for="giveawayDuration">Duration</label><select id="giveawayDuration"><option value="30">30 seconds</option><option value="60">1 minute</option><option value="120">2 minutes</option><option value="180">3 minutes</option><option value="240">4 minutes</option><option value="300">5 minutes</option><option value="360">6 minutes</option><option value="420">7 minutes</option><option value="480">8 minutes</option><option value="540">9 minutes</option><option value="600">10 minutes</option></select></div>
+                <div class="giveaway-selected-preview" id="giveawaySelectedPreview">No pet selected</div>
+            </div>
             <p class="giveaway-eligibility-note">Entrants must have completed a game in the last 24 hours.</p>
-            <button type="button" class="primary-button" id="submitGiveaway">Create Giveaway</button>
+            <div class="giveaway-inventory-actions"><button type="button" class="giveaway-create-button" id="submitGiveaway" disabled><span>🎁</span><span><strong>Create Giveaway</strong><small>Lock the selected pet and publish the event</small></span></button></div>
             <p class="giveaway-form-status" id="giveawayFormStatus" role="status"></p>
         </section>
     </div>
@@ -3393,13 +3406,18 @@
   const giveawayBox=document.getElementById('chatGiveaways');
   const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const money=(v)=>Number(v||0).toLocaleString();
+  const availableCount=document.getElementById('giveawayAvailableCount');
+  const selectedCount=document.getElementById('giveawaySelectedCount');
+  const selectedPreview=document.getElementById('giveawaySelectedPreview');
+  let selectedPet=null;
+  function syncSelection(){ const has=!!petSelect.value; selectedCount.textContent=has?'1 / 1':'0 / 1'; selectedPreview.textContent=selectedPet?`${selectedPet.name}${selectedPet.form?' · '+selectedPet.form:''} · 💎 ${money(selectedPet.value)}`:'No pet selected'; submit.disabled=!has; }
   function open(){ modal.hidden=false; loadInventory(); }
   function close(){ modal.hidden=true; status.textContent=''; }
   menuButton?.addEventListener('click',open); closeButton?.addEventListener('click',close); overlay?.addEventListener('click',close);
   const petGrid=document.getElementById('giveawayPetGrid');
   async function loadInventory(){
     petGrid.innerHTML='<div class="giveaway-loading">Loading inventory...</div>';
-    petSelect.value='';
+    petSelect.value=''; selectedPet=null; syncSelection();
     try {
       const r=await fetch('/api/inventory');
       const text=await r.text();
@@ -3407,15 +3425,17 @@
       if(!r.ok) throw new Error(d.message||'Unable to load inventory.');
       const items=(d.inventory?.items||[]).flatMap(item=>Array.from({length:Number(item.quantity||0)},(_,i)=>({...item,unit:i+1})));
       petGrid.innerHTML='';
+      availableCount.textContent=items.length;
       if(!items.length){ petGrid.innerHTML='<div class="giveaway-loading">No available pets.</div>'; return; }
       items.forEach(item=>{
-        const card=document.createElement('button'); card.type='button'; card.className='giveaway-pet-option'; card.dataset.inventoryId=item.id;
+        const card=document.createElement('button'); card.type='button'; card.className='giveaway-pet-option'; card.dataset.inventoryId=item.id; card.setAttribute('aria-pressed','false');
         const image=item.image?`<img src="${esc(item.image)}" alt="${esc(item.name)}" loading="lazy">`:'<div class="giveaway-pet-placeholder">🐾</div>';
         card.innerHTML=`${image}<span class="giveaway-pet-option-name">${esc(item.name)}${item.form?' · '+esc(item.form):''}</span><span class="giveaway-pet-option-value">${money(item.value)}${item.quantity>1?' · #'+item.unit:''}</span>`;
-        card.addEventListener('click',()=>{ petGrid.querySelectorAll('.giveaway-pet-option').forEach(x=>x.classList.remove('selected')); card.classList.add('selected'); petSelect.value=item.id; });
+        card.addEventListener('click',()=>{ petGrid.querySelectorAll('.giveaway-pet-option').forEach(x=>{x.classList.remove('selected');x.setAttribute('aria-pressed','false');}); card.classList.add('selected'); card.setAttribute('aria-pressed','true'); petSelect.value=item.id; selectedPet=item; syncSelection(); });
         petGrid.appendChild(card);
       });
-    } catch(e){ petGrid.innerHTML='<div class="giveaway-loading">Unable to load inventory.</div>'; status.textContent=e.message||'Unable to load inventory.'; }
+    } catch(e){ availableCount.textContent='0'; petGrid.innerHTML='<div class="giveaway-loading">Unable to load inventory.</div>'; status.textContent=e.message||'Unable to load inventory.'; }
+    syncSelection();
   }
   submit?.addEventListener('click',async()=>{
     if(!petSelect.value) return status.textContent='Select a pet first.'; submit.disabled=true; submit.textContent='Creating...';
