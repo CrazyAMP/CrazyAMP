@@ -5767,3 +5767,17 @@ body {
 .giveaway-pet-option-value{font-size:10px;color:#c4b5fd}
 .giveaway-loading{grid-column:1/-1;padding:22px;text-align:center;color:#a1a1aa;font-size:12px}
 @media(max-width:600px){.giveaway-pet-grid{grid-template-columns:repeat(3,minmax(0,1fr));max-height:260px}.giveaway-pet-option{padding:8px 4px}.giveaway-pet-option img,.giveaway-pet-placeholder{width:48px;height:48px}}
+
+/* Giveaway card refresh: live timer, pet thumbnail and structured details */
+.chat-giveaways{gap:10px;padding:10px 12px 0}
+.chat-giveaway-card{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid rgba(168,85,247,.42);border-radius:16px;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(15,23,42,.82));box-shadow:0 8px 24px rgba(0,0,0,.16);min-width:0}
+.chat-giveaway-pet-image{width:58px;height:58px;flex:0 0 58px;object-fit:contain;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(15,23,42,.7);padding:5px}
+.chat-giveaway-pet-placeholder{display:grid;place-items:center;font-size:27px}
+.chat-giveaway-main{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.chat-giveaway-main strong.chat-giveaway-timer{font-size:14px;line-height:1.35;color:#fff;font-weight:900}
+.chat-giveaway-main span{font-size:12px;line-height:1.35;color:var(--muted-text,#a1a1aa);overflow-wrap:anywhere}
+.chat-giveaway-entrants{margin-top:2px;color:#c4b5fd!important;font-weight:700}
+.chat-giveaway-join{border:1px solid rgba(196,181,253,.75);background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:white;border-radius:10px;padding:10px 16px;font-weight:900;cursor:pointer;flex:0 0 auto;transition:transform .15s ease,filter .15s ease}
+.chat-giveaway-join:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.chat-giveaway-join:disabled{opacity:.55;cursor:wait;transform:none}
+@media(max-width:600px){.chat-giveaway-card{align-items:center;padding:10px;gap:9px}.chat-giveaway-pet-image{width:48px;height:48px;flex-basis:48px}.chat-giveaway-main strong.chat-giveaway-timer{font-size:12px}.chat-giveaway-main span{font-size:10px}.chat-giveaway-join{padding:8px 10px;font-size:12px}}

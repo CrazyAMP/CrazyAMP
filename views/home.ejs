@@ -3422,12 +3422,61 @@
     try { const r=await fetch('/api/giveaways',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({inventoryId:petSelect.value,durationSeconds:Number(durationSelect.value)})}); const text=await r.text(); let d; try{d=JSON.parse(text);}catch{throw new Error(r.ok?'The server returned an invalid response.':'The server returned an unexpected page. Check that the giveaway route is deployed.');} if(!r.ok) throw new Error(d.message||'Could not create giveaway.'); close(); await loadGiveaways(); }
     catch(e){ status.textContent=e.message||'Could not create giveaway.'; } finally { submit.disabled=false; submit.textContent='Create Giveaway'; }
   });
-  function remaining(end){ const ms=new Date(end)-Date.now(); if(ms<=0)return 'Ended'; const m=Math.ceil(ms/60000); if(m<60)return m+'m left'; const h=Math.floor(m/60), mins=m%60; return h+'h'+(mins?' '+mins+'m':'')+' left'; }
-  function renderGiveaways(items){ giveawayBox.innerHTML=items.map(g=>`<article class="chat-giveaway-card"><div class="chat-giveaway-icon">🎁</div><div class="chat-giveaway-main"><strong>${esc(g.roblox_username)} is giving away ${esc(g.item_name)}</strong><span>${money(g.item_value)} value · ${esc(remaining(g.ends_at))} · ${g.entrant_count||0} joined</span></div><button type="button" data-giveaway-id="${esc(g.id)}" class="chat-giveaway-join">Join</button></article>`).join('');
-    giveawayBox.querySelectorAll('[data-giveaway-id]').forEach(b=>b.addEventListener('click',async()=>{b.disabled=true; try{const r=await fetch('/api/giveaways/'+encodeURIComponent(b.dataset.giveawayId)+'/join',{method:'POST'});const d=await r.json();if(!r.ok)alert(d.message||'Could not join.');else alert(d.message||'Joined!');await loadGiveaways();}catch(e){alert('Could not join giveaway.');}finally{b.disabled=false;}}));
+  function formatRemaining(end){
+    const seconds=Math.max(0,Math.ceil((new Date(end).getTime()-Date.now())/1000));
+    if(seconds<=0) return 'Ended';
+    if(seconds<60) return `${seconds} ${seconds===1?'Second':'Seconds'}`;
+    const minutes=Math.floor(seconds/60);
+    const remainder=seconds%60;
+    const minuteLabel=`${minutes} ${minutes===1?'Minute':'Minutes'}`;
+    return remainder ? `${minuteLabel} ${remainder} ${remainder===1?'Second':'Seconds'}` : minuteLabel;
   }
-  async function loadGiveaways(){try{const r=await fetch('/api/giveaways');const d=await r.json();if(r.ok)renderGiveaways(d.giveaways||[]);}catch(e){}}
-  loadGiveaways(); setInterval(loadGiveaways,30000);
+  function updateGiveawayTimers(){
+    giveawayBox.querySelectorAll('[data-giveaway-end]').forEach(label=>{
+      label.textContent=`Giveaway - ${formatRemaining(label.dataset.giveawayEnd)}`;
+    });
+  }
+  function renderGiveaways(items){
+    giveawayBox.innerHTML=items.map(g=>{
+      const image=g.item_image
+        ? `<img class="chat-giveaway-pet-image" src="${esc(g.item_image)}" alt="${esc(g.item_name)}" loading="lazy">`
+        : '<div class="chat-giveaway-pet-image chat-giveaway-pet-placeholder">🐾</div>';
+      return `<article class="chat-giveaway-card">
+        ${image}
+        <div class="chat-giveaway-main">
+          <strong class="chat-giveaway-timer" data-giveaway-end="${esc(g.ends_at)}">Giveaway - ${esc(formatRemaining(g.ends_at))}</strong>
+          <span>Pet: ${esc(g.item_name)}${g.form ? ` · ${esc(g.form)}` : ''}</span>
+          <span>Value: ${money(g.item_value)}</span>
+          <span>Host: ${esc(g.roblox_username)}</span>
+          <span class="chat-giveaway-entrants">${g.entrant_count||0} joined</span>
+        </div>
+        <button type="button" data-giveaway-id="${esc(g.id)}" class="chat-giveaway-join">Join</button>
+      </article>`;
+    }).join('');
+    updateGiveawayTimers();
+    giveawayBox.querySelectorAll('[data-giveaway-id]').forEach(b=>b.addEventListener('click',async()=>{
+      b.disabled=true;
+      try{
+        const r=await fetch('/api/giveaways/'+encodeURIComponent(b.dataset.giveawayId)+'/join',{method:'POST'});
+        const text=await r.text(); let d;
+        try{d=JSON.parse(text);}catch{throw new Error('The server returned an invalid response.');}
+        if(!r.ok) alert(d.message||'Could not join.'); else alert(d.message||'Joined!');
+        await loadGiveaways();
+      }catch(e){alert(e.message||'Could not join giveaway.');}
+      finally{b.disabled=false;}
+    }));
+  }
+  async function loadGiveaways(){
+    try{
+      const r=await fetch('/api/giveaways');
+      const text=await r.text(); let d;
+      try{d=JSON.parse(text);}catch{return;}
+      if(r.ok) renderGiveaways(d.giveaways||[]);
+    }catch(e){}
+  }
+  loadGiveaways();
+  setInterval(updateGiveawayTimers,1000);
+  setInterval(loadGiveaways,10000);
 })();
 </script>
 </body>
