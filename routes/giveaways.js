@@ -50,8 +50,8 @@ router.get('/', requireUser, async (req,res) => {
 router.post('/', requireUser, async (req,res) => {
   const ownerId = userId(req);
   const inventoryId = String(req.body.inventoryId || '');
-  const durationMinutes = Number(req.body.durationMinutes);
-  if (!inventoryId || !Number.isInteger(durationMinutes) || durationMinutes < 1 || durationMinutes > 10080) return res.status(400).json({success:false,message:'Choose a pet and a duration between 1 minute and 7 days.'});
+  const durationSeconds = Number(req.body.durationSeconds);
+  if (!inventoryId || !Number.isInteger(durationSeconds) || durationSeconds < 30 || durationSeconds > 600) return res.status(400).json({success:false,message:'Choose a pet and a duration between 30 seconds and 10 minutes.'});
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -67,7 +67,7 @@ router.post('/', requireUser, async (req,res) => {
     const pet=row.rows[0];
     if (Number(pet.quantity)-Number(pet.locked_quantity) < 1) throw new Error('That pet is already locked.');
     const id=crypto.randomUUID();
-    const endsAt=new Date(Date.now()+durationMinutes*60000);
+    const endsAt=new Date(Date.now()+durationSeconds*1000);
     await client.query('UPDATE inventory SET locked_quantity=locked_quantity+1 WHERE id=$1',[inventoryId]);
     await client.query(`INSERT INTO giveaways (id,user_id,inventory_id,item_name,item_value,item_image,form,fly,ride,ends_at,status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'active')`,[id,ownerId,inventoryId,pet.name,pet.value,pet.image,pet.form,pet.fly,pet.ride,endsAt]);
     await client.query('COMMIT');

@@ -562,10 +562,11 @@
             <span class="coinflip-modal-label">COMMUNITY EVENT</span>
             <h2 id="giveawayModalTitle">Create Giveaway</h2>
             <p>Choose one available pet and how long the giveaway should run.</p>
-            <label for="giveawayPet">Pet to giveaway</label>
-            <select id="giveawayPet"><option value="">Loading inventory...</option></select>
+            <label>Choose a pet from your inventory</label>
+            <div id="giveawayPetGrid" class="giveaway-pet-grid" aria-label="Giveaway pet inventory"><div class="giveaway-loading">Loading inventory...</div></div>
+            <input type="hidden" id="giveawayPet" value="">
             <label for="giveawayDuration">Duration</label>
-            <select id="giveawayDuration"><option value="10">10 minutes</option><option value="30">30 minutes</option><option value="60">1 hour</option><option value="360">6 hours</option><option value="1440">24 hours</option><option value="10080">7 days</option></select>
+            <select id="giveawayDuration"><option value="30">30 seconds</option><option value="60">1 minute</option><option value="120">2 minutes</option><option value="180">3 minutes</option><option value="240">4 minutes</option><option value="300">5 minutes</option><option value="360">6 minutes</option><option value="420">7 minutes</option><option value="480">8 minutes</option><option value="540">9 minutes</option><option value="600">10 minutes</option></select>
             <p class="giveaway-eligibility-note">Entrants must have completed a game in the last 24 hours.</p>
             <button type="button" class="primary-button" id="submitGiveaway">Create Giveaway</button>
             <p class="giveaway-form-status" id="giveawayFormStatus" role="status"></p>
@@ -3395,17 +3396,30 @@
   function open(){ modal.hidden=false; loadInventory(); }
   function close(){ modal.hidden=true; status.textContent=''; }
   menuButton?.addEventListener('click',open); closeButton?.addEventListener('click',close); overlay?.addEventListener('click',close);
+  const petGrid=document.getElementById('giveawayPetGrid');
   async function loadInventory(){
-    petSelect.innerHTML='<option>Loading inventory...</option>';
-    try { const r=await fetch('/api/inventory'); const d=await r.json(); if(!r.ok) throw new Error(d.message);
+    petGrid.innerHTML='<div class="giveaway-loading">Loading inventory...</div>';
+    petSelect.value='';
+    try {
+      const r=await fetch('/api/inventory');
+      const text=await r.text();
+      let d; try { d=JSON.parse(text); } catch { throw new Error(r.ok?'The inventory response was invalid.':'Your session may have expired. Please refresh and log in again.'); }
+      if(!r.ok) throw new Error(d.message||'Unable to load inventory.');
       const items=(d.inventory?.items||[]).flatMap(item=>Array.from({length:Number(item.quantity||0)},(_,i)=>({...item,unit:i+1})));
-      petSelect.innerHTML=items.length?'<option value="">Select a pet</option>':'<option value="">No available pets</option>';
-      items.forEach(item=>{ const o=document.createElement('option'); o.value=item.id; o.textContent=`${item.name}${item.form?' · '+item.form:''}${item.fly?' · Fly':''}${item.ride?' · Ride':''} — ${money(item.value)}${item.quantity>1?' #'+item.unit:''}`; petSelect.appendChild(o); });
-    } catch(e){ petSelect.innerHTML='<option value="">Unable to load inventory</option>'; status.textContent=e.message||'Unable to load inventory.'; }
+      petGrid.innerHTML='';
+      if(!items.length){ petGrid.innerHTML='<div class="giveaway-loading">No available pets.</div>'; return; }
+      items.forEach(item=>{
+        const card=document.createElement('button'); card.type='button'; card.className='giveaway-pet-option'; card.dataset.inventoryId=item.id;
+        const image=item.image?`<img src="${esc(item.image)}" alt="${esc(item.name)}" loading="lazy">`:'<div class="giveaway-pet-placeholder">🐾</div>';
+        card.innerHTML=`${image}<span class="giveaway-pet-option-name">${esc(item.name)}${item.form?' · '+esc(item.form):''}</span><span class="giveaway-pet-option-value">${money(item.value)}${item.quantity>1?' · #'+item.unit:''}</span>`;
+        card.addEventListener('click',()=>{ petGrid.querySelectorAll('.giveaway-pet-option').forEach(x=>x.classList.remove('selected')); card.classList.add('selected'); petSelect.value=item.id; });
+        petGrid.appendChild(card);
+      });
+    } catch(e){ petGrid.innerHTML='<div class="giveaway-loading">Unable to load inventory.</div>'; status.textContent=e.message||'Unable to load inventory.'; }
   }
   submit?.addEventListener('click',async()=>{
     if(!petSelect.value) return status.textContent='Select a pet first.'; submit.disabled=true; submit.textContent='Creating...';
-    try { const r=await fetch('/api/giveaways',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({inventoryId:petSelect.value,durationMinutes:Number(durationSelect.value)})}); const d=await r.json(); if(!r.ok) throw new Error(d.message); close(); await loadGiveaways(); }
+    try { const r=await fetch('/api/giveaways',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({inventoryId:petSelect.value,durationSeconds:Number(durationSelect.value)})}); const text=await r.text(); let d; try{d=JSON.parse(text);}catch{throw new Error(r.ok?'The server returned an invalid response.':'The server returned an unexpected page. Check that the giveaway route is deployed.');} if(!r.ok) throw new Error(d.message||'Could not create giveaway.'); close(); await loadGiveaways(); }
     catch(e){ status.textContent=e.message||'Could not create giveaway.'; } finally { submit.disabled=false; submit.textContent='Create Giveaway'; }
   });
   function remaining(end){ const ms=new Date(end)-Date.now(); if(ms<=0)return 'Ended'; const m=Math.ceil(ms/60000); if(m<60)return m+'m left'; const h=Math.floor(m/60), mins=m%60; return h+'h'+(mins?' '+mins+'m':'')+' left'; }

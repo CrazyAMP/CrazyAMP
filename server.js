@@ -352,6 +352,11 @@ app.use(
     coinflipRoutes
 );
 
+app.use(
+    "/api/giveaways",
+    giveawayRoutes
+);
+
 app.use("/api/admin", adminRoutes);
 app.use("/", accountRoutes);
 
