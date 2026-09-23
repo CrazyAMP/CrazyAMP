@@ -2928,7 +2928,7 @@
                             <div
                                 id="coinflipAnimationCoin"
                                 class="coinflip-animation-coin coinflip-result-pending"
-                                style="transform: rotateY(${finalResult === "tails" ? "180deg" : "0deg"});"
+                                style="--coin-final-rotation: ${finalRotation};"
                             >
                                 <div class="coinflip-animation-face coinflip-animation-heads">
                                     <img
@@ -3009,7 +3009,11 @@
                     }
 
                     const coin = document.getElementById("coinflipAnimationCoin");
-                    if (coin) coin.classList.remove("coinflip-result-pending");
+                    if (coin) {
+                        coin.classList.remove("coinflip-result-pending", "is-flipping");
+                        coin.style.setProperty("--coin-final-rotation", finalRotation);
+                        coin.style.transform = `rotateY(${finalResult === "tails" ? "180deg" : "0deg"})`;
+                    }
 
                     const title =
                         document.getElementById("coinflipGameTitle");
@@ -3029,6 +3033,17 @@
                 /* The outcome is settled first; the UI only reveals it after five seconds. */
                 let secondsRemaining = 5;
                 if (countdownLabel) countdownLabel.textContent = String(secondsRemaining);
+
+                const coin = document.getElementById("coinflipAnimationCoin");
+                if (coin) {
+                    coin.style.setProperty("--coin-final-rotation", finalRotation);
+                    // Wait one frame so the browser reliably transitions from the
+                    // hidden question mark state into the real flip animation.
+                    window.requestAnimationFrame(() => {
+                        coin.classList.remove("coinflip-result-pending");
+                        coin.classList.add("is-flipping");
+                    });
+                }
 
                 const countdown = window.setInterval(() => {
                     secondsRemaining -= 1;
