@@ -3161,10 +3161,25 @@
                 ? match.pets
                 : [];
 
-            const petList = pets.length
-                ? pets.map((pet) => {
+            // Render every quantity as an individual pet card.
+            // The API stores the combined value in pet.value, so divide it
+            // by the quantity to show the value of each individual pet.
+            const individualPets = pets.flatMap((pet) => {
+                const quantity = Math.max(1, Number(pet.quantity) || 1);
+                const totalValue = Number(pet.value) || 0;
+                const valuePerPet = totalValue / quantity;
+
+                return Array.from({ length: quantity }, (_, index) => ({
+                    ...pet,
+                    individualIndex: index + 1,
+                    quantity: 1,
+                    value: valuePerPet
+                }));
+            });
+
+            const petList = individualPets.length
+                ? individualPets.map((pet) => {
                     const name = pet.name || "Wagered pet";
-                    const quantity = Math.max(1, Number(pet.quantity) || 1);
                     const image = pet.image
                         ? `<img src="${escapeAttribute(pet.image)}" alt="${escapeAttribute(name)}">`
                         : "<span>🐾</span>";
@@ -3191,7 +3206,7 @@
                             <div class="coinflip-game-pet-image">${image}</div>
                             <div>
                                 <strong>${escapeHtml(name)}</strong>
-                                <span class="coinflip-game-pet-meta">${quantity > 1 ? `Quantity ×${quantity} · ` : ""}💎 ${formatValue(pet.value)}</span>
+                                <span class="coinflip-game-pet-meta">💎 ${formatValue(pet.value)}</span>
                                 ${traits ? `<div class="coinflip-game-pet-traits">${traits}</div>` : ""}
                             </div>
                         </li>
@@ -3235,7 +3250,7 @@
                 </div>
                 <div class="coinflip-game-pets-heading">
                     <h3>💎 ${formatValue(wager)}</h3>
-                    <span>${pets.length} ${pets.length === 1 ? "pet" : "pets"}</span>
+                    <span>${individualPets.length} ${individualPets.length === 1 ? "pet" : "pets"}</span>
                 </div>
                 <div class="coinflip-game-wagers">
                     <ul class="coinflip-game-pets">${petList}</ul>
