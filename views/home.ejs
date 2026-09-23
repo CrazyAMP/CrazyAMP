@@ -601,6 +601,12 @@
             </div>
 
 
+            <div class="coinflip-max-pets-setting">
+                <label for="coinflipMaxJoinPets">Maximum pets the joiner can use</label>
+                <input type="number" id="coinflipMaxJoinPets" min="1" max="100" value="3" inputmode="numeric">
+                <small>Example: 3 means the opponent can join with up to 3 pets total.</small>
+            </div>
+
             <!-- SIDE SELECTION -->
 
             <div
@@ -1084,6 +1090,9 @@
         const coinflipTailsButton =
             document.getElementById("coinflipTailsButton");
 
+        const coinflipMaxJoinPets =
+            document.getElementById("coinflipMaxJoinPets");
+
         const openMatchesCount =
             document.getElementById("openMatchesCount");
 
@@ -1238,6 +1247,8 @@
 
             coinflipSelectedSide =
                 null;
+
+            if (coinflipMaxJoinPets) coinflipMaxJoinPets.value = "3";
 
             updateSideSelection();
 
@@ -1849,6 +1860,14 @@
                     }
 
 
+                    const maxJoinPets = Number(coinflipMaxJoinPets?.value);
+
+                    if (!Number.isInteger(maxJoinPets) || maxJoinPets < 1 || maxJoinPets > 100) {
+                        showToast("Choose a maximum of 1 to 100 pets.", "error");
+                        return;
+                    }
+
+
                     coinflipConfirmButton.disabled =
                         true;
 
@@ -1890,7 +1909,8 @@
                                             items,
 
                                             creatorChoice:
-                                                coinflipSelectedSide
+                                                coinflipSelectedSide,
+                                            maxJoinPets
                                         })
                                 }
                             );
@@ -2745,7 +2765,12 @@
                     const card = button.closest(".coinflip-join-pet");
                     const item = joinInventoryItems.find((entry) => String(entry.id) === card.dataset.inventoryId);
                     if (!item) return;
-                    const next = Math.max(0, Math.min(Number(item.quantity) || 1, (Number(selectedJoinItems.get(String(item.id))) || 0) + Number(button.dataset.change)));
+                    const current = Number(selectedJoinItems.get(String(item.id))) || 0;
+                    const proposed = current + Number(button.dataset.change);
+                    const selectedPetCount = Array.from(selectedJoinItems.values()).reduce((total, quantity) => total + (Number(quantity) || 0), 0);
+                    const maxJoinPets = Number(joiningMatch?.max_join_pets) || 0;
+                    if (Number(button.dataset.change) > 0 && maxJoinPets > 0 && selectedPetCount >= maxJoinPets) return;
+                    const next = Math.max(0, Math.min(Number(item.quantity) || 1, proposed));
                     selectedJoinItems.set(String(item.id), next);
                     renderJoinInventory();
                     updateJoinSummary();
@@ -2761,6 +2786,13 @@
             const minimum = Number(joiningMatch?.min_join_value) || 0;
             const maximum = Number(joiningMatch?.max_join_value) || 0;
 
+            if (coinflipJoinRangeText) {
+                const maxPets = Number(joiningMatch?.max_join_pets) || 0;
+                coinflipJoinRangeText.textContent = maxPets > 0
+                    ? `Wager ${formatValue(minimum)} - ${formatValue(maximum)} · Maximum ${maxPets} pets`
+                    : `Wager ${formatValue(minimum)} - ${formatValue(maximum)}`;
+            }
+
             if (coinflipJoinValue) {
                 coinflipJoinValue.textContent = `💎 ${formatValue(value)}`;
             }
@@ -2772,11 +2804,15 @@
                 coinflipJoinPayout.textContent = `💎 ${formatValue(totalPot - tax)}`;
             }
 
+            const selectedPetCount = Array.from(selectedJoinItems.values()).reduce((total, quantity) => total + (Number(quantity) || 0), 0);
+            const maxJoinPets = Number(joiningMatch?.max_join_pets) || 0;
+
             if (coinflipJoinConfirm) {
                 coinflipJoinConfirm.disabled =
                     !Array.from(selectedJoinItems.values()).some((quantity) => quantity > 0) ||
                     value < minimum ||
-                    value > maximum;
+                    value > maximum ||
+                    (maxJoinPets > 0 && selectedPetCount > maxJoinPets);
             }
 
         }
@@ -2908,8 +2944,12 @@
 
                 selectedJoinItems = new Map();
                 if (!allSelected) {
+                    let remaining = Number(joiningMatch?.max_join_pets) || Infinity;
                     joinInventoryItems.forEach((item) => {
-                        selectedJoinItems.set(String(item.id), Number(item.quantity) || 1);
+                        if (remaining <= 0) return;
+                        const quantity = Math.min(Number(item.quantity) || 1, remaining);
+                        selectedJoinItems.set(String(item.id), quantity);
+                        remaining -= quantity;
                     });
                 }
 

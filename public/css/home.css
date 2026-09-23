@@ -5158,3 +5158,32 @@ body.coinflip-game-modal-open {
         transform: none;
     }
 }
+
+
+.coinflip-max-pets-setting {
+    display: grid;
+    gap: 6px;
+    margin: 18px 0;
+    padding: 14px;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 14px;
+    background: rgba(15, 23, 42, 0.45);
+}
+
+.coinflip-max-pets-setting label {
+    font-weight: 700;
+}
+
+.coinflip-max-pets-setting input {
+    width: 100%;
+    max-width: 180px;
+    padding: 10px 12px;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 10px;
+    background: rgba(2, 6, 23, 0.65);
+    color: inherit;
+}
+
+.coinflip-max-pets-setting small {
+    color: #94a3b8;
+}

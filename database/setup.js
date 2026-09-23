@@ -235,6 +235,13 @@ async function setupDatabase() {
         `);
 
 
+        await client.query(`
+            ALTER TABLE coinflip_matches
+            ADD COLUMN IF NOT EXISTS max_join_pets
+            INTEGER NOT NULL DEFAULT 0;
+        `);
+
+
         /*
         ==========================================
         MAKE SURE CHOICE CONSTRAINTS EXIST

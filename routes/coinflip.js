@@ -52,6 +52,7 @@ router.get("/", async (req, res) => {
 
                 cm.min_join_value,
                 cm.max_join_value,
+                cm.max_join_pets,
 
                 cm.creator_choice,
                 cm.status,
@@ -138,13 +139,27 @@ router.post("/create", async (req, res) => {
 
     const {
         items,
-        creatorChoice
+        creatorChoice,
+        maxJoinPets
     } = req.body;
 
     if (!Array.isArray(items) || items.length === 0) {
         return res.status(400).json({
             success: false,
             error: "Please select at least one pet."
+        });
+    }
+
+    const parsedMaxJoinPets = Number(maxJoinPets);
+
+    if (
+        !Number.isInteger(parsedMaxJoinPets) ||
+        parsedMaxJoinPets < 1 ||
+        parsedMaxJoinPets > 100
+    ) {
+        return res.status(400).json({
+            success: false,
+            error: "Choose a maximum of 1 to 100 pets for the joiner."
         });
     }
 
@@ -371,6 +386,7 @@ router.post("/create", async (req, res) => {
 
                 min_join_value,
                 max_join_value,
+                max_join_pets,
 
                 creator_choice,
 
@@ -393,8 +409,9 @@ router.post("/create", async (req, res) => {
 
                 $8,
                 $9,
-
                 $10,
+
+                $11,
 
                 'open',
                 CURRENT_TIMESTAMP
@@ -413,6 +430,7 @@ router.post("/create", async (req, res) => {
 
                 minJoinValue,
                 maxJoinValue,
+                parsedMaxJoinPets,
 
                 creatorChoice
             ]
@@ -470,6 +488,7 @@ router.post("/create", async (req, res) => {
                 creatorValue,
                 minJoinValue,
                 maxJoinValue,
+                maxJoinPets: parsedMaxJoinPets,
                 creatorChoice,
                 status: "open"
             }
@@ -587,6 +606,17 @@ router.post("/:matchId/join", async (req, res) => {
 
         const inventoryIds =
             Array.from(requestedItems.keys());
+
+        const requestedPetCount = Array.from(requestedItems.values())
+            .reduce((total, quantity) => total + quantity, 0);
+
+        const maxJoinPets = Number(match.max_join_pets) || 0;
+
+        if (maxJoinPets > 0 && requestedPetCount > maxJoinPets) {
+            throw new Error(
+                `This match allows a maximum of ${maxJoinPets} pets.`
+            );
+        }
 
         /*
          * Lock joiner's inventory rows.
