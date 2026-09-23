@@ -229,10 +229,11 @@ io.on("connection", async (socket) => {
 
         const history = await pool.query(
             `
-            SELECT id, username, message, created_at
+            SELECT id, username, message, created_at, avatar_url
             FROM (
-                SELECT id, username, message, created_at
-                FROM chat_messages
+                SELECT cm.id, cm.username, cm.message, cm.created_at, u.avatar_url
+                FROM chat_messages cm
+                JOIN users u ON u.id = cm.user_id
                 ORDER BY created_at DESC
                 LIMIT $1
             ) recent_messages
@@ -248,7 +249,8 @@ io.on("connection", async (socket) => {
                 username: message.username,
                 message: message.message,
                 owner: isOwnerUsername(message.username),
-                createdAt: message.created_at
+                createdAt: message.created_at,
+                avatarUrl: message.avatar_url || ""
             }))
         );
 
@@ -309,13 +311,15 @@ io.on("connection", async (socket) => {
             );
 
             const row = savedMessage.rows[0];
+            const avatarUrl = user.avatar_url || user.avatar || user.avatarUrl || "";
 
             io.emit("chat:message", {
                 id: row.id,
                 username: row.username,
                 message: row.message,
                 owner: isOwnerUsername(row.username),
-                createdAt: row.created_at
+                createdAt: row.created_at,
+                avatarUrl
             });
 
         } catch (error) {

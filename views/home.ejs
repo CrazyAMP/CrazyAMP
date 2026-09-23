@@ -2448,6 +2448,11 @@
             const ownerClass = chatMessage.owner ? " chat-message-owner" : "";
             const username = String(chatMessage.username || "User");
             const initials = username.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "U";
+            const avatarUrl = String(chatMessage.avatarUrl || chatMessage.avatar_url || "").trim();
+            const avatarMarkup = avatarUrl
+                ? `<img src="${escapeChat(avatarUrl)}" alt="${escapeChat(username)} avatar" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;">`
+                : "";
+            const avatarFallback = `<span class="chat-avatar-fallback"${avatarUrl ? " hidden" : ""}>${escapeChat(initials)}</span>`;
             const crown = chatMessage.owner ? " <span class=\"chat-owner-crown\" aria-label=\"Owner\">👑</span>" : "";
             const createdAt = new Date(chatMessage.createdAt);
             const time = Number.isNaN(createdAt.getTime()) ? "" : createdAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -2456,7 +2461,7 @@
 
             message.className = `chat-message${ownerClass}`;
             message.innerHTML = `
-                <div class="chat-message-avatar" aria-hidden="true">${escapeChat(initials)}</div>
+                <div class="chat-message-avatar" aria-label="${escapeChat(username)} avatar">${avatarMarkup}${avatarFallback}</div>
                 <div class="chat-message-content">
                     <div class="chat-message-header">
                         <strong>${escapeChat(username)}${crown}</strong>
