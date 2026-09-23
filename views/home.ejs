@@ -1575,6 +1575,511 @@
            MATCH CARD
         =========================================== */
 
+        function getSelectedInventoryItems() {
+
+            return coinflipInventoryItems
+                .map((item, index) => ({
+                    ...item,
+                    quantity: Number(coinflipSelectedQuantities.get(getInventoryId(item, index))) || 0
+                }))
+                .filter((item) => item.quantity > 0);
+
+        }
+
+
+        function getSelectedWagerValue() {
+
+            return getSelectedInventoryItems()
+                .reduce(
+                    (total, item) => {
+
+                        const quantity =
+                            getItemQuantity(item);
+
+                        const value =
+                            getItemValue(item);
+
+                        return total +
+                            (value * quantity);
+
+                    },
+                    0
+                );
+
+        }
+
+
+        /* ==========================================
+           UPDATE SUMMARY
+        =========================================== */
+
+        function updateCoinflipSummary() {
+
+            const selectedItems =
+                getSelectedInventoryItems();
+
+
+            const selectedValue =
+                getSelectedWagerValue();
+
+
+            const selectedCount =
+                selectedItems.reduce(
+                    (total, item) =>
+                        total +
+                        getItemQuantity(item),
+                    0
+                );
+
+
+            if (coinflipSelectedCount) {
+
+                coinflipSelectedCount.textContent =
+                    formatValue(selectedCount);
+
+            }
+
+
+            if (coinflipSelectedValue) {
+
+                coinflipSelectedValue.textContent =
+                    `💎 ${formatValue(selectedValue)}`;
+
+            }
+
+
+            if (coinflipJoinRange) {
+
+                if (selectedValue > 0) {
+
+                    const minimum =
+                        Math.floor(
+                            selectedValue * 0.95
+                        );
+
+
+                    const maximum =
+                        Math.ceil(
+                            selectedValue * 1.05
+                        );
+
+
+                    coinflipJoinRange.textContent =
+                        `💎 ${formatValue(minimum)} - 💎 ${formatValue(maximum)}`;
+
+                } else {
+
+                    coinflipJoinRange.textContent =
+                        "💎 0 - 💎 0";
+
+                }
+
+            }
+
+
+            if (coinflipConfirmButton) {
+
+                coinflipConfirmButton.disabled =
+                    selectedItems.length === 0 ||
+                    !coinflipSelectedSide;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           CREATE MATCH
+        =========================================== */
+
+        if (coinflipConfirmButton) {
+
+            coinflipConfirmButton.addEventListener(
+                "click",
+                async () => {
+
+                    const selectedItems =
+                        getSelectedInventoryItems();
+
+
+                    if (!selectedItems.length) {
+
+                        showToast("Please select at least one pet.", "error");
+
+                        return;
+
+                    }
+
+
+                    if (!coinflipSelectedSide) {
+
+                        showToast("Please choose Heads or Tails.", "error");
+
+                        return;
+
+                    }
+
+
+                    const maxJoinPets = Number(coinflipMaxJoinPets?.value);
+
+                    if (!Number.isInteger(maxJoinPets) || maxJoinPets < 1 || maxJoinPets > 100) {
+                        showToast("Choose a maximum of 1 to 100 pets.", "error");
+                        return;
+                    }
+
+
+                    coinflipConfirmButton.disabled =
+                        true;
+
+                    coinflipConfirmButton.textContent =
+                        "Creating...";
+
+
+                    try {
+
+                        const items =
+                            selectedItems.map(
+                                (item) => ({
+
+                                    inventoryId:
+                                        item.inventory_id ||
+                                        item.inventoryId ||
+                                        item.id,
+
+                                    quantity:
+                                        getItemQuantity(item)
+
+                                })
+                            );
+
+
+                        const response =
+                            await fetch(
+                                "/api/coinflip/create",
+                                {
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body:
+                                        JSON.stringify({
+                                            items,
+
+                                            creatorChoice:
+                                                coinflipSelectedSide,
+                                            maxJoinPets
+                                        })
+                                }
+                            );
+
+
+                        const data =
+                            await response.json();
+
+
+                        if (
+                            !response.ok ||
+                            !data.success
+                        ) {
+
+                            throw new Error(
+                                data.error ||
+                                "Failed to create match."
+                            );
+
+                        }
+
+
+                        closeCoinflipModal();
+
+
+                        await loadCoinflipMatches();
+
+
+                        if (
+                            window.AdoptMeInventory &&
+                            typeof window.AdoptMeInventory.refresh ===
+                                "function"
+                        ) {
+
+                            await window.AdoptMeInventory.refresh();
+
+                        }
+
+
+                        showToast("Coinflip match created!");
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Create match error:",
+                            error
+                        );
+
+
+                        showToast(error.message || "Failed to create match.", "error");
+
+
+                    } finally {
+
+                        coinflipConfirmButton.disabled =
+                            false;
+
+                        coinflipConfirmButton.textContent =
+                            "Create Match";
+
+                        updateCoinflipSummary();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* ==========================================
+           LOAD MATCHES
+        =========================================== */
+
+        async function loadCoinflipMatches() {
+
+            if (!coinflipMatches) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/coinflip/"
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.error ||
+                        "Failed to load matches."
+                    );
+
+                }
+
+
+                const matches =
+                    Array.isArray(data.matches)
+                        ? data.matches
+                        : [];
+
+                loadedCoinflipMatches = matches;
+
+
+                updateCoinflipStats(matches);
+
+                renderCoinflipMatches(matches);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Coinflip matches error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* ==========================================
+           MATCH STATS
+        =========================================== */
+
+        function updateCoinflipStats(matches) {
+
+            if (openMatchesCount) {
+
+                openMatchesCount.textContent =
+                    matches.length;
+
+            }
+
+
+            const total =
+                matches.reduce(
+                    (sum, match) => {
+
+                        return sum +
+                            Number(
+                                match.creator_value ??
+                                match.creatorValue ??
+                                match.wager ??
+                                0
+                            );
+
+                    },
+                    0
+                );
+
+
+            if (totalWageredValue) {
+
+                totalWageredValue.textContent =
+                    `💎 ${formatValue(total)}`;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           RENDER MATCHES
+        =========================================== */
+
+        function renderCoinflipMatches(matches) {
+
+            if (!coinflipMatches) {
+                return;
+            }
+
+
+            if (!matches.length) {
+
+                coinflipMatches.innerHTML = `
+                    <div class="matches-empty">
+
+                        <div class="matches-empty-icon">
+                            🪙
+                        </div>
+
+                        <h3>
+                            No open matches
+                        </h3>
+
+                        <p>
+                            Create a match and be the first player to start a coinflip.
+                        </p>
+
+                        <button
+                            type="button"
+                            class="create-match-button empty-create-button"
+                            id="emptyCreateMatchButton"
+                        >
+
+                            <span>
+                                +
+                            </span>
+
+                            Create Match
+
+                        </button>
+
+                    </div>
+                `;
+
+
+                const button =
+                    document.getElementById(
+                        "emptyCreateMatchButton"
+                    );
+
+
+                if (button) {
+
+                    button.addEventListener(
+                        "click",
+                        openCoinflipModal
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            coinflipMatches.innerHTML =
+                matches
+                    .map(
+                        (match) =>
+                            renderMatchCard(match)
+                    )
+                    .join("");
+
+
+            coinflipMatches
+                .querySelectorAll(
+                    ".coinflip-cancel-match-button"
+                )
+                .forEach((button) => {
+
+                    button.addEventListener(
+                        "click",
+                        () =>
+                            cancelCoinflipMatch(
+                                button.dataset.matchId
+                            )
+                    );
+
+                });
+
+
+            coinflipMatches
+                .querySelectorAll(
+                    ".coinflip-view-match-button"
+                )
+                .forEach((button) => {
+
+                    button.addEventListener(
+                        "click",
+                        () => openGameView(
+                            button.dataset.matchId
+                        )
+                    );
+
+                });
+
+
+            coinflipMatches
+                .querySelectorAll(
+                    ".coinflip-join-match-button"
+                )
+                .forEach((button) => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            const matchId =
+                                button.dataset.matchId;
+
+                            openJoinMatch(matchId);
+
+                        }
+                    );
+
+                });
+
+        }
+
+
+        /* ==========================================
+           MATCH CARD
+        =========================================== */
+
         function renderMatchCard(match) {
 
             const creatorName =
