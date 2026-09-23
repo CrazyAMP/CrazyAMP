@@ -47,6 +47,24 @@
         const coinflipSelectAll =
             document.getElementById("coinflipSelectAll");
 
+        const coinflipInventorySearch =
+            document.getElementById("coinflipInventorySearch");
+
+        const coinflipInventorySort =
+            document.getElementById("coinflipInventorySort");
+
+        const coinflipInventoryFilter =
+            document.getElementById("coinflipInventoryFilter");
+
+        const coinflipToolbarSelectedValue =
+            document.getElementById("coinflipToolbarSelectedValue");
+
+        const coinflipToolbarInventoryValue =
+            document.getElementById("coinflipToolbarInventoryValue");
+
+        const coinflipToolbarInventoryCount =
+            document.getElementById("coinflipToolbarInventoryCount");
+
         const coinflipSelectedCount =
             document.getElementById("coinflipSelectedCount");
 
@@ -490,6 +508,44 @@
         function renderCoinflipInventory() {
             if (!coinflipInventory) return;
 
+            const search = String(coinflipInventorySearch?.value || "").trim().toLowerCase();
+            const sort = coinflipInventorySort?.value || "value-desc";
+            const filter = coinflipInventoryFilter?.value || "all";
+
+            const filteredItems = coinflipInventoryItems
+                .map((item, index) => ({ item, index }))
+                .filter(({ item, index }) => {
+                    const id = getInventoryId(item, index);
+                    const selected = Number(coinflipSelectedQuantities.get(id)) || 0;
+                    const name = String(item.name || "Unknown Pet").toLowerCase();
+                    const matchesSearch = !search || name.includes(search);
+                    const matchesFilter = filter === "all" ||
+                        (filter === "selected" && selected > 0) ||
+                        (filter === "unselected" && selected <= 0);
+                    return matchesSearch && matchesFilter;
+                })
+                .sort((a, b) => {
+                    const av = getItemValue(a.item);
+                    const bv = getItemValue(b.item);
+                    const an = String(a.item.name || "").toLowerCase();
+                    const bn = String(b.item.name || "").toLowerCase();
+                    if (sort === "value-asc") return av - bv;
+                    if (sort === "name-asc") return an.localeCompare(bn);
+                    if (sort === "name-desc") return bn.localeCompare(an);
+                    return bv - av;
+                });
+
+            const inventoryTotal = coinflipInventoryItems.reduce((total, item) => {
+                return total + getItemValue(item) * getItemQuantity(item);
+            }, 0);
+            const selectedTotal = getSelectedWagerValue();
+            const totalUnits = coinflipInventoryItems.reduce((total, item) => total + getItemQuantity(item), 0);
+            const selectedUnits = getSelectedInventoryItems().reduce((total, item) => total + Number(item.quantity || 0), 0);
+
+            if (coinflipToolbarSelectedValue) coinflipToolbarSelectedValue.textContent = `💎 ${formatValue(selectedTotal)}`;
+            if (coinflipToolbarInventoryValue) coinflipToolbarInventoryValue.textContent = `💎 ${formatValue(inventoryTotal)}`;
+            if (coinflipToolbarInventoryCount) coinflipToolbarInventoryCount.textContent = `${selectedUnits} / ${totalUnits}`;
+
             if (!coinflipInventoryItems.length) {
                 coinflipInventory.innerHTML = `
                     <div class="coinflip-inventory-empty">
@@ -501,8 +557,19 @@
                 return;
             }
 
+            if (!filteredItems.length) {
+                coinflipInventory.innerHTML = `
+                    <div class="coinflip-inventory-empty">
+                        <div class="coinflip-inventory-empty-icon">⌕</div>
+                        <strong>No matching pets</strong>
+                        <span>Try another search or change your inventory filters.</span>
+                    </div>`;
+                updateCoinflipSummary();
+                return;
+            }
+
             const cards = [];
-            coinflipInventoryItems.forEach((item, index) => {
+            filteredItems.forEach(({ item, index }) => {
                 const inventoryId = getInventoryId(item, index);
                 const quantity = getItemQuantity(item);
                 const value = getItemValue(item);
@@ -542,6 +609,10 @@
             });
         }
 
+        [coinflipInventorySearch, coinflipInventorySort, coinflipInventoryFilter].forEach((control) => {
+            if (control) control.addEventListener("input", renderCoinflipInventory);
+            if (control && control.tagName === "SELECT") control.addEventListener("change", renderCoinflipInventory);
+        });
 
         /* ==========================================
            MATCH CARD
