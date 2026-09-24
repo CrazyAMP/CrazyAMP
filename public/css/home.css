@@ -6537,3 +6537,111 @@ body {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
+
+/* =========================================================
+   REFERENCE COINFLIP HOME REDESIGN — PURPLE THEME
+   ========================================================= */
+:root {
+    --reference-bg: #101321;
+    --reference-panel: #151a2a;
+    --reference-panel-2: #1a2032;
+    --reference-line: rgba(139, 92, 246, .14);
+    --reference-purple: #8b5cf6;
+    --reference-purple-bright: #a78bfa;
+}
+
+body {
+    background:
+        radial-gradient(circle at 76% -20%, rgba(139, 92, 246, .12), transparent 35%),
+        linear-gradient(135deg, #0d1120 0%, #111525 48%, #151329 100%);
+}
+
+.navbar {
+    height: 74px;
+    padding: 0 18px;
+    background: #171b2a;
+    border-bottom: 1px solid rgba(255,255,255,.035);
+    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+
+.navbar-logo {
+    font-size: 17px;
+    letter-spacing: -.5px;
+}
+.navbar-links { margin-left: 28px; gap: 5px; }
+.nav-link { height: 74px; padding: 0 13px; border-radius: 0; font-size: 12px; color: #626b89; }
+.nav-link.active { background: transparent; color: #f7f7ff; }
+.nav-link.active::after { left: 0; right: 0; bottom: 0; width: auto; height: 3px; transform: none; background: var(--reference-purple); box-shadow: 0 0 14px rgba(139,92,246,.6); }
+.navbar-right { gap: 15px; }
+.balance-button { height: 50px; min-width: 112px; justify-content: center; border: 0; border-radius: 12px; background: linear-gradient(135deg, #7c3aed, #8b5cf6); box-shadow: 0 8px 22px rgba(124,58,237,.24); }
+.balance-value { font-size: 15px; }
+.balance-icon { font-size: 16px; }
+.navbar-user { height: 50px; padding: 0 4px 0 8px; border-radius: 12px; }
+.navbar-user-info { gap: 3px; }
+.navbar-username { font-size: 12px; }
+.navbar-user-label { font-size: 9px; }
+
+.coinflip-page { max-width: none; padding: 26px 24px 70px; }
+.coinflip-header, .coinflip-stats { display: none; }
+.reference-toolbar { display: flex; align-items: center; gap: 28px; margin-bottom: 20px; min-height: 48px; }
+.reference-sort { display: flex; align-items: center; gap: 12px; min-width: 252px; height: 44px; padding: 0 15px; border: 1px solid rgba(130,145,190,.18); border-radius: 11px; background: #171d2d; color: #f3f4ff; font-size: 13px; }
+.reference-sort strong { font-weight: 800; flex: 1; text-align: left; }
+.reference-sort span { color: #d4d7e8; }
+.reference-sort .sort-chevron { color: #8b93ad; font-size: 18px; }
+.reference-counts { display: flex; align-items: center; gap: 28px; }
+.reference-count { display: inline-flex; align-items: center; gap: 10px; color: #f7f8ff; font-size: 15px; }
+.reference-count-icon { font-size: 18px; color: #fff; }
+.reference-count.diamond-count { color: #a78bfa; }
+.reference-count.diamond-count span { color: #8b5cf6; }
+.reference-toolbar-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.reference-toolbar-actions .match-tab { min-width: 120px; height: 44px; border: 1px solid rgba(139,92,246,.08); border-radius: 12px; background: #20263a; color: #8b93ad; font-size: 13px; font-weight: 800; }
+.reference-toolbar-actions .match-tab.active { background: linear-gradient(135deg,#7c3aed,#8b5cf6); color: #fff; box-shadow: 0 6px 18px rgba(124,58,237,.2); }
+.reference-create { width: 44px; height: 44px; padding: 0; border-radius: 12px; display: grid; place-items: center; font-size: 24px; }
+.reference-layout { display: block; }
+.coinflip-main { width: 100%; }
+.coinflip-matches { display: flex; flex-direction: column; gap: 12px; }
+.coinflip-match-card { display: grid; grid-template-columns: minmax(300px, 1.25fr) minmax(220px, 1fr) minmax(180px, .65fr) 110px; align-items: center; min-height: 94px; padding: 12px 16px 12px 20px; border: 1px solid rgba(117,132,174,.14); border-radius: 16px; background: linear-gradient(100deg, #171c2c, #151a29); box-shadow: 0 6px 18px rgba(0,0,0,.06); }
+.coinflip-match-card:hover { border-color: rgba(139,92,246,.34); background: linear-gradient(100deg,#1a2033,#171c2e); }
+.coinflip-match-duel { display: flex; align-items: center; gap: 12px; }
+.coinflip-match-contender { display: flex; align-items: center; gap: 8px; min-width: 80px; }
+.coinflip-match-player-info, .coinflip-match-contender > span:not(.coinflip-match-choice) { display: none; }
+.coinflip-match-avatar { width: 62px; height: 62px; border-radius: 50%; background: #0f1423; border: 1px solid rgba(139,92,246,.08); display: grid; place-items: center; overflow: hidden; color: #7e88a7; font-size: 26px; }
+.coinflip-match-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.coinflip-match-choice { display: none; }
+.coinflip-match-versus { color: #f7f7ff; font-size: 17px; font-weight: 900; }
+.coinflip-match-wager { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.coinflip-wager-pets { display: flex; align-items: center; min-width: 0; }
+.coinflip-wager-pet { width: 56px; height: 56px; margin-left: -3px; border: 1px solid rgba(255,255,255,.12); border-radius: 12px; background: #202538; display: grid; place-items: center; overflow: hidden; box-shadow: 0 0 14px rgba(139,92,246,.08); }
+.coinflip-wager-pet:first-child { margin-left: 0; }
+.coinflip-wager-pet img { width: 100%; height: 100%; object-fit: contain; }
+.coinflip-wager-pet-fallback { font-size: 22px; }
+.coinflip-match-value { color: #f3f4ff; font-size: 18px; white-space: nowrap; }
+.coinflip-match-actions { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
+.coinflip-join-match-button, .coinflip-cancel-match-button, .coinflip-view-match-button { min-height: 34px; border-radius: 999px; font-size: 12px; font-weight: 800; }
+.coinflip-join-match-button { background: linear-gradient(135deg,#7c3aed,#8b5cf6); color: #fff; }
+.coinflip-view-match-button { background: #232a3e; color: #7f89a8; }
+.coinflip-cancel-match-button { background: #42203e; color: #f0a6ff; }
+.fair-banner { display: none; }
+.matches-empty { padding: 80px 20px; background: #171c2c; border: 1px solid rgba(117,132,174,.14); border-radius: 16px; }
+
+@media (max-width: 1000px) {
+    .navbar-links { margin-left: 10px; }
+    .nav-link { padding: 0 8px; }
+    .coinflip-match-card { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .coinflip-match-actions { grid-column: 2; grid-row: 1 / span 2; justify-self: end; min-width: 110px; }
+}
+@media (max-width: 760px) {
+    .navbar { padding: 0 12px; }
+    .navbar-links { display: none; }
+    .navbar-user-info { display: none; }
+    .coinflip-page { padding: 18px 12px 80px; }
+    .reference-toolbar { flex-wrap: wrap; gap: 10px; }
+    .reference-sort { flex: 1 1 100%; }
+    .reference-counts { gap: 16px; }
+    .reference-toolbar-actions { margin-left: auto; }
+    .reference-toolbar-actions .match-tab { min-width: 92px; }
+    .reference-create { display: none; }
+    .coinflip-match-card { grid-template-columns: 1fr; padding: 14px; }
+    .coinflip-match-actions { grid-column: auto; grid-row: auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+    .coinflip-match-wager { justify-content: space-between; }
+}

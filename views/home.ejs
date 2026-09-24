@@ -221,237 +221,44 @@
     =========================================== -->
 
     <main class="coinflip-page">
-
-        <!-- HEADER -->
-
-        <section class="coinflip-header">
-
-            <div class="coinflip-heading">
-
-                <span class="section-label">
-                    PROVABLY FAIR
-                </span>
-
-                <h1>
-                    Coinflip
-                </h1>
-
-                <p>
-                    Wager your Adopt Me pets and let the coin decide.
-                </p>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="create-match-button"
-                id="createMatchButton"
-            >
-
-                <span>
-                    +
-                </span>
-
-                Create Match
-
+        <section class="reference-toolbar" aria-label="Coinflip controls">
+            <button type="button" class="sort-button reference-sort" id="sortMatchesButton">
+                <span>☷</span>
+                <strong>Value sort high to low</strong>
+                <span class="sort-chevron">⌄</span>
             </button>
 
+            <div class="reference-counts">
+                <span class="reference-count"><span class="reference-count-icon">◈</span><strong id="openMatchesCount">5</strong></span>
+                <span class="reference-count diamond-count"><span>◆</span><strong id="totalWageredValue">1,550</strong></span>
+            </div>
+
+            <div class="reference-toolbar-actions">
+                <button type="button" class="match-tab active" id="openMatchesTab">Bet Items</button>
+                <button type="button" class="match-tab" id="myMatchesTab">History</button>
+                <button type="button" class="create-match-button reference-create" id="createMatchButton" aria-label="Create match">+</button>
+            </div>
         </section>
 
-
-        <!-- STATS -->
-
-        <section class="coinflip-stats">
-
-            <div class="coinflip-stat">
-
-                <div class="coinflip-stat-icon">
-                    🎲
-                </div>
-
-                <div class="coinflip-stat-content">
-
-                    <span>
-                        OPEN MATCHES
-                    </span>
-
-                    <strong id="openMatchesCount">
-                        0
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="coinflip-stat">
-
-                <div class="coinflip-stat-icon">
-                    💎
-                </div>
-
-                <div class="coinflip-stat-content">
-
-                    <span>
-                        TOTAL WAGERED
-                    </span>
-
-                    <strong id="totalWageredValue">
-                        0
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="coinflip-stat">
-
-                <div class="coinflip-stat-icon">
-                    🪙
-                </div>
-
-                <div class="coinflip-stat-content">
-
-                    <span>
-                        TAX
-                    </span>
-
-                    <strong>
-                        10%
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- MAIN -->
-
-        <div class="coinflip-layout">
-
+        <section class="coinflip-layout reference-layout">
             <section class="coinflip-main">
-
-                <!-- MATCH TOOLBAR -->
-
-                <div class="matches-toolbar">
-
-                    <div class="matches-tabs">
-
-                        <button
-                            type="button"
-                            class="match-tab active"
-                            id="openMatchesTab"
-                        >
-                            Open Matches
-                        </button>
-
-                        <button
-                            type="button"
-                            class="match-tab"
-                            id="myMatchesTab"
-                        >
-                            My Matches
-                        </button>
-
-                    </div>
-
-
-                    <button
-                        type="button"
-                        class="sort-button"
-                        id="sortMatchesButton"
-                    >
-
-                        <span>
-                            ↕
-                        </span>
-
-                        Newest
-
-                    </button>
-
-                </div>
-
-
-                <!-- MATCHES -->
-
-                <div
-                    class="coinflip-matches"
-                    id="coinflipMatches"
-                >
-
+                <div class="coinflip-matches" id="coinflipMatches">
                     <div class="matches-empty">
-
-                        <div class="matches-empty-icon">
-                            🪙
-                        </div>
-
-                        <h3>
-                            No open matches
-                        </h3>
-
-                        <p>
-                            Create a match and be the first player to start a coinflip.
-                        </p>
-
-                        <button
-                            type="button"
-                            class="create-match-button empty-create-button"
-                            id="emptyCreateMatchButton"
-                        >
-
-                            <span>
-                                +
-                            </span>
-
-                            Create Match
-
-                        </button>
-
+                        <div class="matches-empty-icon">🪙</div>
+                        <h3>No open matches</h3>
+                        <p>Create a match and be the first player to start a coinflip.</p>
+                        <button type="button" class="create-match-button empty-create-button" id="emptyCreateMatchButton"><span>+</span> Create Match</button>
                     </div>
-
                 </div>
-
-
-                <!-- FAIR BANNER -->
 
                 <div class="fair-banner">
-
-                    <div class="fair-icon">
-                        ✓
-                    </div>
-
-                    <div class="fair-content">
-
-                        <strong>
-                            Provably Fair
-                        </strong>
-
-                        <span>
-                            Every coinflip result is generated fairly and cannot be manually selected.
-                        </span>
-
-                    </div>
-
-                    <a
-                        href="#"
-                        class="fair-link"
-                    >
-                        Learn more →
-                    </a>
-
+                    <div class="fair-icon">✓</div>
+                    <div class="fair-content"><strong>Provably Fair</strong><span>Every coinflip result is generated fairly and cannot be manually selected.</span></div>
+                    <a href="#" class="fair-link">Learn more →</a>
                 </div>
-
             </section>
-
-        </div>
-
+        </section>
     </main>
-
 
     <!-- ==========================================
          FLOATING CHAT
