@@ -6864,3 +6864,168 @@ body {
     .coinflip-match-value-block { grid-column: 1; grid-row: 3; }
     .coinflip-match-actions { grid-column: 2; grid-row: 3; }
 }
+
+
+/* =========================================================
+   PURPLE MATCH CARD REFINEMENT
+   - Cleaner player profiles
+   - Borderless pet artwork
+   - Subtle purple hover glow
+   - Show the first five pets, then +N overflow
+   ========================================================= */
+.coinflip-match-duel {
+    align-items: center;
+    gap: 13px;
+}
+
+.coinflip-match-contender {
+    min-width: 66px;
+    gap: 3px;
+    justify-content: center;
+}
+
+.coinflip-match-contender .coinflip-match-avatar {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+    border: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 25%, #4d356f 0%, #241735 52%, #120d20 100%);
+    box-shadow: 0 0 0 1px rgba(168, 85, 247, .12), 0 5px 18px rgba(0,0,0,.22);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.coinflip-match-contender:hover .coinflip-match-avatar {
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px rgba(192, 132, 252, .35), 0 0 22px rgba(168, 85, 247, .22);
+}
+
+.coinflip-match-player-name {
+    display: block;
+    max-width: 88px;
+    overflow: hidden;
+    color: #f8f5ff;
+    font-size: 9px;
+    font-weight: 850;
+    line-height: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.coinflip-match-player-status {
+    color: #9f8bbd;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: .07em;
+    line-height: 9px;
+    text-transform: uppercase;
+}
+
+.coinflip-match-waiting .coinflip-match-player-name {
+    color: #b8a8d1;
+}
+
+.coinflip-match-waiting .coinflip-match-player-status {
+    color: #716580;
+}
+
+.coinflip-wager-pets {
+    min-height: 66px;
+    padding: 4px 7px;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+}
+
+.coinflip-wager-pet {
+    width: 56px;
+    height: 56px;
+    margin-right: -8px;
+    border: 0 !important;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+    isolation: isolate;
+    transition: transform .18s ease, filter .18s ease;
+}
+
+.coinflip-wager-pet::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    z-index: -1;
+    border-radius: 50%;
+    background: rgba(168, 85, 247, .0);
+    filter: blur(12px);
+    transition: background .18s ease, opacity .18s ease;
+}
+
+.coinflip-wager-pet img {
+    position: relative;
+    z-index: 1;
+    border: 0;
+    border-radius: 50%;
+    object-fit: contain;
+    transition: transform .18s ease, filter .18s ease;
+}
+
+.coinflip-wager-pet:hover {
+    z-index: 5;
+    transform: translateY(-3px) scale(1.06);
+    filter: drop-shadow(0 0 8px rgba(168, 85, 247, .18));
+}
+
+.coinflip-wager-pet:hover::before {
+    background: rgba(168, 85, 247, .38);
+    opacity: 1;
+}
+
+.coinflip-wager-pet:hover img {
+    filter: drop-shadow(0 0 9px rgba(192, 132, 252, .28));
+}
+
+.coinflip-wager-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    margin-left: 13px;
+    padding: 0 5px;
+    border: 0;
+    border-radius: 9px;
+    background: rgba(168, 85, 247, .09);
+    color: #c4b5fd;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+@media (max-width: 800px) {
+    .coinflip-match-contender .coinflip-match-avatar {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+    }
+
+    .coinflip-match-contender {
+        min-width: 56px;
+    }
+
+    .coinflip-match-player-name {
+        max-width: 70px;
+        font-size: 8px;
+    }
+
+    .coinflip-wager-pets {
+        min-height: 48px;
+        padding: 2px 4px;
+    }
+
+    .coinflip-wager-pet {
+        width: 40px;
+        height: 40px;
+        margin-right: -5px;
+    }
+}

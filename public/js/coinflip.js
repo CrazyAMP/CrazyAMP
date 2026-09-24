@@ -1167,7 +1167,7 @@
                 }));
             });
 
-            const visiblePets = individualPreviewPets.slice(0, 6);
+            const visiblePets = individualPreviewPets.slice(0, 5);
             const remainingPets = Math.max(0, individualPreviewPets.length - visiblePets.length);
 
             const petPreviewHTML = visiblePets.length
@@ -1198,11 +1198,15 @@
                         <div class="coinflip-match-contender">
                             <span class="coinflip-choice-badge ${choice === "tails" ? "tails" : "heads"}">${choice === "tails" ? "T" : "H"}</span>
                             <div class="coinflip-match-avatar">${avatarHTML}</div>
+                            <strong class="coinflip-match-player-name" title="${escapeAttribute(creatorName)}">${escapeHtml(creatorName)}</strong>
+                            <span class="coinflip-match-player-status">Creator</span>
                         </div>
                         <span class="coinflip-match-versus">VS</span>
                         <div class="coinflip-match-contender coinflip-match-waiting">
                             <span class="coinflip-choice-badge waiting">H</span>
                             <div class="coinflip-match-avatar">?</div>
+                            <strong class="coinflip-match-player-name">Waiting</strong>
+                            <span class="coinflip-match-player-status">Opponent</span>
                         </div>
                     </div>
 
