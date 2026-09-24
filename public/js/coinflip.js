@@ -1124,248 +1124,103 @@
         =========================================== */
 
         function renderMatchCard(match) {
-
             const creatorName =
-                match.creator_username ??
-                match.creatorUsername ??
-                match.roblox_username ??
-                match.robloxUsername ??
-                match.creator_display_name ??
-                match.creatorDisplayName ??
-                "Player";
-
+                match.creator_username ?? match.creatorUsername ??
+                match.roblox_username ?? match.robloxUsername ??
+                match.creator_display_name ?? match.creatorDisplayName ?? "Player";
 
             const avatar =
-                match.creator_avatar_url ??
-                match.creatorAvatarUrl ??
-                match.creator_avatar ??
-                match.creatorAvatar ??
-                match.avatar_url ??
-                match.avatarUrl ??
-                match.avatar ??
-                "";
+                match.creator_avatar_url ?? match.creatorAvatarUrl ??
+                match.creator_avatar ?? match.creatorAvatar ??
+                match.avatar_url ?? match.avatarUrl ?? match.avatar ?? "";
 
+            const choice = String(
+                match.creator_choice ?? match.creatorChoice ?? "heads"
+            ).toLowerCase();
 
-            const choice =
-                String(
-                    match.creator_choice ??
-                    match.creatorChoice ??
-                    "heads"
-                ).toLowerCase();
+            const wager = Number(
+                match.creator_value ?? match.creatorValue ?? match.wager ?? 0
+            );
 
+            const minimum = Number(
+                match.min_join_value ?? match.minJoinValue ?? Math.floor(wager * 0.95)
+            );
 
-            const wager =
-                Number(
-                    match.creator_value ??
-                    match.creatorValue ??
-                    match.wager ??
-                    0
-                );
+            const maximum = Number(
+                match.max_join_value ?? match.maxJoinValue ?? Math.ceil(wager * 1.05)
+            );
 
+            const currentUserId = document.body.dataset.userId || null;
+            const matchCreatorId = match.creator_id ?? match.creatorId ?? "";
+            const isCreator = Boolean(match.is_creator ?? match.isCreator) ||
+                (currentUserId && String(matchCreatorId) === String(currentUserId));
 
-            const minimum =
-                Number(
-                    match.min_join_value ??
-                    match.minJoinValue ??
-                    Math.floor(
-                        wager * 0.95
-                    )
-                );
+            const avatarHTML = avatar
+                ? `<img src="${escapeAttribute(avatar)}" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('avatar-failed');">`
+                : escapeHtml(creatorName.charAt(0).toUpperCase());
 
-
-            const maximum =
-                Number(
-                    match.max_join_value ??
-                    match.maxJoinValue ??
-                    Math.ceil(
-                        wager * 1.05
-                    )
-                );
-
-
-            /*
-                IMPORTANT:
-                We no longer put EJS inside the JavaScript.
-
-                The logged-in user ID is stored on the
-                body element as data-user-id.
-            */
-
-            const currentUserId =
-                document.body.dataset.userId ||
-                null;
-
-
-            const matchCreatorId =
-                match.creator_id ??
-                match.creatorId ??
-                "";
-
-
-            const isCreator =
-                Boolean(
-                    match.is_creator ??
-                    match.isCreator
-                ) ||
-                (
-                    currentUserId &&
-                    String(matchCreatorId) ===
-                    String(currentUserId)
-                );
-
-
-            const avatarHTML =
-                avatar
-                    ? `
-                        <img
-                            src="${escapeAttribute(avatar)}"
-                            alt=""
-                            onerror="this.style.display='none'; this.parentElement.classList.add('avatar-failed');"
-                        >
-                    `
-                    : `
-                        ${escapeHtml(
-                            creatorName
-                                .charAt(0)
-                                .toUpperCase()
-                        )}
-                    `;
-
-
-            const pets =
-                Array.isArray(match.pets)
-                    ? match.pets
-                    : [];
-
-
-            // Expand stacked inventory quantities into separate visual pet cards.
-            // The database may store 8 identical pets as one row with quantity: 8,
-            // but the UI should show eight individual cards instead of "×8".
+            const pets = Array.isArray(match.pets) ? match.pets : [];
             const individualPreviewPets = pets.flatMap((pet) => {
                 const quantity = Math.max(1, Number(pet.quantity) || 1);
                 return Array.from({ length: quantity }, (_, index) => ({
-                    ...pet,
-                    quantity: 1,
-                    individualIndex: index + 1
+                    ...pet, quantity: 1, individualIndex: index + 1
                 }));
             });
 
-            const petPreviewHTML =
-                individualPreviewPets.length
-                    ? individualPreviewPets.map((pet) => {
-                        const name = pet.name || "Wagered pet";
-                        return `
-                            <div
-                                class="coinflip-wager-pet${pet.image ? "" : " image-missing"}"
-                                title="${escapeAttribute(name)}"
-                            >
-                                ${pet.image ? `
-                                    <img
-                                        src="${escapeAttribute(pet.image)}"
-                                        alt="${escapeAttribute(name)}"
-                                        onerror="this.style.display='none'; this.parentElement.classList.add('image-missing');"
-                                    >
-                                ` : ""}
-                                <span class="coinflip-wager-pet-fallback">🐾</span>
-                            </div>
-                        `;
-                    }).join("")
-                    : `
-                        <div class="coinflip-wager-pet coinflip-wager-pet-empty">
-                            <span>🐾</span>
-                        </div>
-                    `;
+            const visiblePets = individualPreviewPets.slice(0, 6);
+            const remainingPets = Math.max(0, individualPreviewPets.length - visiblePets.length);
 
-            const remainingPets = 0;
+            const petPreviewHTML = visiblePets.length
+                ? visiblePets.map((pet) => {
+                    const name = pet.name || "Wagered pet";
+                    const form = String(pet.form || "N").trim().toUpperCase();
+                    const trait = pet.fly && pet.ride ? "FR" : pet.fly ? "F" : pet.ride ? "R" : form.charAt(0) || "N";
+                    const traitClass = pet.fly || pet.ride ? "trait-special" : "trait-normal";
+                    return `
+                        <div class="coinflip-wager-pet${pet.image ? "" : " image-missing"}" title="${escapeAttribute(name)}">
+                            ${pet.image ? `<img src="${escapeAttribute(pet.image)}" alt="${escapeAttribute(name)}" onerror="this.style.display='none'; this.parentElement.classList.add('image-missing');">` : ""}
+                            <span class="coinflip-wager-pet-fallback">🐾</span>
+                            <span class="coinflip-pet-trait ${traitClass}">${escapeHtml(trait)}</span>
+                        </div>`;
+                }).join("")
+                : `<div class="coinflip-wager-pet coinflip-wager-pet-empty"><span>🐾</span></div>`;
 
+            const primaryActionHTML = isCreator
+                ? `<button type="button" class="coinflip-cancel-match-button" data-match-id="${escapeAttribute(match.id)}">Cancel Match</button>`
+                : `<button type="button" class="coinflip-join-match-button" data-match-id="${escapeAttribute(match.id)}">Join</button>`;
 
-            const primaryActionHTML =
-                isCreator
-                    ? `
-                        <button
-                            type="button"
-                            class="coinflip-cancel-match-button"
-                            data-match-id="${escapeAttribute(match.id)}"
-                        >
-                            Cancel Match
-                        </button>
-                    `
-                    : `
-                        <button
-                            type="button"
-                            class="coinflip-join-match-button"
-                            data-match-id="${escapeAttribute(match.id)}"
-                        >
-                            Join Match
-                        </button>
-                    `;
-
-
-            const actionHTML = `
-                ${primaryActionHTML}
-                <button
-                    type="button"
-                    class="coinflip-view-match-button"
-                    data-match-id="${escapeAttribute(match.id)}"
-                >
-                    View Game
-                </button>
-            `;
-
+            const actionHTML = `${primaryActionHTML}
+                <button type="button" class="coinflip-view-match-button" data-match-id="${escapeAttribute(match.id)}">View</button>`;
 
             return `
                 <article class="coinflip-match-card">
-
                     <div class="coinflip-match-duel">
-
                         <div class="coinflip-match-contender">
-                            <div class="coinflip-match-avatar">
-                                ${avatarHTML}
-                            </div>
-                            <span class="coinflip-match-choice">
-                                ${escapeHtml(choice)}
-                            </span>
+                            <span class="coinflip-choice-badge ${choice === "tails" ? "tails" : "heads"}">${choice === "tails" ? "T" : "H"}</span>
+                            <div class="coinflip-match-avatar">${avatarHTML}</div>
                         </div>
-
                         <span class="coinflip-match-versus">VS</span>
-
                         <div class="coinflip-match-contender coinflip-match-waiting">
+                            <span class="coinflip-choice-badge waiting">H</span>
                             <div class="coinflip-match-avatar">?</div>
-                            <span>Waiting</span>
                         </div>
-
                     </div>
-
 
                     <div class="coinflip-match-wager">
-
                         <div class="coinflip-wager-pets">
                             ${petPreviewHTML}
-                            ${
-                                remainingPets
-                                    ? `<span class="coinflip-wager-more">+${remainingPets}</span>`
-                                : ""
-                            }
+                            ${remainingPets ? `<span class="coinflip-wager-more">+${remainingPets}</span>` : ""}
                         </div>
-
-                        <strong class="coinflip-match-value">
-                            💎 ${formatValue(wager)}
-                        </strong>
-
                     </div>
 
-
-                    <div class="coinflip-match-actions">
-
-                        ${actionHTML}
-
+                    <div class="coinflip-match-value-block">
+                        <strong class="coinflip-match-value">💎 ${formatValue(wager)}</strong>
+                        <span class="coinflip-match-range">💎 ${formatValue(minimum)} – ${formatValue(maximum)}</span>
                     </div>
 
-                </article>
-            `;
-
+                    <div class="coinflip-match-actions">${actionHTML}</div>
+                </article>`;
         }
-
 
         /* ==========================================
            CANCEL MATCH
